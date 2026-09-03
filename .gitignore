@@ -23,6 +23,11 @@ tmp/
 runs/
 *.pt
 !yolo11n.pt
+!artifacts/checkpoints/*.pt
+
+# Per-PC paths and runtime overrides
+dataset_config.local.yaml
+runtime_config.local.yaml
 
 # Ultralytics local checkout/cache
 Ultralytics/

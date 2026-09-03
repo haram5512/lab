@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import time
 from pathlib import Path
 
@@ -14,6 +15,28 @@ from torch.utils.data import DataLoader
 from .baseline import BaselineDetector
 from .dataset import CocoPersonConfig, CocoPersonPatchDataset, coco_person_collate
 from .metrics import evaluate_coco_person
+
+
+def git_commit(project_root: Path) -> str:
+    """Return the exact source revision used by a run."""
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=project_root, text=True
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+
+def git_is_dirty(project_root: Path) -> bool | None:
+    """Record whether uncommitted source changes affected reproducibility."""
+    try:
+        return bool(
+            subprocess.check_output(
+                ["git", "status", "--porcelain"], cwd=project_root, text=True
+            ).strip()
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
 
 
 def make_loader(project_root: Path, config_path: Path, split: str, max_images: int | None, image_size: int, batch_size: int, num_workers: int = 0, pin_memory: bool = False, persistent_workers: bool = False) -> DataLoader:
@@ -60,6 +83,34 @@ def main() -> None:
     model = BaselineDetector(args.weights).to(device).train()
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
     args.output.mkdir(parents=True, exist_ok=True)
+    source_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    metadata = {
+        "git_commit": git_commit(project_root),
+        "git_dirty": git_is_dirty(project_root),
+        "model": "YOLO11n Baseline",
+        "weights": args.weights,
+        "dataset": "COCO 2017 person",
+        "dataset_config": str(config_path.resolve()),
+        "train_images": source_config["train"]["images"],
+        "validation_images": source_config["validation"]["clean"]["images"],
+        "image_size": args.image_size,
+        "batch_size": args.batch_size,
+        "num_workers": args.num_workers,
+        "pin_memory": args.pin_memory,
+        "persistent_workers": args.persistent_workers and args.num_workers > 0,
+        "learning_rate": args.lr,
+        "epochs": args.epochs,
+        "validation_every": args.val_every,
+        "train_max_images": args.max_images,
+        "validation_max_images": args.val_max_images,
+        "device": str(device),
+        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU",
+        "torch_version": torch.__version__,
+        "torch_cuda_version": torch.version.cuda,
+    }
+    (args.output / "run_metadata.json").write_text(
+        json.dumps(metadata, indent=2), encoding="utf-8"
+    )
     best_loss = float("inf")
     best_map = float("-inf")
     if args.val_every < 1:

@@ -1,10 +1,11 @@
-# Paths are intentionally explicit so train and evaluation patch sets cannot
-# be mixed accidentally. Replace DATA_ROOT with the local COCO root.
-data_root: ./datasets/coco
+# Portable default: the dataset is a sibling of the repository. If a PC uses
+# another location, copy dataset_config.local.example.yaml to
+# dataset_config.local.yaml and pass it with --config.
+data_root: ../datasets/coco
 
 train:
-  images: ./datasets/coco/train2017
-  annotations: ./datasets/coco/annotations/instances_train2017.json
+  images: ../datasets/coco/train2017
+  annotations: ../datasets/coco/annotations/instances_train2017.json
   patch_dirs:
     - ./datasets/adversarial_patches/train/A
     - ./datasets/adversarial_patches/train/B
@@ -15,8 +16,8 @@ train:
 
 validation:
   clean:
-    images: ./datasets/coco/val2017
-    annotations: ./datasets/coco/annotations/instances_val2017.json
+    images: ../datasets/coco/val2017
+    annotations: ../datasets/coco/annotations/instances_val2017.json
   seen_patch:
     patch_dirs: [./datasets/adversarial_patches/train/A, ./datasets/adversarial_patches/train/B, ./datasets/adversarial_patches/train/C, ./datasets/adversarial_patches/train/D, ./datasets/adversarial_patches/train/E]
   unseen_patch:

@@ -1,0 +1,27 @@
+# Copy this file to dataset_config.local.yaml (ignored by Git) and replace
+# D:/datasets/coco with the actual dataset location on this PC.
+data_root: D:/datasets/coco
+
+train:
+  images: D:/datasets/coco/train2017
+  annotations: D:/datasets/coco/annotations/instances_train2017.json
+  patch_dirs: []
+  patch_probability: 0.5
+
+validation:
+  clean:
+    images: D:/datasets/coco/val2017
+    annotations: D:/datasets/coco/annotations/instances_val2017.json
+  seen_patch:
+    patch_dirs: []
+  unseen_patch:
+    patch_dirs: []
+
+physical_test:
+  name: AdvT-shirt-1K
+  images: D:/datasets/AdvT-shirt-1K/images
+  annotations: D:/datasets/AdvT-shirt-1K/annotations.json
+
+optional_crowdhuman:
+  images: D:/datasets/CrowdHuman/Images
+  annotations: D:/datasets/CrowdHuman/annotation_train.odgt

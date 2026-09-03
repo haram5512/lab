@@ -20,29 +20,29 @@ installing the remaining requirements. Verify with:
 python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
 ```
 
-Download COCO 2017 separately and place `train2017`, `val2017`, and the two
-`instances_*.json` files under `datasets\\coco\\`. Adjust only local paths in
-`dataset_config.yaml` when necessary.
+Download COCO 2017 separately. The tracked configuration expects
+`../datasets/coco`; use the ignored `dataset_config.local.yaml` for any other
+machine-specific absolute path.
 
 ## Smoke test
 
 ```powershell
-python train_baseline.py --max-images 100 --val-max-images 20 --epochs 3 --image-size 640 --batch-size 8 --lr 0.0001 --val-every 5 --num-workers 2 --pin-memory --persistent-workers --output runs\\baseline_clean_smoke
+python -m adversarial_robust_detector.train_baseline --config dataset_config.local.yaml --max-images 100 --val-max-images 100 --epochs 1 --image-size 640 --batch-size 4 --lr 0.0001 --val-every 1 --num-workers 2 --pin-memory --persistent-workers --output runs\\baseline_clean_smoke_100
 ```
 
 ## Continue the clean Baseline
 
-The current benchmark-selected configuration is batch 8, two workers, pinned
-memory, persistent workers, learning rate `1e-4`, letterbox `640`, and validation
-every 5 epochs:
+The RTX 5070 Ti verified configuration is batch 16, workers 0, learning rate
+`1e-4`, letterbox `640`, and validation every 5 epochs:
 
 ```powershell
-python train_baseline.py --max-images 0 --val-max-images 0 --epochs 100 --image-size 640 --batch-size 8 --lr 0.0001 --val-every 5 --num-workers 2 --pin-memory --persistent-workers --output runs\\baseline_clean_full_letterbox_b8w2
+python -m adversarial_robust_detector.train_baseline --config dataset_config.yaml --max-images 0 --val-max-images 0 --epochs 100 --image-size 640 --batch-size 16 --lr 0.0001 --val-every 5 --num-workers 0 --output runs\\baseline_clean_full_letterbox
 ```
 
 Metrics are written to `metrics.jsonl`; `last.pt`, `best_map.pt`, and
-`best_loss.pt` are the available checkpoint roles. The repository tracks only
-the selected baseline checkpoint; other experiment outputs remain local.
+`best_loss.pt` are the available checkpoint roles. Copy only reviewed artifacts
+to `artifacts/`; other experiment outputs remain local. See
+`TWO_PC_WORKFLOW.md` for Git and Git LFS synchronization.
 
 ## Research stages
 
