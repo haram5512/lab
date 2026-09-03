@@ -1,0 +1,10 @@
+Python: 3.10.2
+torch: 2.5.1+cu121
+torchvision: 0.20.1+cu121
+ultralytics: 8.4.138
+pytest: 9.1.1
+CUDA available: True
+torch CUDA version: 12.1
+GPU: NVIDIA GeForce RTX 3050 Laptop GPU
+
+The .venv directory is local-only and is intentionally excluded from Git.

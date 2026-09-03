@@ -1,0 +1,34 @@
+# Paths are intentionally explicit so train and evaluation patch sets cannot
+# be mixed accidentally. Replace DATA_ROOT with the local COCO root.
+data_root: ./datasets/coco
+
+train:
+  images: ./datasets/coco/train2017
+  annotations: ./datasets/coco/annotations/instances_train2017.json
+  patch_dirs:
+    - ./datasets/adversarial_patches/train/A
+    - ./datasets/adversarial_patches/train/B
+    - ./datasets/adversarial_patches/train/C
+    - ./datasets/adversarial_patches/train/D
+    - ./datasets/adversarial_patches/train/E
+  patch_probability: 0.5
+
+validation:
+  clean:
+    images: ./datasets/coco/val2017
+    annotations: ./datasets/coco/annotations/instances_val2017.json
+  seen_patch:
+    patch_dirs: [./datasets/adversarial_patches/train/A, ./datasets/adversarial_patches/train/B, ./datasets/adversarial_patches/train/C, ./datasets/adversarial_patches/train/D, ./datasets/adversarial_patches/train/E]
+  unseen_patch:
+    patch_dirs: [./datasets/adversarial_patches/eval/F, ./datasets/adversarial_patches/eval/G, ./datasets/adversarial_patches/eval/H]
+
+physical_test:
+  name: AdvT-shirt-1K
+  images: ./datasets/AdvT-shirt-1K/images
+  annotations: ./datasets/AdvT-shirt-1K/annotations.json
+  note: Keep this split out of training and model selection.
+
+optional_crowdhuman:
+  images: ./datasets/CrowdHuman/Images
+  annotations: ./datasets/CrowdHuman/annotation_train.odgt
+  purpose: Evaluate occlusion and crowded-scene shape-branch effects only.

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adversarial-robust-detector"
+version = "0.2.0"
+description = "Shape-aware adaptive fusion for a real Ultralytics YOLO detector"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.5",
+    "torchvision>=0.20",
+    "ultralytics==8.4.138",
+]
+
+[tool.setuptools]
+packages = ["adversarial_robust_detector"]
+package-dir = { adversarial_robust_detector = "." }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
