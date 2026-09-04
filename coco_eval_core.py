@@ -64,7 +64,11 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
                         area_t=(target_xyxy[2]-target_xyxy[0])*(target_xyxy[3]-target_xyxy[1]); area_c=(candidate_boxes[:,2]-candidate_boxes[:,0])*(candidate_boxes[:,3]-candidate_boxes[:,1])
                         if bool((inter/(area_t+area_c-inter).clamp(min=1e-9) >= .5).any()): attacked_detected += 1
     coco=COCO(str(annotations)); result=coco.loadRes(predictions) if predictions else coco.loadRes([]); evaluator=COCOeval(coco,result,"bbox"); evaluator.params.imgIds=[int(record[0]["id"]) for record in dataset.records]; evaluator.evaluate(); evaluator.accumulate(); evaluator.summarize()
-    precision=evaluator.eval["precision"]; class_ap={}
+    precision=evaluator.eval["precision"]; recall=evaluator.eval["recall"]; class_ap={}; class_ap50={}; class_ap75={}
     for index,name in enumerate(dataset.class_names):
         values=precision[:,:,index,0,-1]; valid=values[values>-1]; class_ap[name]=float(valid.mean()) if valid.size else 0.0
-    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_recall":person_matched/person_gt if person_gt else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
+        v50=precision[0,:,index,0,-1]; v75=precision[5,:,index,0,-1]; v50=v50[v50>-1]; v75=v75[v75>-1]; class_ap50[name]=float(v50.mean()) if v50.size else 0.0; class_ap75[name]=float(v75.mean()) if v75.size else 0.0
+    person_index=dataset.class_names.index("person") if "person" in dataset.class_names else None
+    person_recall_values=recall[:,person_index,0,-1] if person_index is not None else []
+    person_ar100=float(person_recall_values[person_recall_values>-1].mean()) if person_index is not None and (person_recall_values>-1).any() else 0.0
+    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_ap50":class_ap50.get("person"),"person_ap75":class_ap75.get("person"),"person_ar100":person_ar100,"person_recall":person_matched/person_gt if person_gt else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}

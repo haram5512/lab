@@ -6,6 +6,8 @@ import argparse
 import json
 import subprocess
 import time
+import hashlib
+import ultralytics
 from pathlib import Path
 
 import torch
@@ -36,6 +38,10 @@ def main() -> None:
     parser.add_argument("--persistent-workers", action="store_true")
     parser.add_argument("--val-every", type=int, default=5)
     parser.add_argument("--val-max-images", type=int, default=0)
+    parser.add_argument("--early-stopping", action="store_true")
+    parser.add_argument("--min-epochs", type=int, default=30)
+    parser.add_argument("--patience", type=int, default=20)
+    parser.add_argument("--min-delta", type=float, default=0.001)
     parser.add_argument("--output", type=Path, default=Path("runs/main_80class/adversarial_training_smoke"))
     args = parser.parse_args()
     root = Path(__file__).resolve().parent
@@ -71,11 +77,14 @@ def main() -> None:
     criterion = RobustTrainingLoss(model) if args.model == "proposed" else None
     args.output.mkdir(parents=True, exist_ok=True)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "git_dirty": bool(subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "dataset_config":str(config_path), "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_profile": "v5-C torso/very-mild", "unseen_patch_ids":[], "validation": "clean+train_seen only", "checkpoint_policy":{"best_clean_map.pt":"clean AP","best_seen_map.pt":"seen AP","last.pt":"latest"}, "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0,"learning_rate": args.lr, "optimizer":"AdamW", "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda}, indent=2), encoding="utf-8")
+    patch_hash=hashlib.sha256(patched_ds.patch_files[0].read_bytes()).hexdigest()
+    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "git_dirty": bool(subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "dataset_config":str(config_path), "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_sha256":patch_hash,"patch_profile": "v5-C torso/very-mild", "unseen_patch_ids":[], "validation": "official COCOeval person metrics, clean+train_seen only", "person_mapping":{"yolo_class":0,"coco_category_id":1},"recall":{"confidence":.25,"iou":.5}, "checkpoint_policy":{"best_clean_map.pt":"clean person AP","best_seen_map.pt":"seen person AP","last.pt":"latest"},"early_stopping":{"enabled":args.early_stopping,"primary":"seen_person_ap","min_epochs":args.min_epochs,"patience":args.patience,"min_delta":args.min_delta}, "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0,"learning_rate": args.lr, "optimizer":"AdamW", "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda,"ultralytics":ultralytics.__version__}, indent=2), encoding="utf-8")
     clean_iter = iter(clean_loader); patched_iter = iter(patched_loader)
     metrics_path = args.output / "metrics.jsonl"
     best_clean = float("-inf")
     best_seen = float("-inf")
+    meaningful_seen = float("-inf")
+    last_meaningful_epoch = 0
     for epoch in range(args.epochs):
         epoch_started=time.perf_counter()
         losses=[]
@@ -98,17 +107,22 @@ def main() -> None:
         if (epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs:
             clean_metrics = evaluate_model(model, val_clean_loader, val_annotations, val_clean_ds, device, args.image_size, "clean")
             seen_metrics = evaluate_model(model, val_seen_loader, val_annotations, val_seen_ds, device, args.image_size, "seen")
-            record.update({"clean_ap": clean_metrics["ap"], "clean_ap50": clean_metrics["ap50"], "clean_ap75": clean_metrics["ap75"], "clean_person_ap": clean_metrics["person_ap"], "clean_recall":clean_metrics["person_recall"], "seen_ap": seen_metrics["ap"], "seen_ap50": seen_metrics["ap50"], "seen_ap75": seen_metrics["ap75"], "seen_person_ap": seen_metrics["person_ap"], "seen_recall":seen_metrics["person_recall"], "seen_attacked_object_detection_rate": seen_metrics["attacked_object_detection_rate"], "seen_failure_rate":1-seen_metrics["attacked_object_detection_rate"] if seen_metrics["attacked_object_detection_rate"] is not None else None,"ap_drop":clean_metrics["ap"]-seen_metrics["ap"],"ap50_drop":clean_metrics["ap50"]-seen_metrics["ap50"],"recall_drop":clean_metrics["person_recall"]-seen_metrics["person_recall"], "val_seconds": clean_metrics["seconds"] + seen_metrics["seconds"]})
+            record.update({"clean_person_ap":clean_metrics["person_ap"],"clean_person_ap50":clean_metrics["person_ap50"],"clean_person_ap75":clean_metrics["person_ap75"],"clean_person_ar100":clean_metrics["person_ar100"],"clean_person_recall":clean_metrics["person_recall"],"clean_person_gt":clean_metrics["person_gt"],"seen_person_ap":seen_metrics["person_ap"],"seen_person_ap50":seen_metrics["person_ap50"],"seen_person_ap75":seen_metrics["person_ap75"],"seen_person_ar100":seen_metrics["person_ar100"],"seen_person_recall":seen_metrics["person_recall"],"seen_person_gt":seen_metrics["person_gt"],"seen_failure_rate":1-seen_metrics["attacked_object_detection_rate"] if seen_metrics["attacked_object_detection_rate"] is not None else None,"clean_to_seen_ap_drop":clean_metrics["person_ap"]-seen_metrics["person_ap"],"clean_to_seen_ap50_drop":clean_metrics["person_ap50"]-seen_metrics["person_ap50"],"clean_to_seen_recall_drop":clean_metrics["person_recall"]-seen_metrics["person_recall"],"val_seconds":clean_metrics["seconds"]+seen_metrics["seconds"]})
             state = {"model": model.state_dict(), "epoch": epoch + 1, "train_loss": mean_loss, "clean": clean_metrics, "seen": seen_metrics, "git_commit": commit}
-            if clean_metrics["ap"] > best_clean:
-                best_clean = clean_metrics["ap"]; torch.save(state, args.output / "best_clean_map.pt")
-            if seen_metrics["ap"] > best_seen:
-                best_seen = seen_metrics["ap"]; torch.save(state, args.output / "best_seen_map.pt")
+            if clean_metrics["person_ap"] > best_clean:
+                best_clean = clean_metrics["person_ap"]; torch.save(state, args.output / "best_clean_map.pt")
+            if seen_metrics["person_ap"] > best_seen:
+                best_seen = seen_metrics["person_ap"]; torch.save(state, args.output / "best_seen_map.pt")
+            if seen_metrics["person_ap"] >= meaningful_seen + args.min_delta:
+                meaningful_seen=seen_metrics["person_ap"]; last_meaningful_epoch=epoch+1
+            record["early_stop_wait"]=epoch+1-last_meaningful_epoch
+            record["early_stop_triggered"]=bool(args.early_stopping and epoch+1>=args.min_epochs and epoch+1-last_meaningful_epoch>=args.patience)
             model.train()
         record["epoch_seconds"]=time.perf_counter()-epoch_started; record["images_per_second"]=(len(clean_ds)+len(patched_ds))/record["epoch_seconds"]
         with metrics_path.open("a",encoding="utf-8") as handle: handle.write(json.dumps(record)+"\n")
         torch.save({"model":model.state_dict(),"epoch":epoch+1,"train_loss":mean_loss,"git_commit":commit},args.output/"last.pt")
         print(json.dumps(record))
+        if record.get("early_stop_triggered"): break
 
 
 if __name__ == "__main__":
