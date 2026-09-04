@@ -22,7 +22,7 @@ from torch.utils.data import Dataset
 
 
 PatchMode = Literal["clean", "seen", "unseen"]
-IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".pt"}
 
 
 @dataclass(frozen=True)
@@ -129,7 +129,16 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
         self, image: Image.Image, rng: random.Random, target_bbox: list[float] | None = None
     ) -> tuple[Image.Image, Image.Image]:
         patch_path = self.patch_files[rng.randrange(len(self.patch_files))]
-        patch = Image.open(patch_path).convert("RGBA")
+        if patch_path.suffix.lower() == ".pt":
+            tensor = torch.load(patch_path, map_location="cpu", weights_only=False)
+            if isinstance(tensor, dict) and "patch" in tensor:
+                tensor = tensor["patch"]
+            tensor = torch.as_tensor(tensor).detach().float().clamp(0, 1)
+            if tensor.ndim == 4: tensor = tensor[0]
+            pixels = (tensor.permute(1, 2, 0).numpy() * 255).round().astype("uint8")
+            patch = Image.fromarray(pixels, mode="RGB").convert("RGBA")
+        else:
+            patch = Image.open(patch_path).convert("RGBA")
         if target_bbox is None:
             patch.thumbnail((max(8, image.width // 2), max(8, image.height // 2)), Image.Resampling.LANCZOS)
         else:
