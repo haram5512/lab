@@ -70,3 +70,15 @@ def test_v4_shared_patch_receives_multi_image_gradient() -> None:
     assert len(result.gradient_norms) == 2
     assert all(torch.isfinite(torch.tensor(result.gradient_norms)))
     assert all(value > 0 for value in result.gradient_norms)
+
+
+def test_torso_placement_is_inside_bbox_and_above_center() -> None:
+    image = torch.zeros((1, 3, 100, 100))
+    patch = torch.ones((1, 3, 16, 16))
+    box = torch.tensor([0.5, 0.5, 0.4, 0.6])
+    center = PatchGenerator(TinyRawDetector(), PatchConfig(placement_mode="center"), torch.device("cpu"))._place(patch, image, box)
+    torso = PatchGenerator(TinyRawDetector(), PatchConfig(placement_mode="torso"), torch.device("cpu"))._place(patch, image, box)
+    center_rows = torch.nonzero(center[0, 0].sum(1), as_tuple=False).flatten()
+    torso_rows = torch.nonzero(torso[0, 0].sum(1), as_tuple=False).flatten()
+    assert torso_rows.float().mean() < center_rows.float().mean()
+    assert torso_rows.min() >= 20 and torso_rows.max() <= 80

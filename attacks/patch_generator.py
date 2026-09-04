@@ -37,16 +37,18 @@ class PatchGenerator:
             parameter.requires_grad_(False)
         self._generator = torch.Generator(device=self.device).manual_seed(self.config.seed)
 
-    @staticmethod
-    def _place(patch: Tensor, image: Tensor, box: Tensor) -> Tensor:
+    def _place(self, patch: Tensor, image: Tensor, box: Tensor) -> Tensor:
         _, _, height, width = image.shape
         _, _, patch_height, patch_width = patch.shape
         _, _, box_width, box_height = box * width
-        target_width = max(8, int(float(box_width * 0.35)))
-        target_height = max(8, int(float(box_height * 0.35)))
+        target_width = max(8, int(float(box_width * self.config.patch_relative_scale)))
+        target_height = max(8, int(float(box_height * self.config.patch_relative_scale)))
         resized = F.interpolate(patch, size=(min(height, target_height), min(width, target_width)), mode="bilinear", align_corners=False)
         left = int(float(box[0] * width - resized.shape[-1] / 2)).__index__()
-        top = int(float(box[1] * height - resized.shape[-2] / 2)).__index__()
+        center_y = box[1] * height
+        if self.config.placement_mode == "torso":
+            center_y = (box[1] - box[3] / 2 + box[3] * self.config.torso_relative_y) * height
+        top = int(float(center_y - resized.shape[-2] / 2)).__index__()
         left = max(0, min(width - resized.shape[-1], left))
         top = max(0, min(height - resized.shape[-2], top))
         canvas = image.clone()

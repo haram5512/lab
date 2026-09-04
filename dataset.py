@@ -43,6 +43,13 @@ class CocoPersonConfig:
     patch_area_ratio: float = 0.12
     min_box_pixels: float = 16.0
     position_jitter: float = 0.08
+    placement_mode: str = "center"
+    torso_relative_y: float = 0.38
+    patch_scale_min: float = 0.35
+    patch_scale_max: float = 1.0
+    patch_rotation_degrees: float = 35.0
+    patch_brightness_jitter: float = 0.35
+    patch_perspective_jitter: float = 0.12
 
 
 class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
@@ -146,20 +153,20 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             ratio = math.sqrt(max(1e-6, self.config.patch_area_ratio))
             patch.thumbnail((max(8, int(target_width * ratio)), max(8, int(target_height * ratio))), Image.Resampling.LANCZOS)
 
-        scale = rng.uniform(0.35, 1.0)
+        scale = rng.uniform(self.config.patch_scale_min, self.config.patch_scale_max)
         patch = patch.resize(
             (max(8, int(patch.width * scale)), max(8, int(patch.height * scale))),
             Image.Resampling.BICUBIC,
         )
-        patch = patch.rotate(rng.uniform(-35.0, 35.0), expand=True, resample=Image.Resampling.BICUBIC)
-        patch = ImageEnhance.Brightness(patch).enhance(rng.uniform(0.65, 1.35))
+        patch = patch.rotate(rng.uniform(-self.config.patch_rotation_degrees, self.config.patch_rotation_degrees), expand=True, resample=Image.Resampling.BICUBIC)
+        patch = ImageEnhance.Brightness(patch).enhance(rng.uniform(1-self.config.patch_brightness_jitter, 1+self.config.patch_brightness_jitter))
 
         # A mild perspective-like quadrilateral warp using PIL's perspective
         # transform.  The random coefficient is bounded to keep the patch
         # visible and avoid unstable extreme geometries.
-        if rng.random() < 0.7 and patch.width > 4 and patch.height > 4:
+        if self.config.patch_perspective_jitter > 0 and rng.random() < 0.7 and patch.width > 4 and patch.height > 4:
             w, h = patch.size
-            jitter = min(w, h) * rng.uniform(0.02, 0.12)
+            jitter = min(w, h) * rng.uniform(0.0, self.config.patch_perspective_jitter)
             quad = [
                 (rng.uniform(-jitter, jitter), rng.uniform(-jitter, jitter)),
                 (w + rng.uniform(-jitter, jitter), rng.uniform(-jitter, jitter)),
@@ -178,7 +185,8 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             jitter_x = width * self.config.position_jitter
             jitter_y = height * self.config.position_jitter
             center_x = x + width / 2 + rng.uniform(-jitter_x, jitter_x)
-            center_y = y + height / 2 + rng.uniform(-jitter_y, jitter_y)
+            base_y = y + (height * self.config.torso_relative_y if self.config.placement_mode == "torso" else height / 2)
+            center_y = base_y + rng.uniform(-jitter_y, jitter_y)
             left = int(center_x - patch.width / 2)
             top = int(center_y - patch.height / 2)
             left = max(0, min(image.width - patch.width, left))
@@ -327,5 +335,12 @@ class Coco80DetectionDataset(CocoPersonPatchDataset):
                 patch_area_ratio=config.patch_area_ratio,
                 min_box_pixels=config.min_box_pixels,
                 position_jitter=config.position_jitter,
+                placement_mode=config.placement_mode,
+                torso_relative_y=config.torso_relative_y,
+                patch_scale_min=config.patch_scale_min,
+                patch_scale_max=config.patch_scale_max,
+                patch_rotation_degrees=config.patch_rotation_degrees,
+                patch_brightness_jitter=config.patch_brightness_jitter,
+                patch_perspective_jitter=config.patch_perspective_jitter,
             )
         )

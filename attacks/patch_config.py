@@ -28,4 +28,7 @@ class PatchConfig:
     objective: str = "v2"
     candidate_iou_threshold: float = 0.10
     candidate_top_k: int = 10
+    placement_mode: str = "center"
+    patch_relative_scale: float = 0.35
+    torso_relative_y: float = 0.38
     eot: EOTConfig = EOTConfig()
