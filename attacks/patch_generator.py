@@ -125,6 +125,7 @@ class PatchGenerator:
         output.parent.mkdir(parents=True, exist_ok=True)
         pixels = (result.patch[0].cpu().permute(1, 2, 0).clamp(0, 1).numpy() * 255).round().astype("uint8")
         Image.fromarray(pixels).save(output)
+        torch.save(result.patch.cpu(), output.with_suffix(".pt"))
         payload = dict(metadata)
         payload.update({"before_score": result.before_score, "after_score": result.after_score, "loss_last": result.losses[-1] if result.losses else None})
         output.with_suffix(".json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
