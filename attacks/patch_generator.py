@@ -13,7 +13,7 @@ from PIL import Image
 from torch import Tensor
 
 from .patch_config import PatchConfig
-from .patch_losses import target_suppression_loss
+from .patch_losses import gt_matched_topk_suppression_loss, target_suppression_loss
 from .patch_transforms import transform_patch
 
 
@@ -23,6 +23,7 @@ class PatchResult:
     losses: list[float]
     before_score: float
     after_score: float
+    gradient_norms: list[float]
 
 
 class PatchGenerator:
@@ -59,10 +60,11 @@ class PatchGenerator:
             patched[index : index + 1] = self._place(transformed, patched[index : index + 1], boxes[index, 0])
         return patched
 
-    @staticmethod
-    def _score(detector: torch.nn.Module, image: Tensor, boxes: Tensor, classes: Tensor, image_size: int) -> Tensor:
+    def _score(self, detector: torch.nn.Module, image: Tensor, boxes: Tensor, classes: Tensor, image_size: int) -> Tensor:
         raw = detector(image)
         raw_prediction = raw[0] if isinstance(raw, (tuple, list)) else raw
+        if self.config.objective == "v3":
+            return gt_matched_topk_suppression_loss(raw_prediction, boxes, classes, image_size, self.config.candidate_iou_threshold, self.config.candidate_top_k)
         return target_suppression_loss(raw_prediction, boxes, classes, image_size)
 
     def generate(self, image: Tensor, boxes: Tensor, classes: Tensor) -> PatchResult:
@@ -75,18 +77,20 @@ class PatchGenerator:
         with torch.no_grad():
             before = float(self._score(self.detector, image, boxes, classes, image.shape[-1]))
         losses: list[float] = []
+        gradient_norms: list[float] = []
         for _ in range(self.config.steps):
             optimizer.zero_grad(set_to_none=True)
             patched = self._patched(image, boxes, patch.clamp(0, 1))
             loss = self._score(self.detector, patched, boxes, classes, image.shape[-1])
             loss.backward()
+            gradient_norms.append(float(patch.grad.norm().detach()))
             optimizer.step()
             with torch.no_grad():
                 patch.clamp_(0, 1)
             losses.append(float(loss.detach()))
         with torch.no_grad():
             after = float(self._score(self.detector, self._patched(image, boxes, patch), boxes, classes, image.shape[-1]))
-        return PatchResult(patch.detach(), losses, before, after)
+        return PatchResult(patch.detach(), losses, before, after, gradient_norms)
 
     def generate_many(self, images: list[Tensor], boxes: list[Tensor], classes: list[Tensor], batch_size: int = 8) -> PatchResult:
         """Optimize one shared patch over a reproducible source-image set."""
@@ -103,6 +107,7 @@ class PatchGenerator:
         with torch.no_grad():
             before = sum(float(self._score(self.detector, image, box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
         losses: list[float] = []
+        gradient_norms: list[float] = []
         for _ in range(self.config.steps):
             optimizer.zero_grad(set_to_none=True)
             step_value = 0.0
@@ -112,13 +117,14 @@ class PatchGenerator:
             patched = self._patched(image, box, patch.clamp(0, 1))
             loss = self._score(self.detector, patched, box, cls, image.shape[-1])
             loss.backward()
+            gradient_norms.append(float(patch.grad.norm().detach()))
             step_value = float(loss.detach())
             optimizer.step()
             with torch.no_grad(): patch.clamp_(0, 1)
             losses.append(step_value)
         with torch.no_grad():
             after = sum(float(self._score(self.detector, self._patched(image, box, patch), box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
-        return PatchResult(patch.detach(), losses, before, after)
+        return PatchResult(patch.detach(), losses, before, after, gradient_norms)
 
     @staticmethod
     def save(result: PatchResult, output: Path, metadata: dict[str, Any]) -> None:
@@ -127,5 +133,5 @@ class PatchGenerator:
         Image.fromarray(pixels).save(output)
         torch.save(result.patch.cpu(), output.with_suffix(".pt"))
         payload = dict(metadata)
-        payload.update({"before_score": result.before_score, "after_score": result.after_score, "loss_last": result.losses[-1] if result.losses else None})
+        payload.update({"before_score": result.before_score, "after_score": result.after_score, "loss_last": result.losses[-1] if result.losses else None, "gradient_norm_last": result.gradient_norms[-1] if result.gradient_norms else None})
         output.with_suffix(".json").write_text(json.dumps(payload, indent=2), encoding="utf-8")

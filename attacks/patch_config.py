@@ -25,5 +25,7 @@ class PatchConfig:
     steps: int = 200
     learning_rate: float = 0.03
     seed: int = 7
+    objective: str = "v2"
+    candidate_iou_threshold: float = 0.10
+    candidate_top_k: int = 10
     eot: EOTConfig = EOTConfig()
-

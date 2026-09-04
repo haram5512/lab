@@ -2,6 +2,7 @@ import torch
 from torch import nn
 
 from adversarial_robust_detector.attacks import PatchConfig, PatchGenerator
+from adversarial_robust_detector.attacks.patch_losses import gt_matched_topk_suppression_loss
 
 
 class TinyRawDetector(nn.Module):
@@ -34,3 +35,25 @@ def test_patch_updates_while_detector_stays_frozen() -> None:
     assert torch.all((result.patch >= 0) & (result.patch <= 1))
     assert all(parameter.grad is None for parameter in detector.parameters())
     assert result.patch.std() > 0
+
+
+def test_v3_gt_matched_loss_is_scalar_finite_and_differentiable() -> None:
+    raw = torch.zeros((1, 84, 4), requires_grad=True)
+    raw.data[:, :4, :] = torch.tensor([[[320.0], [320.0], [160.0], [160.0]]])
+    raw.data[:, 4, :] = torch.tensor([0.9, 0.7, 0.1, 0.01])
+    boxes = torch.tensor([[[0.5, 0.5, 0.25, 0.25]]])
+    classes = torch.zeros((1, 1))
+    loss = gt_matched_topk_suppression_loss(raw, boxes, classes, 640, top_k=2)
+    assert loss.ndim == 0 and torch.isfinite(loss)
+    loss.backward()
+    assert raw.grad is not None and raw.grad[:, 4].norm() > 0
+
+
+def test_v3_handles_multiple_gt_and_no_overlap() -> None:
+    raw = torch.zeros((1, 84, 3), requires_grad=True)
+    raw.data[:, :4, :] = torch.tensor([[[10.0], [10.0], [4.0], [4.0]]])
+    boxes = torch.tensor([[[0.5, 0.5, 0.2, 0.2], [0.8, 0.8, 0.1, 0.1]]])
+    classes = torch.zeros((1, 2))
+    loss = gt_matched_topk_suppression_loss(raw, boxes, classes, 640)
+    loss.backward()
+    assert torch.isfinite(loss) and raw.grad is not None

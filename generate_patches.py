@@ -11,7 +11,7 @@ import yaml
 
 from .attacks import EOTConfig, PatchConfig, PatchGenerator
 from .baseline import BaselineDetector
-from .dataset import Coco80DetectionDataset, CocoPersonConfig
+from .dataset import Coco80DetectionDataset, CocoPersonConfig, CocoPersonPatchDataset
 
 
 def main() -> None:
@@ -20,6 +20,8 @@ def main() -> None:
     parser.add_argument("--weights", default=None)
     parser.add_argument("--checkpoint", type=Path, default=None)
     parser.add_argument("--strength", choices=("weak", "medium", "strong"), default="strong")
+    parser.add_argument("--objective", choices=("v2", "v3"), default="v3")
+    parser.add_argument("--target", choices=("person", "all"), default="person")
     parser.add_argument("--pool", choices=("train_seen", "unseen"), default="train_seen")
     parser.add_argument("--count", type=int, default=5)
     parser.add_argument("--source-images", type=int, default=50)
@@ -46,7 +48,8 @@ def main() -> None:
         images = root / images
     if not annotations.is_absolute():
         annotations = root / annotations
-    dataset = Coco80DetectionDataset(CocoPersonConfig(images, annotations, image_size=640, max_images=args.source_images))
+    dataset_type = CocoPersonPatchDataset if args.target == "person" else Coco80DetectionDataset
+    dataset = dataset_type(CocoPersonConfig(images, annotations, image_size=640, max_images=args.source_images))
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     detector = BaselineDetector("yolo11n.pt").to(device).eval()
     try:
@@ -64,7 +67,7 @@ def main() -> None:
     else:
         eot = EOTConfig(scale_min=scale_min, scale_max=scale_max)
         seed = 7 if args.pool == "train_seen" else 101
-    generator = PatchGenerator(detector, PatchConfig(patch_size=args.patch_size, steps=steps, seed=seed, eot=eot), device=device)
+    generator = PatchGenerator(detector, PatchConfig(patch_size=args.patch_size, steps=steps, seed=seed, objective=args.objective, eot=eot), device=device)
     output_dir = args.output / args.variant / args.pool if args.variant == "v2" else args.output / args.pool
     start_index = 0
     source_samples = [dataset[index] for index in range(len(dataset))]
@@ -78,7 +81,7 @@ def main() -> None:
         patch_id = (chr(ord("A") + index) if args.pool == "train_seen" else chr(ord("F") + index)) + ("_v2" if args.variant == "v2" else "")
         path = output_dir / f"patch_{patch_id}.png"
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-        generator.save(result, path, {"patch_id": patch_id, "pool": args.pool, "variant": args.variant, "git_commit": commit, "checkpoint": str(checkpoint), "source_detector": "YOLO11n", "dataset": "COCO train2017", "source_image_count": args.source_images, "heldout_split": "train2017_disjoint_subset", "target_policy": "all", "strength": args.strength, "steps": steps, "learning_rate": generator.config.learning_rate, "patch_size": args.patch_size, "seed": generator.config.seed, "attack_objective": "target_pre_nms_class_suppression", "initialization": "uniform_random_[0,1]", "eot": generator.config.eot.__dict__})
+        generator.save(result, path, {"patch_id": patch_id, "pool": args.pool, "variant": args.variant, "git_commit": commit, "checkpoint": str(checkpoint), "source_detector": "YOLO11n", "dataset": "COCO train2017", "source_image_count": args.source_images, "heldout_split": "train2017_disjoint_subset", "target_policy": "all", "strength": args.strength, "steps": steps, "learning_rate": generator.config.learning_rate, "patch_size": args.patch_size, "seed": generator.config.seed, "attack_objective": args.objective, "candidate_iou_threshold": generator.config.candidate_iou_threshold, "candidate_top_k": generator.config.candidate_top_k, "initialization": "uniform_random_[0,1]", "eot": generator.config.eot.__dict__})
         print(f"saved={path} before={result.before_score:.8f} after={result.after_score:.8f}")
 
 
