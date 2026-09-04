@@ -38,6 +38,11 @@ class CocoPersonConfig:
     # None preserves the historical person-only selection. Supplying all
     # COCO category ids enables the general 80-class experiment.
     category_ids: tuple[int, ...] | None = None
+    target_policy: str = "person"
+    target_classes: tuple[int, ...] = ()
+    patch_area_ratio: float = 0.12
+    min_box_pixels: float = 16.0
+    position_jitter: float = 0.08
 
 
 class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
@@ -116,11 +121,16 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
         return self.config.patch_mode != "clean" and rng.random() < self.config.patch_probability
 
     def _compose_patch(
-        self, image: Image.Image, rng: random.Random
+        self, image: Image.Image, rng: random.Random, target_bbox: list[float] | None = None
     ) -> tuple[Image.Image, Image.Image]:
         patch_path = self.patch_files[rng.randrange(len(self.patch_files))]
         patch = Image.open(patch_path).convert("RGBA")
-        patch.thumbnail((max(8, image.width // 2), max(8, image.height // 2)), Image.Resampling.LANCZOS)
+        if target_bbox is None:
+            patch.thumbnail((max(8, image.width // 2), max(8, image.height // 2)), Image.Resampling.LANCZOS)
+        else:
+            _, _, target_width, target_height = target_bbox
+            ratio = math.sqrt(max(1e-6, self.config.patch_area_ratio))
+            patch.thumbnail((max(8, int(target_width * ratio)), max(8, int(target_height * ratio))), Image.Resampling.LANCZOS)
 
         scale = rng.uniform(0.35, 1.0)
         patch = patch.resize(
@@ -144,10 +154,21 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             ]
             patch = patch.transform(patch.size, Image.Transform.QUAD, sum(quad, ()), Image.Resampling.BICUBIC)
 
-        max_x = max(0, image.width - patch.width)
-        max_y = max(0, image.height - patch.height)
-        left = rng.randint(0, max_x)
-        top = rng.randint(0, max_y)
+        if target_bbox is None:
+            max_x = max(0, image.width - patch.width)
+            max_y = max(0, image.height - patch.height)
+            left = rng.randint(0, max_x)
+            top = rng.randint(0, max_y)
+        else:
+            x, y, width, height = target_bbox
+            jitter_x = width * self.config.position_jitter
+            jitter_y = height * self.config.position_jitter
+            center_x = x + width / 2 + rng.uniform(-jitter_x, jitter_x)
+            center_y = y + height / 2 + rng.uniform(-jitter_y, jitter_y)
+            left = int(center_x - patch.width / 2)
+            top = int(center_y - patch.height / 2)
+            left = max(0, min(image.width - patch.width, left))
+            top = max(0, min(image.height - patch.height, top))
         layer = Image.new("RGBA", image.size, (0, 0, 0, 0))
         layer.alpha_composite(patch, (left, top))
         composed = Image.alpha_composite(image.convert("RGBA"), layer).convert("RGB")
@@ -184,7 +205,18 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
         patched = False
         patch_mask = Image.new("L", image.size, 0)
         if self._should_patch(rng):
-            image, patch_mask = self._compose_patch(image, rng)
+            target_annotations = [
+                annotation for annotation in raw_annotations
+                if self.config.target_policy == "all"
+                or (self.config.target_policy == "person" and int(annotation["category_id"]) == 1)
+                or (self.config.target_policy == "selected_classes" and int(annotation["category_id"]) in set(self.config.target_classes))
+            ]
+            target_annotations = [
+                annotation for annotation in target_annotations
+                if float(annotation["bbox"][2]) * float(annotation["bbox"][3]) >= self.config.min_box_pixels**2
+            ]
+            target = rng.choice(target_annotations) if target_annotations else None
+            image, patch_mask = self._compose_patch(image, rng, target["bbox"] if target else None)
             patched = True
 
         image, patch_mask, scale, pad_left, pad_top = self._letterbox(image, patch_mask)
@@ -265,5 +297,10 @@ class Coco80DetectionDataset(CocoPersonPatchDataset):
                 max_images=config.max_images,
                 seed=config.seed,
                 category_ids=category_ids,
+                target_policy=config.target_policy,
+                target_classes=config.target_classes,
+                patch_area_ratio=config.patch_area_ratio,
+                min_box_pixels=config.min_box_pixels,
+                position_jitter=config.position_jitter,
             )
         )

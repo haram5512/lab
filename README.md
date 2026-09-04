@@ -44,6 +44,10 @@ Evaluate the official pretrained clean Baseline with
 `python -m adversarial_robust_detector.evaluate_coco`; install
 `pycocotools` first for official COCO AP/AP50/AP75 and per-class AP.
 
+Gradient-based patch generation and the 80-class clean/patch fine-tuning entry
+point are documented in `TWO_PC_WORKFLOW.md`. Existing person-only runs remain
+untouched.
+
 ## Outputs
 
 Each run may contain `last.pt`, `best_map.pt`, `best_loss.pt`, and

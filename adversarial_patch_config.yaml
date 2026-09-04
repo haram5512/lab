@@ -1,0 +1,33 @@
+# Reproducible attack/defense split for the 80-class main experiment.
+train_seen_pool: artifacts/adversarial_patches/train_seen
+unseen_pool: artifacts/adversarial_patches/unseen
+source_split: train2017
+target_policy: all
+target_classes: []
+min_box_pixels: 16
+patch_area_ratio: 0.12
+position_jitter: 0.08
+patch_probability: 0.5
+patch_size: 128
+
+generator:
+  optimizer: Adam
+  learning_rate: 0.03
+  steps: 200
+  seed_train_seen: 7
+  seed_unseen: 101
+  eot:
+    scale: [0.80, 1.20]
+    translation_fraction: 0.08
+    rotation_degrees: 15
+    perspective_jitter: 0.08
+    brightness: 0.20
+    contrast: 0.20
+
+defense:
+  image_size: 640
+  learning_rate: 0.0001
+  epochs: 100
+  validation_every: 5
+  clean_ratio: 0.5
+  patched_ratio: 0.5

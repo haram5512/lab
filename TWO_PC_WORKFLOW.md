@@ -22,6 +22,35 @@ The new main experiment uses `dataset_config.main80.yaml` and the official
 pretrained `yolo11n.pt` without clean re-training. The old person-only config
 and runs remain auxiliary and are not overwritten.
 
+## Gradient patch generation and defense training
+
+Patch generation is a separate phase. The detector is frozen and only the
+patch tensor is optimized against the differentiable pre-NMS YOLO output. The
+generator applies EOT scale, translation, rotation, appearance, and bounded
+affine-perspective jitter, then writes a PNG plus JSON metadata.
+
+Generate Train/Seen patches from `train2017` only:
+
+```powershell
+python -m adversarial_robust_detector.generate_patches --pool train_seen --count 5 --source-images 50 --steps 200 --output artifacts\adversarial_patches
+```
+
+Generate a separate Unseen pool with a different seed:
+
+```powershell
+python -m adversarial_robust_detector.generate_patches --pool unseen --count 3 --source-images 50 --steps 250 --output artifacts\adversarial_patches
+```
+
+Never pass the unseen pool to defense training. The 80-class fine-tuning entry
+point uses clean and Train/Seen samples in a 50/50 pair:
+
+```powershell
+python -m adversarial_robust_detector.train_robust --model baseline --patch-dir artifacts\adversarial_patches\train_seen --config dataset_config.main80.yaml --max-images 0 --epochs 100 --image-size 640 --batch-size 16 --lr 0.0001 --num-workers 0 --output runs\main_80class\adversarial_training
+python -m adversarial_robust_detector.train_robust --model proposed --patch-dir artifacts\adversarial_patches\train_seen --config dataset_config.main80.yaml --max-images 0 --epochs 100 --image-size 640 --batch-size 8 --lr 0.0001 --num-workers 0 --output runs\main_80class\proposed_rgb_shape
+```
+
+Run the 1-2 epoch smoke versions first with `--max-images 50 --epochs 1`.
+
 ### RTX 3050: development
 
 Use this PC for code/model/DataLoader/evaluator changes, tests, documentation,
