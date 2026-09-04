@@ -46,8 +46,20 @@ to `artifacts/`; other experiment outputs remain local. See
 
 ## Research stages
 
-- Baseline Clean: COCO person detection with letterbox preprocessing.
+- Main Baseline: official pretrained YOLO11n on all 80 COCO classes.
+- Auxiliary Baseline: preserved person-only detection experiment.
 - Baseline + Adversarial Training: clean and synthetic patch mixing.
 - Proposed RGB/Texture + Shape/Edge branches: shape-aware fusion model.
 - Seen and Unseen Patch evaluation: separate train and evaluation patch sets.
 - Physical-world evaluation: AdvT-shirt-1K, held out from training and model selection.
+
+The main 80-class config is `dataset_config.main80.yaml`. Its official evaluator
+is invoked with:
+
+```powershell
+python -m adversarial_robust_detector.evaluate_coco --config dataset_config.main80.yaml --weights yolo11n.pt --image-size 640 --batch-size 16 --num-workers 0 --output runs\baseline_pretrained_clean_eval
+```
+
+This uses `pycocotools.COCOeval`, reports overall AP/AP50/AP75 plus per-class
+AP and person AP, and maps letterboxed predictions back to original COCO
+coordinates before evaluation.

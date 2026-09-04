@@ -59,7 +59,13 @@ class BaselineDetector(nn.Module):
             detect.train(was_training)
 
     @torch.no_grad()
-    def predict(self, images: Tensor, confidence: float = 0.001, iou: float = 0.7) -> list[Tensor]:
+    def predict(
+        self,
+        images: Tensor,
+        confidence: float = 0.001,
+        iou: float = 0.7,
+        classes: list[int] | None = [0],
+    ) -> list[Tensor]:
         """Return NMS-filtered ``xyxy, confidence, class`` rows."""
         was_training = self.training
         self.eval()
@@ -69,7 +75,7 @@ class BaselineDetector(nn.Module):
             prediction,
             conf_thres=confidence,
             iou_thres=iou,
-            classes=[0],
+            classes=classes,
             max_det=300,
             nc=80,
         )

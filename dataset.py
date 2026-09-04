@@ -35,6 +35,9 @@ class CocoPersonConfig:
     patch_probability: float = 0.5
     max_images: int | None = None
     seed: int = 7
+    # None preserves the historical person-only selection. Supplying all
+    # COCO category ids enables the general 80-class experiment.
+    category_ids: tuple[int, ...] | None = None
 
 
 class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
@@ -59,10 +62,23 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
 
         self.config = config
         payload = json.loads(Path(config.annotations_file).read_text(encoding="utf-8"))
+        categories = sorted(payload.get("categories", []), key=lambda item: int(item["id"]))
+        selected_ids = (1,) if config.category_ids is None else tuple(config.category_ids)
+        selected_set = set(int(item) for item in selected_ids)
+        self.category_id_to_class = {
+            int(item["id"]): index
+            for index, item in enumerate(categories)
+            if int(item["id"]) in selected_set
+        }
+        self.class_names = tuple(
+            str(item["name"]) for item in categories if int(item["id"]) in selected_set
+        )
+        if not self.category_id_to_class:
+            raise ValueError("No selected COCO categories were found in the annotation file.")
         images = {int(item["id"]): item for item in payload["images"]}
         annotations: dict[int, list[dict[str, Any]]] = {image_id: [] for image_id in images}
         for annotation in payload.get("annotations", []):
-            if int(annotation.get("category_id", -1)) == 1:
+            if int(annotation.get("category_id", -1)) in self.category_id_to_class:
                 bbox = annotation.get("bbox", [])
                 if len(bbox) == 4 and bbox[2] > 0 and bbox[3] > 0:
                     annotations[int(annotation["image_id"])].append(annotation)
@@ -193,7 +209,10 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
         return {
             "img": image_tensor,
             "bboxes": torch.tensor(boxes, dtype=torch.float32),
-            "cls": torch.zeros((len(boxes), 1), dtype=torch.float32),
+            "cls": torch.tensor(
+                [[float(self.category_id_to_class[int(annotation["category_id"])])] for annotation in raw_annotations],
+                dtype=torch.float32,
+            ),
             "patch_mask": mask_tensor,
             "patched": patched,
             "image_id": int(record["id"]),
@@ -201,6 +220,7 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             "original_size": torch.tensor([original_width, original_height], dtype=torch.float32),
             "letterbox_scale": torch.tensor(scale, dtype=torch.float32),
             "letterbox_pad": torch.tensor([pad_left, pad_top], dtype=torch.float32),
+            "category_ids": [int(annotation["category_id"]) for annotation in raw_annotations],
         }
 
 
@@ -224,4 +244,26 @@ def coco_person_collate(batch: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "original_size": torch.stack([item["original_size"] for item in batch]),
         "letterbox_scale": torch.stack([item["letterbox_scale"] for item in batch]),
         "letterbox_pad": torch.stack([item["letterbox_pad"] for item in batch]),
+        "category_ids": [item["category_ids"] for item in batch],
     }
+
+
+class Coco80DetectionDataset(CocoPersonPatchDataset):
+    """All-category COCO dataset while preserving the person-only class API."""
+
+    def __init__(self, config: CocoPersonConfig) -> None:
+        payload = json.loads(Path(config.annotations_file).read_text(encoding="utf-8"))
+        category_ids = tuple(sorted(int(item["id"]) for item in payload.get("categories", [])))
+        super().__init__(
+            CocoPersonConfig(
+                images_dir=config.images_dir,
+                annotations_file=config.annotations_file,
+                image_size=config.image_size,
+                patch_mode=config.patch_mode,
+                patch_dirs=config.patch_dirs,
+                patch_probability=config.patch_probability,
+                max_images=config.max_images,
+                seed=config.seed,
+                category_ids=category_ids,
+            )
+        )

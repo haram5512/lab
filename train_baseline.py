@@ -13,7 +13,7 @@ import yaml
 from torch.utils.data import DataLoader
 
 from .baseline import BaselineDetector
-from .dataset import CocoPersonConfig, CocoPersonPatchDataset, coco_person_collate
+from .dataset import Coco80DetectionDataset, CocoPersonConfig, CocoPersonPatchDataset, coco_person_collate
 from .metrics import evaluate_coco_person
 
 
@@ -48,9 +48,9 @@ def make_loader(project_root: Path, config_path: Path, split: str, max_images: i
         images = project_root / images
     if not annotations.is_absolute():
         annotations = project_root / annotations
-    dataset = CocoPersonPatchDataset(
-        CocoPersonConfig(images, annotations, image_size=image_size, patch_mode="clean", max_images=max_images)
-    )
+    dataset_config = CocoPersonConfig(images, annotations, image_size=image_size, patch_mode="clean", max_images=max_images)
+    dataset_type = Coco80DetectionDataset if config.get("category_mode", "person") == "all" else CocoPersonPatchDataset
+    dataset = dataset_type(dataset_config)
     return DataLoader(dataset, batch_size=batch_size, shuffle=(split == "train"), collate_fn=coco_person_collate, num_workers=num_workers, pin_memory=pin_memory, persistent_workers=persistent_workers and num_workers > 0)
 
 
@@ -89,7 +89,7 @@ def main() -> None:
         "git_dirty": git_is_dirty(project_root),
         "model": "YOLO11n Baseline",
         "weights": args.weights,
-        "dataset": "COCO 2017 person",
+        "dataset": "COCO 2017 (80 classes)" if source_config.get("category_mode") == "all" else "COCO 2017 person",
         "dataset_config": str(config_path.resolve()),
         "train_images": source_config["train"]["images"],
         "validation_images": source_config["validation"]["clean"]["images"],

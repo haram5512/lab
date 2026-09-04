@@ -1,14 +1,18 @@
 # Adversarial Robust Person Detector
 
-Research code for evaluating whether person detection remains robust to unseen
-adversarial patches and physical-world attacks by using RGB/texture and
-shape/edge information.
+Research code for evaluating general COCO object-detector robustness to unseen
+adversarial patches, while retaining the original person-focused experiment as
+an auxiliary result.
 
 ## Scope
 
-- Baseline Clean: COCO 2017 person detection with letterbox `640x640` input.
-- Baseline + Adversarial Training: clean images mixed with synthetic patches.
-- Proposed RGB/Texture + Shape/Edge Model: shape-aware feature fusion.
+- Main Baseline: official COCO-pretrained YOLO11n (`yolo11n.pt`), no clean
+  re-training, evaluated on all 80 COCO classes.
+- Baseline + Adversarial Training: 80-class fine-tuning from the official
+  pretrained weights with clean/synthetic-patch mixtures.
+- Proposed RGB/Texture + Shape/Edge Model: 80-class shape-aware fusion.
+- Auxiliary experiment: the completed person-only runs and checkpoints remain
+  preserved under their existing `runs/` paths.
 - Seen Patch and Unseen Patch evaluation: train patches and held-out patches are separated.
 - Physical-world evaluation: AdvT-shirt-1K is not used for training or model selection.
 - CrowdHuman is optional for occlusion and crowded-scene shape-branch experiments.
@@ -34,6 +38,11 @@ python -m adversarial_robust_detector.train_baseline --config dataset_config.loc
 The two-PC development/full-training workflow and current commands are in
 `TWO_PC_WORKFLOW.md`. Each run records its source commit, GPU, dependencies,
 data configuration, and training arguments in `run_metadata.json`.
+
+The main 80-class dataset configuration is `dataset_config.main80.yaml`.
+Evaluate the official pretrained clean Baseline with
+`python -m adversarial_robust_detector.evaluate_coco`; install
+`pycocotools` first for official COCO AP/AP50/AP75 and per-class AP.
 
 ## Outputs
 

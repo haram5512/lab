@@ -1,8 +1,7 @@
-# Portable default: the dataset is a sibling of the repository. If a PC uses
-# another location, copy dataset_config.local.example.yaml to
-# dataset_config.local.yaml and pass it with --config.
+# Main experiment configuration: all COCO 80 categories.
+# COCO stays outside GitHub at ../datasets/coco by default.
 data_root: ../datasets/coco
-category_mode: person
+category_mode: all
 
 train:
   images: ../datasets/coco/train2017
@@ -28,9 +27,7 @@ physical_test:
   name: AdvT-shirt-1K
   images: ./datasets/AdvT-shirt-1K/images
   annotations: ./datasets/AdvT-shirt-1K/annotations.json
-  note: Keep this split out of training and model selection.
 
 optional_crowdhuman:
   images: ./datasets/CrowdHuman/Images
   annotations: ./datasets/CrowdHuman/annotation_train.odgt
-  purpose: Evaluate occlusion and crowded-scene shape-branch effects only.

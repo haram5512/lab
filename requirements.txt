@@ -3,3 +3,4 @@ torch==2.5.1+cu121
 torchvision==0.20.1+cu121
 ultralytics==8.4.138
 pytest==9.1.1
+pycocotools>=2.0.7

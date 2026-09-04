@@ -18,6 +18,10 @@ The verified Baseline Clean runtime is batch 16, workers 0, CUDA, learning rate
 `1e-4`, 100 epochs, and validation every 5 epochs. Common research settings live
 in `baseline_train_config.yaml`; runtime choices stay in the command line.
 
+The new main experiment uses `dataset_config.main80.yaml` and the official
+pretrained `yolo11n.pt` without clean re-training. The old person-only config
+and runs remain auxiliary and are not overwritten.
+
 ### RTX 3050: development
 
 Use this PC for code/model/DataLoader/evaluator changes, tests, documentation,
@@ -69,6 +73,11 @@ Push only after this gate passes. Then pull the exact commit on the RTX 5070 Ti.
 git rev-parse HEAD
 python -m adversarial_robust_detector.train_baseline --config dataset_config.yaml --weights yolo11n.pt --max-images 0 --val-max-images 0 --epochs 100 --image-size 640 --batch-size 16 --lr 0.0001 --val-every 5 --num-workers 0 --output runs\baseline_clean_full_letterbox
 ```
+
+For the new no-retraining 80-class clean Baseline evaluation, use
+`evaluate_coco.py` with `dataset_config.main80.yaml`; it requires
+`pycocotools` and writes official COCO metrics, including per-class and person
+AP. Do not use the old person-only `train_baseline` command as the main result.
 
 Every new run automatically writes `run_metadata.json` with the commit, model,
 dataset, preprocessing, optimizer settings, GPU, PyTorch/CUDA versions, and
