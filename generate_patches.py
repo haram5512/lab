@@ -72,8 +72,8 @@ def main() -> None:
     start_index = 0
     source_samples = [dataset[index] for index in range(len(dataset))]
     images = [sample["img"].unsqueeze(0) for sample in source_samples]
-    boxes = [sample["bboxes"][:1].unsqueeze(0) for sample in source_samples]
-    classes = [sample["cls"][:1].squeeze(1).unsqueeze(0) for sample in source_samples]
+    boxes = [sample["bboxes"].unsqueeze(0) for sample in source_samples]
+    classes = [sample["cls"].squeeze(1).unsqueeze(0) for sample in source_samples]
     for index in range(args.count):
         # One reproducible target per image; the generator API remains open to
         # multi-object attacks later.

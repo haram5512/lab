@@ -98,24 +98,21 @@ class PatchGenerator:
             raise ValueError("images, boxes, and classes must be non-empty and aligned")
         patch = torch.rand((1, 3, self.config.patch_size, self.config.patch_size), device=self.device, generator=self._generator, requires_grad=True)
         optimizer = torch.optim.Adam([patch], lr=self.config.learning_rate)
-        def batches() -> list[tuple[Tensor, Tensor, Tensor]]:
-            return [
-                (torch.cat(images[start:start + batch_size]).to(self.device), torch.cat(boxes[start:start + batch_size]).to(self.device), torch.cat(classes[start:start + batch_size]).to(self.device))
-                for start in range(0, len(images), batch_size)
-            ]
-        source_batches = batches()
         with torch.no_grad():
-            before = sum(float(self._score(self.detector, image, box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
+            before = sum(float(self._score(self.detector, image.to(self.device), box.to(self.device), cls.to(self.device), image.shape[-1])) for image, box, cls in zip(images, boxes, classes)) / len(images)
         losses: list[float] = []
         gradient_norms: list[float] = []
         for _ in range(self.config.steps):
             optimizer.zero_grad(set_to_none=True)
             step_value = 0.0
-            # Sample one different mini-batch per step: keeps multi-image
-            # diversity while avoiding an O(steps × source_images) runtime.
-            image, box, cls = source_batches[_ % len(source_batches)]
-            patched = self._patched(image, box, patch.clamp(0, 1))
-            loss = self._score(self.detector, patched, box, cls, image.shape[-1])
+            start = (_ * batch_size) % len(images)
+            indices = [(start + offset) % len(images) for offset in range(min(batch_size, len(images)))]
+            batch_losses = []
+            for index in indices:
+                image, box, cls = images[index].to(self.device), boxes[index].to(self.device), classes[index].to(self.device)
+                patched = self._patched(image, box, patch.clamp(0, 1))
+                batch_losses.append(self._score(self.detector, patched, box, cls, image.shape[-1]))
+            loss = torch.stack(batch_losses).mean()
             loss.backward()
             gradient_norms.append(float(patch.grad.norm().detach()))
             step_value = float(loss.detach())
@@ -123,7 +120,7 @@ class PatchGenerator:
             with torch.no_grad(): patch.clamp_(0, 1)
             losses.append(step_value)
         with torch.no_grad():
-            after = sum(float(self._score(self.detector, self._patched(image, box, patch), box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
+            after = sum(float(self._score(self.detector, self._patched(image.to(self.device), box.to(self.device), patch), box.to(self.device), cls.to(self.device), image.shape[-1])) for image, box, cls in zip(images, boxes, classes)) / len(images)
         return PatchResult(patch.detach(), losses, before, after, gradient_norms)
 
     @staticmethod

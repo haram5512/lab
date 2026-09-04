@@ -57,3 +57,16 @@ def test_v3_handles_multiple_gt_and_no_overlap() -> None:
     loss = gt_matched_topk_suppression_loss(raw, boxes, classes, 640)
     loss.backward()
     assert torch.isfinite(loss) and raw.grad is not None
+
+
+def test_v4_shared_patch_receives_multi_image_gradient() -> None:
+    detector = TinyRawDetector()
+    config = PatchConfig(patch_size=16, steps=2, learning_rate=0.05, objective="v3")
+    generator = PatchGenerator(detector, config, device=torch.device("cpu"))
+    images = [torch.full((1, 3, 640, 640), value) for value in (0.3, 0.7)]
+    boxes = [torch.tensor([[[0.5, 0.5, 0.25, 0.25]]]), torch.tensor([[[0.5, 0.5, 0.25, 0.25], [0.6, 0.6, 0.1, 0.1]]])]
+    classes = [torch.zeros((1, 1)), torch.zeros((1, 2))]
+    result = generator.generate_many(images, boxes, classes, batch_size=2)
+    assert len(result.gradient_norms) == 2
+    assert all(torch.isfinite(torch.tensor(result.gradient_norms)))
+    assert all(value > 0 for value in result.gradient_norms)
