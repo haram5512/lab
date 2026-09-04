@@ -47,14 +47,17 @@ def main() -> None:
     val_images, val_annotations = Path(val_split["images"]), Path(val_split["annotations"])
     if not val_images.is_absolute(): val_images = root / val_images
     if not val_annotations.is_absolute(): val_annotations = root / val_annotations
-    ds_config = CocoPersonConfig(images, annotations, image_size=args.image_size, patch_mode="clean", max_images=None if args.max_images <= 0 else args.max_images, target_policy="all", patch_probability=args.patch_probability)
+    if not 0.0 < args.patch_probability < 1.0: raise ValueError("--patch-probability must be between 0 and 1")
+    common = {"image_size": args.image_size, "max_images": None if args.max_images <= 0 else args.max_images, "target_policy": "person", "required_category_ids": (1,)}
+    ds_config = CocoPersonConfig(images, annotations, patch_mode="clean", **common)
     clean_ds = Coco80DetectionDataset(ds_config)
-    patched_ds = Coco80DetectionDataset(CocoPersonConfig(images, annotations, image_size=args.image_size, patch_mode="seen", patch_dirs=(patch_dir,), max_images=None if args.max_images <= 0 else args.max_images, target_policy="all", patch_probability=1.0))
+    patched_ds = Coco80DetectionDataset(CocoPersonConfig(images, annotations, patch_mode="seen", patch_dirs=(patch_dir,), patch_probability=1.0, placement_mode="torso", torso_relative_y=.38, position_jitter=.015, patch_scale_min=.95, patch_scale_max=1.05, patch_rotation_degrees=3, patch_brightness_jitter=.03, patch_perspective_jitter=.005, **common))
     clean_loader = DataLoader(clean_ds, batch_size=args.batch_size, shuffle=True, collate_fn=coco_person_collate, num_workers=args.num_workers)
     patched_loader = DataLoader(patched_ds, batch_size=args.batch_size, shuffle=True, collate_fn=coco_person_collate, num_workers=args.num_workers)
     val_limit = None if args.val_max_images <= 0 else args.val_max_images
-    val_clean_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, image_size=args.image_size, patch_mode="clean", max_images=val_limit, target_policy="all"))
-    val_seen_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, image_size=args.image_size, patch_mode="seen", patch_dirs=(patch_dir,), patch_probability=1.0, max_images=val_limit, target_policy="all"))
+    val_common = {"image_size": args.image_size, "max_images": val_limit, "target_policy": "person", "required_category_ids": (1,)}
+    val_clean_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, patch_mode="clean", **val_common))
+    val_seen_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, patch_mode="seen", patch_dirs=(patch_dir,), patch_probability=1.0, placement_mode="torso", torso_relative_y=.38, position_jitter=.015, patch_scale_min=.95, patch_scale_max=1.05, patch_rotation_degrees=3, patch_brightness_jitter=.03, patch_perspective_jitter=.005, **val_common))
     val_clean_loader = DataLoader(val_clean_ds, batch_size=args.batch_size, shuffle=False, collate_fn=coco_person_collate, num_workers=args.num_workers)
     val_seen_loader = DataLoader(val_seen_ds, batch_size=args.batch_size, shuffle=False, collate_fn=coco_person_collate, num_workers=args.num_workers)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -64,7 +67,7 @@ def main() -> None:
     criterion = RobustTrainingLoss(model) if args.model == "proposed" else None
     args.output.mkdir(parents=True, exist_ok=True)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "model": args.model, "source_checkpoint": args.weights, "dataset": "COCO 2017 (80 classes)", "patch_pool": str(patch_dir.resolve()), "validation": "clean+train_seen only", "clean_patch_ratio": [0.5, 0.5], "image_size": args.image_size, "batch_size": args.batch_size, "learning_rate": args.lr, "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"}, indent=2), encoding="utf-8")
+    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "git_dirty": bool(subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_profile": "v5-C torso/very-mild", "validation": "clean+train_seen only", "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "learning_rate": args.lr, "optimizer":"AdamW", "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda}, indent=2), encoding="utf-8")
     clean_iter = iter(clean_loader); patched_iter = iter(patched_loader)
     metrics_path = args.output / "metrics.jsonl"
     best_clean = float("-inf")
@@ -81,12 +84,12 @@ def main() -> None:
             patched_batch={key:value.to(device) if isinstance(value,torch.Tensor) else value for key,value in patched_batch.items()}
             optimizer.zero_grad(set_to_none=True)
             if criterion is None:
-                clean_loss,_=model.loss(clean_batch,model(clean_images)); patched_loss,_=model.loss(patched_batch,model(patched_images)); loss=0.5*(clean_loss.sum()+patched_loss.sum())
+                clean_loss,_=model.loss(clean_batch,model(clean_images)); patched_loss,_=model.loss(patched_batch,model(patched_images)); loss=(1-args.patch_probability)*clean_loss.sum()+args.patch_probability*patched_loss.sum()
             else:
                 clean_outputs=model(clean_images); patched_outputs=model(patched_images); loss=criterion(clean_outputs,clean_batch,patched_outputs,patched_batch["patch_mask"])["total"]
             if not torch.isfinite(loss): raise FloatingPointError(f"non-finite loss at epoch={epoch+1}")
             loss.backward(); optimizer.step(); losses.append(float(loss.detach()))
-        mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"device":str(device)}
+        mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"clean_samples":len(losses)*args.batch_size,"perturbed_samples":len(losses)*args.batch_size,"patch_ratio":args.patch_probability,"device":str(device),"max_vram_gib":torch.cuda.max_memory_allocated()/1024**3 if torch.cuda.is_available() else 0}
         if (epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs:
             clean_metrics = evaluate_model(model, val_clean_loader, val_annotations, val_clean_ds, device, args.image_size, "clean")
             seen_metrics = evaluate_model(model, val_seen_loader, val_annotations, val_seen_ds, device, args.image_size, "seen")

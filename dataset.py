@@ -38,6 +38,7 @@ class CocoPersonConfig:
     # None preserves the historical person-only selection. Supplying all
     # COCO category ids enables the general 80-class experiment.
     category_ids: tuple[int, ...] | None = None
+    required_category_ids: tuple[int, ...] = ()
     target_policy: str = "person"
     target_classes: tuple[int, ...] = ()
     patch_area_ratio: float = 0.12
@@ -95,10 +96,12 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
                 if len(bbox) == 4 and bbox[2] > 0 and bbox[3] > 0:
                     annotations[int(annotation["image_id"])].append(annotation)
 
+        required = set(config.required_category_ids)
         self.records = [
             (images[image_id], annotations[image_id])
             for image_id in sorted(images)
             if annotations[image_id]
+            and (not required or any(int(item["category_id"]) in required for item in annotations[image_id]))
         ]
         if config.max_images is not None:
             self.records = self.records[: config.max_images]
@@ -330,6 +333,7 @@ class Coco80DetectionDataset(CocoPersonPatchDataset):
                 max_images=config.max_images,
                 seed=config.seed,
                 category_ids=category_ids,
+                required_category_ids=config.required_category_ids,
                 target_policy=config.target_policy,
                 target_classes=config.target_classes,
                 patch_area_ratio=config.patch_area_ratio,

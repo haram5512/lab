@@ -1,8 +1,11 @@
 import torch
+import pytest
+from pathlib import Path
 from torch import nn
 
 from adversarial_robust_detector.attacks import PatchConfig, PatchGenerator
 from adversarial_robust_detector.attacks.patch_losses import gt_matched_topk_suppression_loss
+from adversarial_robust_detector.attacks.patch_splits import assert_disjoint_patch_pools
 
 
 class TinyRawDetector(nn.Module):
@@ -82,3 +85,9 @@ def test_torso_placement_is_inside_bbox_and_above_center() -> None:
     torso_rows = torch.nonzero(torso[0, 0].sum(1), as_tuple=False).flatten()
     assert torso_rows.float().mean() < center_rows.float().mean()
     assert torso_rows.min() >= 20 and torso_rows.max() <= 80
+
+
+def test_training_and_unseen_patch_ids_must_be_disjoint() -> None:
+    assert_disjoint_patch_pools([Path("train_A.pt")], [Path("unseen_F.pt")])
+    with pytest.raises(ValueError):
+        assert_disjoint_patch_pools([Path("same.pt")], [Path("same.png")])
