@@ -89,7 +89,7 @@ def main() -> None:
                 clean_outputs=model(clean_images); patched_outputs=model(patched_images); loss=criterion(clean_outputs,clean_batch,patched_outputs,patched_batch["patch_mask"])["total"]
             if not torch.isfinite(loss): raise FloatingPointError(f"non-finite loss at epoch={epoch+1}")
             loss.backward(); optimizer.step(); losses.append(float(loss.detach()))
-        mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"clean_samples":len(losses)*args.batch_size,"perturbed_samples":len(losses)*args.batch_size,"patch_ratio":args.patch_probability,"device":str(device),"max_vram_gib":torch.cuda.max_memory_allocated()/1024**3 if torch.cuda.is_available() else 0}
+        mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"clean_samples":len(clean_ds),"perturbed_samples":len(patched_ds),"patch_ratio":args.patch_probability,"device":str(device),"max_vram_gib":torch.cuda.max_memory_allocated()/1024**3 if torch.cuda.is_available() else 0}
         if (epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs:
             clean_metrics = evaluate_model(model, val_clean_loader, val_annotations, val_clean_ds, device, args.image_size, "clean")
             seen_metrics = evaluate_model(model, val_seen_loader, val_annotations, val_seen_ds, device, args.image_size, "seen")
