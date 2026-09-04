@@ -1,0 +1,29 @@
+{
+  "patch_id": "E_v2",
+  "pool": "train_seen",
+  "variant": "v2",
+  "git_commit": "0b7249a14701183f3300a85e7e8073d3c8ba028c",
+  "source_detector": "yolo11n.pt",
+  "dataset": "COCO train2017",
+  "source_image_count": 200,
+  "heldout_split": "train2017_disjoint_subset",
+  "target_policy": "all",
+  "steps": 500,
+  "learning_rate": 0.03,
+  "patch_size": 128,
+  "seed": 7001,
+  "attack_objective": "target_pre_nms_class_suppression",
+  "initialization": "uniform_random_[0,1]",
+  "eot": {
+    "scale_min": 0.65,
+    "scale_max": 1.35,
+    "translate_fraction": 0.14,
+    "rotation_degrees": 25.0,
+    "perspective_jitter": 0.12,
+    "brightness": 0.3,
+    "contrast": 0.3
+  },
+  "before_score": 0.02278818132355809,
+  "after_score": 0.01582740806043148,
+  "loss_last": 0.004855705425143242
+}

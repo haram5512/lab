@@ -105,15 +105,17 @@ class PatchGenerator:
         losses: list[float] = []
         for _ in range(self.config.steps):
             optimizer.zero_grad(set_to_none=True)
-            step_losses: list[Tensor] = []
-            for image, box, cls in source_batches:
-                patched = self._patched(image, box, patch.clamp(0, 1))
-                step_losses.append(self._score(self.detector, patched, box, cls, image.shape[-1]) / len(source_batches))
-            loss = torch.stack(step_losses).sum()
+            step_value = 0.0
+            # Sample one different mini-batch per step: keeps multi-image
+            # diversity while avoiding an O(steps × source_images) runtime.
+            image, box, cls = source_batches[_ % len(source_batches)]
+            patched = self._patched(image, box, patch.clamp(0, 1))
+            loss = self._score(self.detector, patched, box, cls, image.shape[-1])
             loss.backward()
+            step_value = float(loss.detach())
             optimizer.step()
             with torch.no_grad(): patch.clamp_(0, 1)
-            losses.append(float(loss.detach()))
+            losses.append(step_value)
         with torch.no_grad():
             after = sum(float(self._score(self.detector, self._patched(image, box, patch), box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
         return PatchResult(patch.detach(), losses, before, after)
