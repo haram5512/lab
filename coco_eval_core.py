@@ -18,6 +18,7 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     class_to_category = {class_index: category_id for category_id, class_index in dataset.category_id_to_class.items()}
     predictions: list[dict[str, object]] = []
     attacked_total = attacked_detected = 0
+    person_gt = person_matched = 0
     started = time.perf_counter()
     model.eval()
     with torch.no_grad():
@@ -32,6 +33,25 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
                 for box, score, class_index in zip(restored, detection[:, 4].cpu(), detection[:, 5].long().cpu()):
                     x1, y1, x2, y2 = [float(value) for value in box]
                     predictions.append({"image_id": int(batch["image_id"][index]), "category_id": int(class_to_category[int(class_index)]), "bbox": [x1, y1, max(0.0, x2-x1), max(0.0, y2-y1)], "score": float(score)})
+                item_mask = batch["batch_idx"] == index
+                item_boxes = batch["bboxes"][item_mask]
+                item_classes = batch["cls"][item_mask].reshape(-1)
+                gt_boxes = []
+                for gt_box, gt_class in zip(item_boxes, item_classes):
+                    if int(gt_class.item()) != 0: continue
+                    x,y,w,h = gt_box; size=image_size
+                    letterbox = torch.tensor([[(x-w/2)*size,(y-h/2)*size,(x+w/2)*size,(y+h/2)*size]])
+                    gt_boxes.append(inverse_letterbox_xyxy(letterbox,batch["original_size"][index],batch["letterbox_scale"][index],batch["letterbox_pad"][index])[0])
+                person_gt += len(gt_boxes)
+                person_predictions = restored[(detection[:,5].long().cpu()==0) & (detection[:,4].cpu()>=.25)]
+                used: set[int] = set()
+                for gt_box in gt_boxes:
+                    if not len(person_predictions): continue
+                    lt=torch.maximum(person_predictions[:,:2],gt_box[:2]); rb=torch.minimum(person_predictions[:,2:],gt_box[2:]); wh=(rb-lt).clamp(min=0); inter=wh[:,0]*wh[:,1]
+                    union=(gt_box[2]-gt_box[0])*(gt_box[3]-gt_box[1])+(person_predictions[:,2]-person_predictions[:,0])*(person_predictions[:,3]-person_predictions[:,1])-inter
+                    overlaps=inter/union.clamp(min=1e-9); order=torch.argsort(overlaps,descending=True)
+                    for candidate in order.tolist():
+                        if candidate not in used and float(overlaps[candidate])>=.5: used.add(candidate); person_matched += 1; break
                 if attack_mode != "clean" and batch["patch_target"][index] is not None:
                     target = torch.tensor(batch["patch_target"][index], dtype=torch.float32)
                     target_xyxy = torch.tensor([(target[0]-target[2]/2)*image_size, (target[1]-target[3]/2)*image_size, (target[0]+target[2]/2)*image_size, (target[1]+target[3]/2)*image_size]).reshape(1,4)
@@ -47,4 +67,4 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     precision=evaluator.eval["precision"]; class_ap={}
     for index,name in enumerate(dataset.class_names):
         values=precision[:,:,index,0,-1]; valid=values[values>-1]; class_ap[name]=float(valid.mean()) if valid.size else 0.0
-    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
+    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_recall":person_matched/person_gt if person_gt else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
