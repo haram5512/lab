@@ -43,8 +43,9 @@ def _coco_metrics(annotations, dataset, preds, gts):
             rows.append({"image_id":image_id,"category_id":1,"bbox":[float(box[0]),float(box[1]),float(box[2]-box[0]),float(box[3]-box[1])],"score":float(score)})
     result=coco.loadRes(rows) if rows else coco.loadRes([]); ev=COCOeval(coco,result,"bbox"); ev.params.imgIds=list(preds); ev.evaluate(); ev.accumulate(); ev.summarize()
     precision=ev.eval["precision"][:,:,0,0,-1]; valid=precision[precision>-1]
+    p50=precision[0]; p75=precision[5]; p50=p50[p50>-1]; p75=p75[p75>-1]
     gt_count=sum(len(v) for v in gts.values()); tp=sum(len(v) for v in gts.values() if v)
-    return {"ap":float(valid.mean()) if valid.size else 0.0,"ap50":float(ev.stats[1]),"ap75":float(ev.stats[2]),"recall50":tp/gt_count if gt_count else 0.0,"gt_person_count":gt_count}
+    return {"ap":float(valid.mean()) if valid.size else 0.0,"ap50":float(p50.mean()) if p50.size else 0.0,"ap75":float(p75.mean()) if p75.size else 0.0,"recall50":tp/gt_count if gt_count else 0.0,"gt_person_count":gt_count}
 
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--checkpoint",type=Path,required=True); p.add_argument("--patch",type=Path,required=True); p.add_argument("--config",type=Path,default=Path("dataset_config.main80.yaml")); p.add_argument("--max-images",type=int,default=100); p.add_argument("--image-size",type=int,default=640); p.add_argument("--mode",choices=("deterministic","eot"),default="deterministic"); p.add_argument("--seed",type=int,default=42); p.add_argument("--conf-threshold",type=float,default=0.25); p.add_argument("--output",type=Path,required=True); args=p.parse_args(); root=Path(__file__).resolve().parent
