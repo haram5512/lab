@@ -88,6 +88,36 @@ class PatchGenerator:
             after = float(self._score(self.detector, self._patched(image, boxes, patch), boxes, classes, image.shape[-1]))
         return PatchResult(patch.detach(), losses, before, after)
 
+    def generate_many(self, images: list[Tensor], boxes: list[Tensor], classes: list[Tensor], batch_size: int = 8) -> PatchResult:
+        """Optimize one shared patch over a reproducible source-image set."""
+        if not images or len(images) != len(boxes) or len(images) != len(classes):
+            raise ValueError("images, boxes, and classes must be non-empty and aligned")
+        patch = torch.rand((1, 3, self.config.patch_size, self.config.patch_size), device=self.device, generator=self._generator, requires_grad=True)
+        optimizer = torch.optim.Adam([patch], lr=self.config.learning_rate)
+        def batches() -> list[tuple[Tensor, Tensor, Tensor]]:
+            return [
+                (torch.cat(images[start:start + batch_size]).to(self.device), torch.cat(boxes[start:start + batch_size]).to(self.device), torch.cat(classes[start:start + batch_size]).to(self.device))
+                for start in range(0, len(images), batch_size)
+            ]
+        source_batches = batches()
+        with torch.no_grad():
+            before = sum(float(self._score(self.detector, image, box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
+        losses: list[float] = []
+        for _ in range(self.config.steps):
+            optimizer.zero_grad(set_to_none=True)
+            step_losses: list[Tensor] = []
+            for image, box, cls in source_batches:
+                patched = self._patched(image, box, patch.clamp(0, 1))
+                step_losses.append(self._score(self.detector, patched, box, cls, image.shape[-1]) / len(source_batches))
+            loss = torch.stack(step_losses).sum()
+            loss.backward()
+            optimizer.step()
+            with torch.no_grad(): patch.clamp_(0, 1)
+            losses.append(float(loss.detach()))
+        with torch.no_grad():
+            after = sum(float(self._score(self.detector, self._patched(image, box, patch), box, cls, image.shape[-1])) for image, box, cls in source_batches) / len(source_batches)
+        return PatchResult(patch.detach(), losses, before, after)
+
     @staticmethod
     def save(result: PatchResult, output: Path, metadata: dict[str, Any]) -> None:
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -96,4 +126,3 @@ class PatchGenerator:
         payload = dict(metadata)
         payload.update({"before_score": result.before_score, "after_score": result.after_score, "loss_last": result.losses[-1] if result.losses else None})
         output.with_suffix(".json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-

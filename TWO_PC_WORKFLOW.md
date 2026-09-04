@@ -49,6 +49,11 @@ python -m adversarial_robust_detector.train_robust --model baseline --patch-dir 
 python -m adversarial_robust_detector.train_robust --model proposed --patch-dir artifacts\adversarial_patches\train_seen --config dataset_config.main80.yaml --max-images 0 --epochs 100 --image-size 640 --batch-size 8 --lr 0.0001 --num-workers 0 --output runs\main_80class\proposed_rgb_shape
 ```
 
+Training-time validation is official COCO evaluation on Clean and Train/Seen
+only (`--val-every 5`, with the final epoch always evaluated). It writes
+`best_clean_map.pt`, `best_seen_map.pt`, and `last.pt`; no unseen checkpoint is
+created. Use `--val-max-images 0` for the complete validation split.
+
 Run the 1-2 epoch smoke versions first with `--max-images 50 --epochs 1`.
 
 ### RTX 3050: development

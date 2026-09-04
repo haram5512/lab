@@ -41,18 +41,18 @@ def main() -> None:
     generator = PatchGenerator(detector, PatchConfig(patch_size=args.patch_size, steps=args.steps, seed=7 if args.pool == "train_seen" else 101), device=device)
     output_dir = args.output / args.pool
     start_index = 0
+    source_samples = [dataset[index] for index in range(len(dataset))]
+    images = [sample["img"].unsqueeze(0) for sample in source_samples]
+    boxes = [sample["bboxes"][:1].unsqueeze(0) for sample in source_samples]
+    classes = [sample["cls"][:1].squeeze(1).unsqueeze(0) for sample in source_samples]
     for index in range(args.count):
-        sample = dataset[index % len(dataset)]
-        image = sample["img"].unsqueeze(0)
-        boxes = sample["bboxes"].unsqueeze(0)
-        classes = sample["cls"].squeeze(1).unsqueeze(0)
         # One reproducible target per image; the generator API remains open to
         # multi-object attacks later.
-        result = generator.generate(image, boxes[:, :1], classes[:, :1])
+        result = generator.generate_many(images, boxes, classes, batch_size=8)
         patch_id = chr(ord("A") + index) if args.pool == "train_seen" else chr(ord("F") + index)
         path = output_dir / f"patch_{patch_id}.png"
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-        generator.save(result, path, {"patch_id": patch_id, "pool": args.pool, "git_commit": commit, "source_detector": args.weights, "dataset": "COCO train2017", "source_image_count": args.source_images, "target_policy": "all", "steps": args.steps, "learning_rate": generator.config.learning_rate, "patch_size": args.patch_size, "eot": generator.config.eot.__dict__})
+        generator.save(result, path, {"patch_id": patch_id, "pool": args.pool, "git_commit": commit, "source_detector": args.weights, "dataset": "COCO train2017", "source_image_count": args.source_images, "target_policy": "all", "steps": args.steps, "learning_rate": generator.config.learning_rate, "patch_size": args.patch_size, "seed": generator.config.seed, "attack_objective": "target_pre_nms_class_suppression", "initialization": "uniform_random_[0,1]", "eot": generator.config.eot.__dict__})
         print(f"saved={path} before={result.before_score:.8f} after={result.after_score:.8f}")
 
 

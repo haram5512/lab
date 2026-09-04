@@ -104,12 +104,17 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
 
     @staticmethod
     def _find_patch_files(directories: Sequence[Path]) -> list[Path]:
-        return sorted(
-            path
-            for directory in directories
-            for path in Path(directory).rglob("*")
-            if path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES
-        )
+        files: list[Path] = []
+        for directory in directories:
+            candidate = Path(directory)
+            if candidate.is_file() and candidate.suffix.lower() in IMAGE_SUFFIXES:
+                files.append(candidate)
+            elif candidate.is_dir():
+                files.extend(
+                    path for path in candidate.rglob("*")
+                    if path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES
+                )
+        return sorted(files)
 
     def __len__(self) -> int:
         return len(self.records)
@@ -203,6 +208,9 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
         original_width, original_height = image.size
         rng = self._rng(index)
         patched = False
+        patched_target: list[float] | None = None
+        patched_target_class = -1
+        target: dict[str, Any] | None = None
         patch_mask = Image.new("L", image.size, 0)
         if self._should_patch(rng):
             target_annotations = [
@@ -218,6 +226,8 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             target = rng.choice(target_annotations) if target_annotations else None
             image, patch_mask = self._compose_patch(image, rng, target["bbox"] if target else None)
             patched = True
+            if target is not None:
+                patched_target_class = self.category_id_to_class[int(target["category_id"])]
 
         image, patch_mask, scale, pad_left, pad_top = self._letterbox(image, patch_mask)
         image_tensor = torch.from_numpy(np.asarray(image).copy()).permute(2, 0, 1).float() / 255.0
@@ -238,6 +248,8 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
                     (y2 - y1) / self.config.image_size,
                 ]
             )
+            if target is not None and patched_target is None and int(annotation.get("id", -1)) == int(target.get("id", -2)):
+                patched_target = boxes[-1]
         return {
             "img": image_tensor,
             "bboxes": torch.tensor(boxes, dtype=torch.float32),
@@ -253,6 +265,8 @@ class CocoPersonPatchDataset(Dataset[dict[str, Any]]):
             "letterbox_scale": torch.tensor(scale, dtype=torch.float32),
             "letterbox_pad": torch.tensor([pad_left, pad_top], dtype=torch.float32),
             "category_ids": [int(annotation["category_id"]) for annotation in raw_annotations],
+            "patch_target": patched_target,
+            "patch_target_class": patched_target_class,
         }
 
 
@@ -277,6 +291,8 @@ def coco_person_collate(batch: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "letterbox_scale": torch.stack([item["letterbox_scale"] for item in batch]),
         "letterbox_pad": torch.stack([item["letterbox_pad"] for item in batch]),
         "category_ids": [item["category_ids"] for item in batch],
+        "patch_target": [item["patch_target"] for item in batch],
+        "patch_target_class": torch.tensor([item["patch_target_class"] for item in batch], dtype=torch.long),
     }
 
 

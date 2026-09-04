@@ -15,6 +15,7 @@ from .baseline import BaselineDetector
 from .dataset import Coco80DetectionDataset, CocoPersonConfig, coco_person_collate
 from .losses import RobustTrainingLoss
 from .model import ModelConfig, ShapeAwareYolo
+from .coco_eval_core import evaluate_model
 
 
 def main() -> None:
@@ -30,6 +31,8 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--patch-probability", type=float, default=0.5)
     parser.add_argument("--num-workers", type=int, default=0)
+    parser.add_argument("--val-every", type=int, default=5)
+    parser.add_argument("--val-max-images", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path("runs/main_80class/adversarial_training_smoke"))
     args = parser.parse_args()
     root = Path(__file__).resolve().parent
@@ -40,11 +43,20 @@ def main() -> None:
     if not images.is_absolute(): images = root / images
     if not annotations.is_absolute(): annotations = root / annotations
     patch_dir = args.patch_dir if args.patch_dir.is_absolute() else root / args.patch_dir
+    val_split = config["validation"]["clean"]
+    val_images, val_annotations = Path(val_split["images"]), Path(val_split["annotations"])
+    if not val_images.is_absolute(): val_images = root / val_images
+    if not val_annotations.is_absolute(): val_annotations = root / val_annotations
     ds_config = CocoPersonConfig(images, annotations, image_size=args.image_size, patch_mode="clean", max_images=None if args.max_images <= 0 else args.max_images, target_policy="all", patch_probability=args.patch_probability)
     clean_ds = Coco80DetectionDataset(ds_config)
     patched_ds = Coco80DetectionDataset(CocoPersonConfig(images, annotations, image_size=args.image_size, patch_mode="seen", patch_dirs=(patch_dir,), max_images=None if args.max_images <= 0 else args.max_images, target_policy="all", patch_probability=1.0))
     clean_loader = DataLoader(clean_ds, batch_size=args.batch_size, shuffle=True, collate_fn=coco_person_collate, num_workers=args.num_workers)
     patched_loader = DataLoader(patched_ds, batch_size=args.batch_size, shuffle=True, collate_fn=coco_person_collate, num_workers=args.num_workers)
+    val_limit = None if args.val_max_images <= 0 else args.val_max_images
+    val_clean_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, image_size=args.image_size, patch_mode="clean", max_images=val_limit, target_policy="all"))
+    val_seen_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, image_size=args.image_size, patch_mode="seen", patch_dirs=(patch_dir,), patch_probability=1.0, max_images=val_limit, target_policy="all"))
+    val_clean_loader = DataLoader(val_clean_ds, batch_size=args.batch_size, shuffle=False, collate_fn=coco_person_collate, num_workers=args.num_workers)
+    val_seen_loader = DataLoader(val_seen_ds, batch_size=args.batch_size, shuffle=False, collate_fn=coco_person_collate, num_workers=args.num_workers)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = BaselineDetector(args.weights) if args.model == "baseline" else ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
     model = model.to(device).train()
@@ -52,9 +64,11 @@ def main() -> None:
     criterion = RobustTrainingLoss(model) if args.model == "proposed" else None
     args.output.mkdir(parents=True, exist_ok=True)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "model": args.model, "source_checkpoint": args.weights, "dataset": "COCO 2017 (80 classes)", "patch_pool": str(patch_dir.resolve()), "clean_patch_ratio": [0.5, 0.5], "image_size": args.image_size, "batch_size": args.batch_size, "learning_rate": args.lr, "epochs": args.epochs, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"}, indent=2), encoding="utf-8")
+    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "model": args.model, "source_checkpoint": args.weights, "dataset": "COCO 2017 (80 classes)", "patch_pool": str(patch_dir.resolve()), "validation": "clean+train_seen only", "clean_patch_ratio": [0.5, 0.5], "image_size": args.image_size, "batch_size": args.batch_size, "learning_rate": args.lr, "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"}, indent=2), encoding="utf-8")
     clean_iter = iter(clean_loader); patched_iter = iter(patched_loader)
     metrics_path = args.output / "metrics.jsonl"
+    best_clean = float("-inf")
+    best_seen = float("-inf")
     for epoch in range(args.epochs):
         losses=[]
         for _ in range(max(len(clean_loader), len(patched_loader))):
@@ -73,8 +87,18 @@ def main() -> None:
             if not torch.isfinite(loss): raise FloatingPointError(f"non-finite loss at epoch={epoch+1}")
             loss.backward(); optimizer.step(); losses.append(float(loss.detach()))
         mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"device":str(device)}
+        if (epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs:
+            clean_metrics = evaluate_model(model, val_clean_loader, val_annotations, val_clean_ds, device, args.image_size, "clean")
+            seen_metrics = evaluate_model(model, val_seen_loader, val_annotations, val_seen_ds, device, args.image_size, "seen")
+            record.update({"clean_ap": clean_metrics["ap"], "clean_ap50": clean_metrics["ap50"], "clean_ap75": clean_metrics["ap75"], "clean_person_ap": clean_metrics["person_ap"], "seen_ap": seen_metrics["ap"], "seen_ap50": seen_metrics["ap50"], "seen_ap75": seen_metrics["ap75"], "seen_person_ap": seen_metrics["person_ap"], "seen_attacked_object_detection_rate": seen_metrics["attacked_object_detection_rate"], "val_seconds": clean_metrics["seconds"] + seen_metrics["seconds"]})
+            state = {"model": model.state_dict(), "epoch": epoch + 1, "train_loss": mean_loss, "clean": clean_metrics, "seen": seen_metrics, "git_commit": commit}
+            if clean_metrics["ap"] > best_clean:
+                best_clean = clean_metrics["ap"]; torch.save(state, args.output / "best_clean_map.pt")
+            if seen_metrics["ap"] > best_seen:
+                best_seen = seen_metrics["ap"]; torch.save(state, args.output / "best_seen_map.pt")
+            model.train()
         with metrics_path.open("a",encoding="utf-8") as handle: handle.write(json.dumps(record)+"\n")
-        torch.save({"model":model.state_dict(),"epoch":epoch+1,"train_loss":mean_loss},args.output/"last.pt")
+        torch.save({"model":model.state_dict(),"epoch":epoch+1,"train_loss":mean_loss,"git_commit":commit},args.output/"last.pt")
         print(json.dumps(record))
 
 

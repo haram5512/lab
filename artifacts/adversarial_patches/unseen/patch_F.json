@@ -1,0 +1,24 @@
+{
+  "patch_id": "F",
+  "pool": "unseen",
+  "git_commit": "f3de61dffb4df37bfead200de5d90b4f37e4a176",
+  "source_detector": "yolo11n.pt",
+  "dataset": "COCO train2017",
+  "source_image_count": 50,
+  "target_policy": "all",
+  "steps": 250,
+  "learning_rate": 0.03,
+  "patch_size": 128,
+  "eot": {
+    "scale_min": 0.8,
+    "scale_max": 1.2,
+    "translate_fraction": 0.08,
+    "rotation_degrees": 15.0,
+    "perspective_jitter": 0.08,
+    "brightness": 0.2,
+    "contrast": 0.2
+  },
+  "before_score": 0.020348971975701197,
+  "after_score": 0.011251560878008604,
+  "loss_last": 0.01125936210155487
+}

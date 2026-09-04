@@ -24,6 +24,8 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--max-images", type=int, default=0)
+    parser.add_argument("--attack-mode", choices=("clean", "seen", "unseen"), default="clean")
+    parser.add_argument("--patch-root", type=Path, default=Path("artifacts/adversarial_patches"))
     parser.add_argument("--confidence", type=float, default=0.001)
     parser.add_argument("--iou", type=float, default=0.7)
     parser.add_argument("--output", type=Path, default=Path("runs/baseline_pretrained_clean_eval"))
@@ -46,14 +48,18 @@ def main() -> None:
     if not annotations.is_absolute():
         annotations = project_root / annotations
 
-    dataset = Coco80DetectionDataset(
-        CocoPersonConfig(images, annotations, image_size=args.image_size, max_images=None if args.max_images <= 0 else args.max_images)
-    )
+    patch_mode = "clean" if args.attack_mode == "clean" else "seen"
+    patch_dir = args.patch_root if args.patch_root.is_absolute() else project_root / args.patch_root
+    pool_dir = patch_dir / ("train_seen" if args.attack_mode == "seen" else "unseen")
+    patch_dirs = () if args.attack_mode == "clean" else (pool_dir,)
+    dataset = Coco80DetectionDataset(CocoPersonConfig(images, annotations, image_size=args.image_size, patch_mode=patch_mode, patch_dirs=patch_dirs, patch_probability=1.0 if args.attack_mode != "clean" else 0.0, target_policy="all", max_images=None if args.max_images <= 0 else args.max_images))
     loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False, collate_fn=coco_person_collate, num_workers=args.num_workers)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = BaselineDetector(args.weights).to(device).eval()
     class_to_category = {class_index: category_id for category_id, class_index in dataset.category_id_to_class.items()}
     predictions: list[dict[str, object]] = []
+    attacked_total = 0
+    attacked_detected = 0
     started = time.perf_counter()
     with torch.no_grad():
         for batch in loader:
@@ -71,6 +77,20 @@ def main() -> None:
                         "bbox": [x1, y1, max(0.0, x2 - x1), max(0.0, y2 - y1)],
                         "score": float(score),
                     })
+                if args.attack_mode != "clean" and batch["patch_target"][index] is not None:
+                    target = torch.tensor(batch["patch_target"][index], dtype=torch.float32)
+                    target_box = inverse_letterbox_xyxy(
+                        torch.tensor([[ (target[0] - target[2] / 2) * args.image_size, (target[1] - target[3] / 2) * args.image_size, (target[0] + target[2] / 2) * args.image_size, (target[1] + target[3] / 2) * args.image_size ]]),
+                        batch["original_size"][index], batch["letterbox_scale"][index], batch["letterbox_pad"][index],
+                    )[0]
+                    attacked_total += 1
+                    if len(detection):
+                        candidate = detection[detection[:, 5].long().cpu() == int(batch["patch_target_class"][index])]
+                        if len(candidate):
+                            candidate_boxes = inverse_letterbox_xyxy(candidate[:, :4].cpu(), batch["original_size"][index], batch["letterbox_scale"][index], batch["letterbox_pad"][index])
+                            lt = torch.maximum(candidate_boxes[:, :2], target_box[:2]); rb = torch.minimum(candidate_boxes[:, 2:], target_box[2:]); wh = (rb-lt).clamp(min=0); inter = wh[:,0]*wh[:,1]
+                            area_t=(target_box[2]-target_box[0])*(target_box[3]-target_box[1]); area_c=(candidate_boxes[:,2]-candidate_boxes[:,0])*(candidate_boxes[:,3]-candidate_boxes[:,1]);
+                            if bool((inter/(area_t+area_c-inter).clamp(min=1e-9) >= 0.5).any()): attacked_detected += 1
 
     coco = COCO(str(annotations))
     result = coco.loadRes(predictions) if predictions else coco.loadRes([])
@@ -88,6 +108,8 @@ def main() -> None:
         class_ap[name] = float(valid.mean()) if valid.size else 0.0
     output = {
         "weights": args.weights,
+        "attack_mode": args.attack_mode,
+        "patch_pool": str(pool_dir.resolve()) if args.attack_mode != "clean" else None,
         "dataset": "COCO 2017 validation, 80 classes",
         "image_size": args.image_size,
         "device": str(device),
@@ -98,6 +120,7 @@ def main() -> None:
         "ap50": float(evaluator.stats[1]),
         "ap75": float(evaluator.stats[2]),
         "person_ap": class_ap.get("person"),
+        "attacked_object_detection_rate": (attacked_detected / attacked_total) if attacked_total else None,
         "class_ap": class_ap,
     }
     args.output.mkdir(parents=True, exist_ok=True)
