@@ -18,6 +18,7 @@ from .baseline import BaselineDetector
 from .dataset import Coco80DetectionDataset, CocoPersonConfig, coco_person_collate
 from .losses import RobustTrainingLoss
 from .model import ModelConfig, ShapeAwareYolo
+from .models.proposed_rgb_shape import ProposedRGBShapeV1, ProposedV1Config
 from .coco_eval_core import evaluate_model
 
 
@@ -25,13 +26,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("dataset_config.main80.yaml"))
     parser.add_argument("--weights", default="yolo11n.pt")
-    parser.add_argument("--model", choices=("baseline", "proposed"), default="baseline")
+    parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1"), default="baseline")
     parser.add_argument("--patch-dir", type=Path, required=True)
     parser.add_argument("--max-images", type=int, default=100)
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--image-size", type=int, default=640)
     parser.add_argument("--batch-size", type=int, default=4)
     parser.add_argument("--lr", type=float, default=1e-4)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--patch-probability", type=float, default=0.5)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--pin-memory", action="store_true")
@@ -44,6 +46,9 @@ def main() -> None:
     parser.add_argument("--min-delta", type=float, default=0.001)
     parser.add_argument("--output", type=Path, default=Path("runs/main_80class/adversarial_training_smoke"))
     args = parser.parse_args()
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
     root = Path(__file__).resolve().parent
     config_path = args.config if args.config.is_absolute() else root / args.config
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
@@ -62,8 +67,8 @@ def main() -> None:
     clean_ds = Coco80DetectionDataset(ds_config)
     patched_ds = Coco80DetectionDataset(CocoPersonConfig(images, annotations, patch_mode="seen", patch_dirs=(patch_dir,), patch_probability=1.0, placement_mode="torso", torso_relative_y=.38, position_jitter=.015, patch_scale_min=.95, patch_scale_max=1.05, patch_rotation_degrees=3, patch_brightness_jitter=.03, patch_perspective_jitter=.005, **common))
     loader_options={"batch_size":args.batch_size,"collate_fn":coco_person_collate,"num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0}
-    clean_loader = DataLoader(clean_ds, shuffle=True, **loader_options)
-    patched_loader = DataLoader(patched_ds, shuffle=True, **loader_options)
+    clean_loader = DataLoader(clean_ds, shuffle=True, generator=torch.Generator().manual_seed(args.seed), **loader_options)
+    patched_loader = DataLoader(patched_ds, shuffle=True, generator=torch.Generator().manual_seed(args.seed + 1), **loader_options)
     val_limit = None if args.val_max_images <= 0 else args.val_max_images
     val_common = {"image_size": args.image_size, "max_images": val_limit, "target_policy": "person", "required_category_ids": (1,)}
     val_clean_ds = Coco80DetectionDataset(CocoPersonConfig(val_images, val_annotations, patch_mode="clean", **val_common))
@@ -71,14 +76,22 @@ def main() -> None:
     val_clean_loader = DataLoader(val_clean_ds, shuffle=False, **loader_options)
     val_seen_loader = DataLoader(val_seen_ds, shuffle=False, **loader_options)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = BaselineDetector(args.weights) if args.model == "baseline" else ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
+    if args.model == "baseline":
+        model = BaselineDetector(args.weights)
+    elif args.model == "proposed_v1":
+        model = ProposedRGBShapeV1(ProposedV1Config(weights=args.weights))
+    else:
+        model = ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
     model = model.to(device).train()
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
     criterion = RobustTrainingLoss(model) if args.model == "proposed" else None
     args.output.mkdir(parents=True, exist_ok=True)
-    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+    git_safe = ["git", "-c", f"safe.directory={root}"]
+    commit = subprocess.check_output([*git_safe, "rev-parse", "HEAD"], cwd=root, text=True).strip()
     patch_hash=hashlib.sha256(patched_ds.patch_files[0].read_bytes()).hexdigest()
-    (args.output / "run_metadata.json").write_text(json.dumps({"git_commit": commit, "git_dirty": bool(subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "dataset_config":str(config_path), "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_sha256":patch_hash,"patch_profile": "v5-C torso/very-mild", "unseen_patch_ids":[], "validation": "official COCOeval person metrics, clean+train_seen only", "person_mapping":{"yolo_class":0,"coco_category_id":1},"recall":{"confidence":.25,"iou":.5}, "checkpoint_policy":{"best_clean_map.pt":"clean person AP","best_seen_map.pt":"seen person AP","last.pt":"latest"},"early_stopping":{"enabled":args.early_stopping,"primary":"seen_person_ap","min_epochs":args.min_epochs,"patience":args.patience,"min_delta":args.min_delta}, "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0,"learning_rate": args.lr, "optimizer":"AdamW", "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda,"ultralytics":ultralytics.__version__}, indent=2), encoding="utf-8")
+    architecture = getattr(model, "initialization_report", None)
+    metadata = {"git_commit": commit, "git_dirty": bool(subprocess.check_output([*git_safe,"status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "architecture": architecture, "dataset_config":str(config_path), "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_sha256":patch_hash,"patch_profile": "v5-C torso/very-mild", "unseen_patch_ids":[], "validation": "official COCOeval person metrics, clean+train_seen only", "person_mapping":{"yolo_class":0,"coco_category_id":1},"recall":{"confidence":.25,"iou":.5}, "checkpoint_policy":{"best_clean_map.pt":"clean person AP","best_seen_map.pt":"seen person AP","last.pt":"latest"},"early_stopping":{"enabled":args.early_stopping,"primary":"seen_person_ap","min_epochs":args.min_epochs,"patience":args.patience,"min_delta":args.min_delta}, "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0,"learning_rate": args.lr, "optimizer":"AdamW", "seed":args.seed, "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda,"ultralytics":ultralytics.__version__}
+    (args.output / "run_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     clean_iter = iter(clean_loader); patched_iter = iter(patched_loader)
     metrics_path = args.output / "metrics.jsonl"
     best_clean = float("-inf")
