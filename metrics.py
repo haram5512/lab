@@ -49,6 +49,54 @@ def _box_iou(one: Tensor, many: Tensor) -> Tensor:
     return intersection / (area_one + area_many - intersection).clamp(min=1e-9)
 
 
+def greedy_person_match_metrics(
+    gt_boxes: Tensor,
+    prediction_boxes: Tensor,
+    prediction_scores: Tensor,
+    thresholds: tuple[float, ...] = (0.50, 0.75),
+) -> dict[str, Any]:
+    """Score-descending, one-to-one GT matching in original-image coordinates."""
+    gt_boxes = gt_boxes.reshape(-1, 4).float()
+    prediction_boxes = prediction_boxes.reshape(-1, 4).float()
+    prediction_scores = prediction_scores.reshape(-1).float()
+    ious = _box_iou(gt_boxes, prediction_boxes)
+    order = torch.argsort(prediction_scores, descending=True).tolist()
+    recalls: dict[str, float] = {}
+    for threshold in thresholds:
+        used: set[int] = set()
+        matched: list[float] = []
+        for prediction_index in order:
+            if not len(gt_boxes):
+                break
+            candidates = [(float(ious[gt_index, prediction_index]), gt_index) for gt_index in range(len(gt_boxes)) if gt_index not in used]
+            if not candidates:
+                continue
+            overlap, gt_index = max(candidates)
+            if overlap >= threshold:
+                used.add(gt_index)
+                matched.append(overlap)
+        recalls[f"recall_iou{int(threshold * 100)}"] = len(matched) / len(gt_boxes) if len(gt_boxes) else 0.0
+        if threshold == 0.50:
+            matched_ious = matched
+            matched_gt = used
+    gt_iou_with_misses = []
+    for gt_index in range(len(gt_boxes)):
+        best = float(ious[gt_index].max()) if ious.shape[1] else 0.0
+        gt_iou_with_misses.append(best if gt_index in matched_gt else 0.0)
+    matched_tensor = torch.tensor(matched_ious, dtype=torch.float32)
+    gt_tensor = torch.tensor(gt_iou_with_misses, dtype=torch.float32)
+    return {
+        **recalls,
+        "matched_ious": matched_tensor,
+        "gt_iou_with_misses": gt_tensor,
+        "mean_matched_iou": float(matched_tensor.mean()) if len(matched_tensor) else 0.0,
+        "median_matched_iou": float(matched_tensor.median()) if len(matched_tensor) else 0.0,
+        "std_matched_iou": float(matched_tensor.std(unbiased=False)) if len(matched_tensor) else 0.0,
+        "matched_count": int(len(matched_tensor)),
+        "mean_gt_iou_with_misses": float(gt_tensor.mean()) if len(gt_tensor) else 0.0,
+    }
+
+
 def _average_precision(predictions: list[tuple[int, float, Tensor]], ground_truth: dict[int, Tensor], threshold: float) -> float:
     total_gt = sum(len(boxes) for boxes in ground_truth.values())
     if total_gt == 0:

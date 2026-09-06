@@ -9,6 +9,7 @@ from typing import Any
 import torch
 
 from .metrics import inverse_letterbox_xyxy
+from .metrics import greedy_person_match_metrics
 
 
 def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, device: torch.device, image_size: int, attack_mode: str = "clean", confidence: float = 0.001, iou_threshold: float = 0.7) -> dict[str, Any]:
@@ -19,6 +20,9 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     predictions: list[dict[str, object]] = []
     attacked_total = attacked_detected = 0
     person_gt = person_matched = 0
+    person_matched75 = 0
+    matched_ious: list[float] = []
+    gt_ious_with_misses: list[float] = []
     started = time.perf_counter()
     model.eval()
     with torch.no_grad():
@@ -43,15 +47,14 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
                     letterbox = torch.tensor([[(x-w/2)*size,(y-h/2)*size,(x+w/2)*size,(y+h/2)*size]])
                     gt_boxes.append(inverse_letterbox_xyxy(letterbox,batch["original_size"][index],batch["letterbox_scale"][index],batch["letterbox_pad"][index])[0])
                 person_gt += len(gt_boxes)
-                person_predictions = restored[(detection[:,5].long().cpu()==0) & (detection[:,4].cpu()>=.25)]
-                used: set[int] = set()
-                for gt_box in gt_boxes:
-                    if not len(person_predictions): continue
-                    lt=torch.maximum(person_predictions[:,:2],gt_box[:2]); rb=torch.minimum(person_predictions[:,2:],gt_box[2:]); wh=(rb-lt).clamp(min=0); inter=wh[:,0]*wh[:,1]
-                    union=(gt_box[2]-gt_box[0])*(gt_box[3]-gt_box[1])+(person_predictions[:,2]-person_predictions[:,0])*(person_predictions[:,3]-person_predictions[:,1])-inter
-                    overlaps=inter/union.clamp(min=1e-9); order=torch.argsort(overlaps,descending=True)
-                    for candidate in order.tolist():
-                        if candidate not in used and float(overlaps[candidate])>=.5: used.add(candidate); person_matched += 1; break
+                person_mask = (detection[:,5].long().cpu()==0) & (detection[:,4].cpu()>=.25)
+                person_predictions = restored[person_mask]
+                person_scores = detection[:,4].cpu()[person_mask]
+                match = greedy_person_match_metrics(torch.stack(gt_boxes) if gt_boxes else torch.empty((0,4)), person_predictions, person_scores)
+                person_matched += int(match["recall_iou50"] * len(gt_boxes))
+                person_matched75 += int(match["recall_iou75"] * len(gt_boxes))
+                matched_ious.extend(match["matched_ious"].tolist())
+                gt_ious_with_misses.extend(match["gt_iou_with_misses"].tolist())
                 if attack_mode != "clean" and batch["patch_target"][index] is not None:
                     target = torch.tensor(batch["patch_target"][index], dtype=torch.float32)
                     target_xyxy = torch.tensor([(target[0]-target[2]/2)*image_size, (target[1]-target[3]/2)*image_size, (target[0]+target[2]/2)*image_size, (target[1]+target[3]/2)*image_size]).reshape(1,4)
@@ -71,4 +74,6 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     person_index=dataset.class_names.index("person") if "person" in dataset.class_names else None
     person_recall_values=recall[:,person_index,0,-1] if person_index is not None else []
     person_ar100=float(person_recall_values[person_recall_values>-1].mean()) if person_index is not None and (person_recall_values>-1).any() else 0.0
-    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_ap50":class_ap50.get("person"),"person_ap75":class_ap75.get("person"),"person_ar100":person_ar100,"person_recall":person_matched/person_gt if person_gt else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
+    iou_tensor = torch.tensor(matched_ious, dtype=torch.float32)
+    gt_iou_tensor = torch.tensor(gt_ious_with_misses, dtype=torch.float32)
+    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_ap50":class_ap50.get("person"),"person_ap75":class_ap75.get("person"),"person_ar100":person_ar100,"person_recall":person_matched/person_gt if person_gt else 0.0,"person_recall_iou50_conf025":person_matched/person_gt if person_gt else 0.0,"person_recall_iou75_conf025":person_matched75/person_gt if person_gt else 0.0,"mean_matched_iou":float(iou_tensor.mean()) if len(iou_tensor) else 0.0,"median_matched_iou":float(iou_tensor.median()) if len(iou_tensor) else 0.0,"std_matched_iou":float(iou_tensor.std(unbiased=False)) if len(iou_tensor) else 0.0,"matched_count":int(len(iou_tensor)),"mean_gt_iou_with_misses":float(gt_iou_tensor.mean()) if len(gt_iou_tensor) else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"failure_rate":1-attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
