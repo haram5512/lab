@@ -19,6 +19,7 @@ from .dataset import Coco80DetectionDataset, CocoPersonConfig, coco_person_colla
 from .losses import RobustTrainingLoss
 from .model import ModelConfig, ShapeAwareYolo
 from .models.proposed_rgb_shape import ProposedRGBShapeV1, ProposedV1Config
+from .models.proposed_rgb_shape_v2 import ProposedRGBShapeV2, ProposedV2Config
 from .coco_eval_core import evaluate_model
 
 
@@ -26,7 +27,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("dataset_config.main80.yaml"))
     parser.add_argument("--weights", default="yolo11n.pt")
-    parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1"), default="baseline")
+    parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1", "proposed_v2"), default="baseline")
     parser.add_argument("--patch-dir", type=Path, required=True)
     parser.add_argument("--max-images", type=int, default=100)
     parser.add_argument("--epochs", type=int, default=1)
@@ -80,6 +81,8 @@ def main() -> None:
         model = BaselineDetector(args.weights)
     elif args.model == "proposed_v1":
         model = ProposedRGBShapeV1(ProposedV1Config(weights=args.weights))
+    elif args.model == "proposed_v2":
+        model = ProposedRGBShapeV2(ProposedV2Config(weights=args.weights))
     else:
         model = ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
     model = model.to(device).train()
@@ -118,11 +121,21 @@ def main() -> None:
                 clean_outputs=model(clean_images); patched_outputs=model(patched_images); loss=criterion(clean_outputs,clean_batch,patched_outputs,patched_batch["patch_mask"])["total"]
             if not torch.isfinite(loss): raise FloatingPointError(f"non-finite loss at epoch={epoch+1}")
             loss.backward()
-            if args.model == "proposed_v1":
+            if args.model in ("proposed_v1", "proposed_v2"):
                 shape_gradients.append(sum(float(parameter.grad.norm()) for parameter in model.shape_backbone.parameters() if parameter.grad is not None))
-                fusion_alphas.append(float(model.fusion.alpha.detach()))
+                if args.model == "proposed_v1":
+                    fusion_alphas.append(float(model.fusion.alpha.detach()))
+                else:
+                    fusion_alphas.append(model.alpha_values)
             optimizer.step(); losses.append(float(loss.detach()))
-        mean_loss=sum(losses)/len(losses); record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"clean_samples":len(clean_ds),"perturbed_samples":len(patched_ds),"patch_ratio":args.patch_probability,"shape_gradient_norm":sum(shape_gradients)/len(shape_gradients) if shape_gradients else None,"fusion_alpha":sum(fusion_alphas)/len(fusion_alphas) if fusion_alphas else None,"device":str(device),"max_vram_gib":torch.cuda.max_memory_allocated()/1024**3 if torch.cuda.is_available() else 0}
+        mean_loss=sum(losses)/len(losses)
+        alpha_record = None
+        if fusion_alphas:
+            if args.model == "proposed_v2":
+                alpha_record = {key: sum(item[key] for item in fusion_alphas) / len(fusion_alphas) for key in fusion_alphas[0]}
+            else:
+                alpha_record = sum(fusion_alphas) / len(fusion_alphas)
+        record={"epoch":epoch+1,"train_loss":mean_loss,"train_batches":len(losses),"clean_samples":len(clean_ds),"perturbed_samples":len(patched_ds),"patch_ratio":args.patch_probability,"shape_gradient_norm":sum(shape_gradients)/len(shape_gradients) if shape_gradients else None,"fusion_alpha":alpha_record,"device":str(device),"max_vram_gib":torch.cuda.max_memory_allocated()/1024**3 if torch.cuda.is_available() else 0}
         if (epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs:
             clean_metrics = evaluate_model(model, val_clean_loader, val_annotations, val_clean_ds, device, args.image_size, "clean")
             seen_metrics = evaluate_model(model, val_seen_loader, val_annotations, val_seen_ds, device, args.image_size, "seen")
