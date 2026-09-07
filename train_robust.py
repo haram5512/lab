@@ -20,6 +20,7 @@ from .losses import RobustTrainingLoss
 from .model import ModelConfig, ShapeAwareYolo
 from .models.proposed_rgb_shape import ProposedRGBShapeV1, ProposedV1Config
 from .models.proposed_rgb_shape_v2 import ProposedRGBShapeV2, ProposedV2Config
+from .models.proposed_rgb_shape_v3 import ProposedRGBShapeV3, ProposedV3Config
 from .coco_eval_core import evaluate_model
 
 
@@ -27,7 +28,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("dataset_config.main80.yaml"))
     parser.add_argument("--weights", default="yolo11n.pt")
-    parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1", "proposed_v2"), default="baseline")
+    parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1", "proposed_v2", "proposed_v3"), default="baseline")
     parser.add_argument("--patch-dir", type=Path, required=True)
     parser.add_argument("--max-images", type=int, default=100)
     parser.add_argument("--epochs", type=int, default=1)
@@ -83,6 +84,8 @@ def main() -> None:
         model = ProposedRGBShapeV1(ProposedV1Config(weights=args.weights))
     elif args.model == "proposed_v2":
         model = ProposedRGBShapeV2(ProposedV2Config(weights=args.weights))
+    elif args.model == "proposed_v3":
+        model = ProposedRGBShapeV3(ProposedV3Config(weights=args.weights))
     else:
         model = ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
     model = model.to(device).train()
@@ -121,7 +124,7 @@ def main() -> None:
                 clean_outputs=model(clean_images); patched_outputs=model(patched_images); loss=criterion(clean_outputs,clean_batch,patched_outputs,patched_batch["patch_mask"])["total"]
             if not torch.isfinite(loss): raise FloatingPointError(f"non-finite loss at epoch={epoch+1}")
             loss.backward()
-            if args.model in ("proposed_v1", "proposed_v2"):
+            if args.model in ("proposed_v1", "proposed_v2", "proposed_v3"):
                 shape_gradients.append(sum(float(parameter.grad.norm()) for parameter in model.shape_backbone.parameters() if parameter.grad is not None))
                 if args.model == "proposed_v1":
                     fusion_alphas.append(float(model.fusion.alpha.detach()))
@@ -131,7 +134,7 @@ def main() -> None:
         mean_loss=sum(losses)/len(losses)
         alpha_record = None
         if fusion_alphas:
-            if args.model == "proposed_v2":
+            if args.model in ("proposed_v2", "proposed_v3"):
                 alpha_record = {key: sum(item[key] for item in fusion_alphas) / len(fusion_alphas) for key in fusion_alphas[0]}
             else:
                 alpha_record = sum(fusion_alphas) / len(fusion_alphas)
