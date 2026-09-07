@@ -32,3 +32,12 @@ def test_score_descending_one_to_one_matching() -> None:
     result = greedy_person_match_metrics(gt, pred, torch.tensor([.95, .5]))
     assert result["recall_iou75"] == 1.0
     assert result["matched_count"] == 2
+
+
+def test_operating_point_counts_include_unmatched_predictions() -> None:
+    gt = torch.tensor([[0., 0., 10., 10.]])
+    pred = torch.tensor([[0., 0., 10., 10.], [20., 20., 30., 30.]])
+    result = greedy_person_match_metrics(gt, pred, torch.tensor([.9, .8]))
+    assert result["true_positives_iou50"] == 1
+    assert result["false_positives_iou50"] == 1
+    assert result["prediction_count"] == 2

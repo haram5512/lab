@@ -19,10 +19,11 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     class_to_category = {class_index: category_id for category_id, class_index in dataset.category_id_to_class.items()}
     predictions: list[dict[str, object]] = []
     attacked_total = attacked_detected = 0
-    person_gt = person_matched = 0
+    person_gt = person_matched = person_predictions_total = 0
     person_matched75 = 0
     matched_ious: list[float] = []
     gt_ious_with_misses: list[float] = []
+    person_match_status: dict[str, list[bool]] = {}
     started = time.perf_counter()
     model.eval()
     with torch.no_grad():
@@ -52,9 +53,13 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
                 person_scores = detection[:,4].cpu()[person_mask]
                 match = greedy_person_match_metrics(torch.stack(gt_boxes) if gt_boxes else torch.empty((0,4)), person_predictions, person_scores)
                 person_matched += int(match["recall_iou50"] * len(gt_boxes))
+                person_predictions_total += int(match["prediction_count"])
                 person_matched75 += int(match["recall_iou75"] * len(gt_boxes))
                 matched_ious.extend(match["matched_ious"].tolist())
                 gt_ious_with_misses.extend(match["gt_iou_with_misses"].tolist())
+                person_match_status[str(int(batch["image_id"][index]))] = [
+                    gt_index in match["matched_gt_indices_iou50"] for gt_index in range(len(gt_boxes))
+                ]
                 if attack_mode != "clean" and batch["patch_target"][index] is not None:
                     target = torch.tensor(batch["patch_target"][index], dtype=torch.float32)
                     target_xyxy = torch.tensor([(target[0]-target[2]/2)*image_size, (target[1]-target[3]/2)*image_size, (target[0]+target[2]/2)*image_size, (target[1]+target[3]/2)*image_size]).reshape(1,4)
@@ -76,4 +81,7 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
     person_ar100=float(person_recall_values[person_recall_values>-1].mean()) if person_index is not None and (person_recall_values>-1).any() else 0.0
     iou_tensor = torch.tensor(matched_ious, dtype=torch.float32)
     gt_iou_tensor = torch.tensor(gt_ious_with_misses, dtype=torch.float32)
-    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_ap50":class_ap50.get("person"),"person_ap75":class_ap75.get("person"),"person_ar100":person_ar100,"person_recall":person_matched/person_gt if person_gt else 0.0,"person_recall_iou50_conf025":person_matched/person_gt if person_gt else 0.0,"person_recall_iou75_conf025":person_matched75/person_gt if person_gt else 0.0,"mean_matched_iou":float(iou_tensor.mean()) if len(iou_tensor) else 0.0,"median_matched_iou":float(iou_tensor.median()) if len(iou_tensor) else 0.0,"std_matched_iou":float(iou_tensor.std(unbiased=False)) if len(iou_tensor) else 0.0,"matched_count":int(len(iou_tensor)),"mean_gt_iou_with_misses":float(gt_iou_tensor.mean()) if len(gt_iou_tensor) else 0.0,"person_gt":person_gt,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"failure_rate":1-attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}
+    precision_iou50 = person_matched / person_predictions_total if person_predictions_total else 0.0
+    recall_iou50 = person_matched / person_gt if person_gt else 0.0
+    f1_iou50 = 2 * precision_iou50 * recall_iou50 / (precision_iou50 + recall_iou50) if precision_iou50 + recall_iou50 else 0.0
+    return {"attack_mode":attack_mode,"ap":float(evaluator.stats[0]),"ap50":float(evaluator.stats[1]),"ap75":float(evaluator.stats[2]),"person_ap":class_ap.get("person"),"person_ap50":class_ap50.get("person"),"person_ap75":class_ap75.get("person"),"person_ar100":person_ar100,"person_recall":recall_iou50,"person_recall_iou50_conf025":recall_iou50,"person_recall_iou75_conf025":person_matched75/person_gt if person_gt else 0.0,"precision_iou50_conf025":precision_iou50,"f1_iou50_conf025":f1_iou50,"fp_per_image_conf025":(person_predictions_total-person_matched)/len(dataset) if len(dataset) else 0.0,"mean_matched_iou":float(iou_tensor.mean()) if len(iou_tensor) else 0.0,"median_matched_iou":float(iou_tensor.median()) if len(iou_tensor) else 0.0,"std_matched_iou":float(iou_tensor.std(unbiased=False)) if len(iou_tensor) else 0.0,"matched_count":int(len(iou_tensor)),"mean_gt_iou_with_misses":float(gt_iou_tensor.mean()) if len(gt_iou_tensor) else 0.0,"person_gt":person_gt,"person_predictions_conf025":person_predictions_total,"person_match_status":person_match_status,"class_ap":class_ap,"attacked_object_detection_rate":attacked_detected/attacked_total if attacked_total else None,"failure_rate":1-attacked_detected/attacked_total if attacked_total else None,"images":len(dataset),"seconds":time.perf_counter()-started}

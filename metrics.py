@@ -87,6 +87,10 @@ def greedy_person_match_metrics(
     gt_tensor = torch.tensor(gt_iou_with_misses, dtype=torch.float32)
     return {
         **recalls,
+        "true_positives_iou50": int(len(matched_ious)),
+        "false_positives_iou50": int(len(prediction_scores) - len(matched_ious)),
+        "prediction_count": int(len(prediction_scores)),
+        "matched_gt_indices_iou50": sorted(int(index) for index in matched_gt),
         "matched_ious": matched_tensor,
         "gt_iou_with_misses": gt_tensor,
         "mean_matched_iou": float(matched_tensor.mean()) if len(matched_tensor) else 0.0,
