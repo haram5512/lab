@@ -158,16 +158,21 @@ def main() -> None:
         identifier = f"{spec['model']}:{spec['checkpoint']}"
         if path is not None and (not path.is_file() or path.stat().st_size == 0):
             unavailable.append({**spec, "status": "checkpoint unavailable"}); continue
+        result_paths = {mode: OUT / f"{spec['model']}_{spec['checkpoint']}_{mode}.json" for mode in ("clean", "seen", "unseen")}
+        cached = all(candidate.is_file() and candidate.stat().st_size > 0 for candidate in result_paths.values())
         model = load_model(spec["kind"], path, device)
         if spec["checkpoint"] in ("pretrained", "best_seen_map"):
             efficiency.append({"model": spec["model"], "checkpoint": spec["checkpoint"], **latency(model, device)})
-        condition_results: dict[str, dict[str, Any]] = {}
-        for mode in ("clean", "seen", "unseen"):
-            with (OUT / f"{spec['model']}_{spec['checkpoint']}_{mode}.log").open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log):
-                condition_results[mode] = evaluate_model(model, loaders[mode], annotations, datasets[mode], device, 640, mode, confidence=.001, iou_threshold=.7)
-        for mode in ("seen", "unseen"):
-            condition_results[mode]["failure_rate"] = failure_rate(deepcopy(condition_results["clean"]), condition_results[mode])
-        condition_results["clean"].pop("person_match_status")
+        if cached:
+            condition_results = {mode: json.loads(candidate.read_text(encoding="utf-8")) for mode, candidate in result_paths.items()}
+        else:
+            condition_results: dict[str, dict[str, Any]] = {}
+            for mode in ("clean", "seen", "unseen"):
+                with (OUT / f"{spec['model']}_{spec['checkpoint']}_{mode}.log").open("w", encoding="utf-8") as log, contextlib.redirect_stdout(log):
+                    condition_results[mode] = evaluate_model(model, loaders[mode], annotations, datasets[mode], device, 640, mode, confidence=.001, iou_threshold=.7)
+            for mode in ("seen", "unseen"):
+                condition_results[mode]["failure_rate"] = failure_rate(deepcopy(condition_results["clean"]), condition_results[mode])
+            condition_results["clean"].pop("person_match_status")
         for mode, metric in condition_results.items():
             metric.update({"model": spec["model"], "checkpoint": spec["checkpoint"], "condition": mode, "checkpoint_path": str(path) if path else str(BASE)})
             (OUT / f"{spec['model']}_{spec['checkpoint']}_{mode}.json").write_text(json.dumps(metric, indent=2), encoding="utf-8")
