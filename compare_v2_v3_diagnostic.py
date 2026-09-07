@@ -31,13 +31,13 @@ def main() -> None:
     loaders = {mode: DataLoader(ds, batch_size=16, shuffle=False, collate_fn=coco_person_collate, num_workers=0) for mode, ds in datasets.items()}
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     v2_path = root.parent / "runs" / "main_80class" / "proposed_rgb_shape_v2_full" / "best_seen_map.pt"
-    v3_path = out / "v3_diagnostic_last.pt"
+    v3_path = out / "last.pt"
     models = {"v2_best_seen": load(ProposedRGBShapeV2(ProposedV2Config(weights=str(root / "yolo11n.pt"))), v2_path, device), "v3_diagnostic": load(ProposedRGBShapeV3(ProposedV3Config(weights=str(root / "yolo11n.pt"))), v3_path, device)}
     results = {}
     for name, model in models.items():
         results[name] = {mode: evaluate_model(model, loaders[mode], annotations, datasets[mode], device, 640, mode, confidence=.001, iou_threshold=.7) for mode in ("clean", "seen")}
     for values in results.values():
-        for metric in values.values(): values[metric].pop("person_match_status", None)
+        for metric in values.values(): metric.pop("person_match_status", None)
     (out / "diagnostic_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(json.dumps(results, indent=2))
 
