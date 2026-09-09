@@ -1,0 +1,60 @@
+{
+  "best_clean": {
+    "clean_degradation": {
+      "person_ap": 0.04378874049206677,
+      "person_ap50": 0.034656320679685715,
+      "person_ap75": 0.05516791550715083,
+      "person_recall": -0.016721192293711384,
+      "person_ar100": 0.026306022084067848
+    },
+    "seen_absolute_improvement": {
+      "person_ap": -0.024962967183610407,
+      "person_ap50": -0.038782654685681206,
+      "person_ap75": -0.027491994741762782,
+      "person_recall": 0.04598327880770636,
+      "person_ar100": -0.008221211840029552,
+      "failure_rate_reduction": 0.02464922260144098
+    },
+    "unseen_absolute_improvement": {
+      "person_ap": -0.02574567948287343,
+      "person_ap50": -0.021656370527856295,
+      "person_ap75": -0.03145832359566281,
+      "person_recall": 0.037440930570701525,
+      "person_ar100": -0.015625869908137635
+    },
+    "generalization_gap": {
+      "seen_minus_unseen_ap": 0.0017203773374132036,
+      "seen_minus_unseen_recall": 0.007360959651036003
+    },
+    "verdict": "PARTIAL"
+  },
+  "best_seen": {
+    "clean_degradation": {
+      "person_ap": 0.04398895210376175,
+      "person_ap50": 0.03495736359515367,
+      "person_ap75": 0.055244209087310425,
+      "person_recall": -0.0162668120683388,
+      "person_ar100": 0.02660295072840302
+    },
+    "seen_absolute_improvement": {
+      "person_ap": -0.02350345613128807,
+      "person_ap50": -0.03648025147252809,
+      "person_ap75": -0.0257945903101231,
+      "person_recall": 0.048800436205016395,
+      "person_ar100": -0.006003526027651307,
+      "failure_rate_reduction": 0.028820629503223394
+    },
+    "unseen_absolute_improvement": {
+      "person_ap": -0.024617658143741505,
+      "person_ap50": -0.01956365656702186,
+      "person_ap75": -0.030214982823103087,
+      "person_recall": 0.04007633587786252,
+      "person_ar100": -0.013500974297114166
+    },
+    "generalization_gap": {
+      "seen_minus_unseen_ap": 0.0020518670506036174,
+      "seen_minus_unseen_recall": 0.0075427117411850375
+    },
+    "verdict": "PARTIAL"
+  }
+}

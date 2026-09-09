@@ -1,0 +1,14 @@
+[
+  {
+    "epoch": 1,
+    "shape_gradient_norm": 35.536712540712315
+  },
+  {
+    "epoch": 2,
+    "shape_gradient_norm": 50.51482138728995
+  },
+  {
+    "epoch": 3,
+    "shape_gradient_norm": 76.67116842165845
+  }
+]

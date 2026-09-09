@@ -1,0 +1,95 @@
+{
+  "adv_best_seen": {
+    "clean_degradation": {
+      "person_ap": 0.042282346526297754,
+      "person_ap50": 0.03230770845947739,
+      "person_ap75": 0.053316826720725796,
+      "person_recall": -0.019265721555797866,
+      "person_ar100": 0.02406049921128317
+    },
+    "seen_vs_pretrained": {
+      "person_ap": -0.02350345613128807,
+      "person_ap50": -0.03648025147252809,
+      "person_recall": 0.04907306434023995
+    },
+    "unseen_vs_pretrained": {
+      "person_ap": -0.02489701287047491,
+      "person_ap50": -0.019933475645256493,
+      "person_recall": 0.0398945837877136
+    },
+    "seen_vs_adv": {
+      "person_ap": 0.0,
+      "person_recall": 0.0
+    },
+    "unseen_vs_adv": {
+      "person_ap": 0.0,
+      "person_recall": 0.0
+    },
+    "generalization_gap": {
+      "seen_minus_unseen_ap": 0.002190699050676148,
+      "seen_minus_unseen_recall": 0.007906215921483106
+    }
+  },
+  "proposed_best_clean": {
+    "clean_degradation": {
+      "person_ap": 0.04637686424077858,
+      "person_ap50": 0.03313698324412662,
+      "person_ap75": 0.06077995549193271,
+      "person_recall": -0.009360232642675381,
+      "person_ar100": 0.03158578454115246
+    },
+    "seen_vs_pretrained": {
+      "person_ap": -0.022139943472597234,
+      "person_ap50": -0.02826387647478945,
+      "person_recall": 0.044983642311886674
+    },
+    "unseen_vs_pretrained": {
+      "person_ap": -0.03257645936291864,
+      "person_ap50": -0.022375342473510584,
+      "person_recall": 0.02889858233369691
+    },
+    "seen_vs_adv": {
+      "person_ap": 0.0013635126586908353,
+      "person_recall": -0.004089422028353273
+    },
+    "unseen_vs_adv": {
+      "person_ap": -0.007679446492443731,
+      "person_recall": -0.01099600145401669
+    },
+    "generalization_gap": {
+      "seen_minus_unseen_ap": 0.011233658201810715,
+      "seen_minus_unseen_recall": 0.014812795347146523
+    }
+  },
+  "proposed_best_seen": {
+    "clean_degradation": {
+      "person_ap": 0.04637686424077858,
+      "person_ap50": 0.03313698324412662,
+      "person_ap75": 0.06077995549193271,
+      "person_recall": -0.009360232642675381,
+      "person_ar100": 0.03158578454115246
+    },
+    "seen_vs_pretrained": {
+      "person_ap": -0.02204365461196106,
+      "person_ap50": -0.028156380042584472,
+      "person_recall": 0.04507451835696119
+    },
+    "unseen_vs_pretrained": {
+      "person_ap": -0.03257645936291864,
+      "person_ap50": -0.022375342473510584,
+      "person_recall": 0.02889858233369691
+    },
+    "seen_vs_adv": {
+      "person_ap": 0.0014598015193270086,
+      "person_recall": -0.003998545983278756
+    },
+    "unseen_vs_adv": {
+      "person_ap": -0.007679446492443731,
+      "person_recall": -0.01099600145401669
+    },
+    "generalization_gap": {
+      "seen_minus_unseen_ap": 0.011329947062446888,
+      "seen_minus_unseen_recall": 0.01490367139222104
+    }
+  }
+}

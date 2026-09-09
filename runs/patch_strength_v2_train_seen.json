@@ -1,0 +1,62 @@
+{
+  "pool": "train_seen",
+  "images_per_patch": 20,
+  "rows": [
+    {
+      "patch": "patch_A_v2.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017286142897683023,
+      "raw_score_drop": -0.00022424028302339138,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5579370431602001
+    },
+    {
+      "patch": "patch_B_v2.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017820746700635937,
+      "raw_score_drop": -0.0007588440859763069,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5581089303363115
+    },
+    {
+      "patch": "patch_C_v2.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017089692573063076,
+      "raw_score_drop": -2.778995840344578e-05,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.9,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.555764495790936
+    },
+    {
+      "patch": "patch_D_v2.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.018339509196994185,
+      "raw_score_drop": -0.0012776065823345562,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.9,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5617324735969305
+    },
+    {
+      "patch": "patch_E_v2.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.01707372761975421,
+      "raw_score_drop": -1.1825005094578955e-05,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5552875992842019
+    }
+  ],
+  "note": "Smoke strength diagnostic, not a final research result."
+}

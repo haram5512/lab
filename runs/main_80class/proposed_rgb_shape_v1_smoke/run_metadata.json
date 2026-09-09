@@ -1,0 +1,73 @@
+{
+  "git_commit": "f0821baa4efeaa57b74adbefbaeeaa94337ae764",
+  "git_dirty": true,
+  "model": "proposed_v1",
+  "source_checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+  "architecture": {
+    "pretrained_parameter_count": 2624080,
+    "new_parameter_count": 16105,
+    "incompatible_keys": [],
+    "config": {
+      "weights": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+      "shape_channels": [
+        8,
+        16,
+        24,
+        32
+      ],
+      "fusion_alpha": 0.05,
+      "fusion_layer": 19,
+      "num_classes": 80
+    }
+  },
+  "dataset_config": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\dataset_config.main80.yaml",
+  "dataset": "COCO 2017 person-containing images, 80-class targets",
+  "patch_pool": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.png",
+  "patch_ids": [
+    "patch_V5-C.png"
+  ],
+  "patch_sha256": "a7efd31008ee9ca20fd951fda3c6cdb6a5fe1fc3199d8f9f009a992e9250186c",
+  "patch_profile": "v5-C torso/very-mild",
+  "unseen_patch_ids": [],
+  "validation": "official COCOeval person metrics, clean+train_seen only",
+  "person_mapping": {
+    "yolo_class": 0,
+    "coco_category_id": 1
+  },
+  "recall": {
+    "confidence": 0.25,
+    "iou": 0.5
+  },
+  "checkpoint_policy": {
+    "best_clean_map.pt": "clean person AP",
+    "best_seen_map.pt": "seen person AP",
+    "last.pt": "latest"
+  },
+  "early_stopping": {
+    "enabled": false,
+    "primary": "seen_person_ap",
+    "min_epochs": 30,
+    "patience": 20,
+    "min_delta": 0.001
+  },
+  "clean_patch_ratio": [
+    0.5,
+    0.5
+  ],
+  "image_size": 640,
+  "batch_size": 4,
+  "effective_images_per_step": 8,
+  "num_workers": 0,
+  "pin_memory": false,
+  "persistent_workers": false,
+  "learning_rate": 0.0001,
+  "optimizer": "AdamW",
+  "epochs": 1,
+  "val_every": 1,
+  "val_max_images": 50,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "ultralytics": "8.4.138"
+}

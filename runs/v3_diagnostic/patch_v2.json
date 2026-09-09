@@ -1,0 +1,11 @@
+{
+  "objective": "v2",
+  "seed": 123,
+  "steps": 50,
+  "source_images": 5,
+  "checkpoint": "artifacts\\checkpoints\\baseline_clean_best_map.pt",
+  "before_score": 0.04313906282186508,
+  "after_score": 0.009234541095793247,
+  "loss_last": 0.011497984640300274,
+  "gradient_norm_last": 0.005415805149823427
+}

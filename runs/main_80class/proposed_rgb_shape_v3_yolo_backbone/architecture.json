@@ -1,0 +1,113 @@
+{
+  "pretrained_parameter_count": 2624080,
+  "new_parameter_count": 1041859,
+  "incompatible_keys": [],
+  "pretrained_shape_initialization": {
+    "copied_rgb_layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "incompatible_rgb_layers": [],
+    "first_conv_policy": "mean over RGB input channels"
+  },
+  "config": {
+    "weights": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+    "fusion_alpha": 0.05,
+    "fusion_layers": [
+      16,
+      19,
+      22
+    ],
+    "num_classes": 80
+  },
+  "rgb_channels": [
+    64,
+    128,
+    256
+  ],
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "parameters_total": 3665939,
+  "shape_parameters": 950848,
+  "forward_diagnostics": {
+    "rgb_input": [
+      2,
+      3,
+      640,
+      640
+    ],
+    "shape_input": [
+      2,
+      1,
+      640,
+      640
+    ],
+    "shape_p3": [
+      2,
+      128,
+      80,
+      80
+    ],
+    "shape_p4": [
+      2,
+      128,
+      40,
+      40
+    ],
+    "shape_p5": [
+      2,
+      256,
+      20,
+      20
+    ],
+    "rgb_p3": [
+      2,
+      64,
+      80,
+      80
+    ],
+    "rgb_p4": [
+      2,
+      128,
+      40,
+      40
+    ],
+    "rgb_p5": [
+      2,
+      256,
+      20,
+      20
+    ],
+    "fused_p3": [
+      2,
+      64,
+      80,
+      80
+    ],
+    "fused_p4": [
+      2,
+      128,
+      40,
+      40
+    ],
+    "fused_p5": [
+      2,
+      256,
+      20,
+      20
+    ],
+    "detection_type": "dict",
+    "alpha": {
+      "alpha3": 0.05000000074505806,
+      "alpha4": 0.05000000074505806,
+      "alpha5": 0.05000000074505806
+    }
+  }
+}

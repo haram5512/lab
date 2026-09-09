@@ -1,0 +1,4 @@
+condition,both_success_gt,mean_confidence_change,median_confidence_change,confidence_increased_count,confidence_decreased_count,confidence_unchanged_count
+clean,7182,-0.024969117550490062,-0.02392745018005371,1305,5877,0
+seen,7021,-0.007046152695243031,-0.018292725086212158,2171,4850,0
+unseen,7006,-0.0020377668455060197,-0.016476213932037354,2376,4630,0

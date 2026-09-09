@@ -25,6 +25,10 @@ runs/
 !yolo11n.pt
 !artifacts/checkpoints/*.pt
 
+# Version the finalized research runs and their LFS-backed checkpoints.
+!runs/
+!runs/**
+
 # Per-PC paths and runtime overrides
 dataset_config.local.yaml
 runtime_config.local.yaml

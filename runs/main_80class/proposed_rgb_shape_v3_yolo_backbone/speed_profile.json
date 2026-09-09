@@ -1,0 +1,46 @@
+{
+  "diagnostic_epoch_seconds": [
+    231.486971300008,
+    240.7946637000132,
+    237.85559749999084
+  ],
+  "diagnostic_images_per_second": [
+    43.19897549240454,
+    41.52915951849415,
+    42.042315190839204
+  ],
+  "benchmark": [
+    {
+      "batch_size": 8,
+      "num_workers": 0,
+      "pin_memory": true,
+      "mean_sec_per_batch": 0.03093376111064572,
+      "images_per_sec": 258.61711323705913,
+      "peak_vram_gib": 1.7264437675476074
+    },
+    {
+      "batch_size": 8,
+      "num_workers": 2,
+      "pin_memory": true,
+      "mean_sec_per_batch": 0.034709577778509505,
+      "images_per_sec": 230.4839330241929,
+      "peak_vram_gib": 1.7340264320373535
+    },
+    {
+      "batch_size": 16,
+      "num_workers": 0,
+      "pin_memory": true,
+      "mean_sec_per_batch": 0.05709785555599309,
+      "images_per_sec": 280.2206815684974,
+      "peak_vram_gib": 3.4043002128601074
+    },
+    {
+      "batch_size": 16,
+      "num_workers": 2,
+      "pin_memory": true,
+      "mean_sec_per_batch": 0.06087287777336314,
+      "images_per_sec": 262.8428388020339,
+      "peak_vram_gib": 3.411898136138916
+    }
+  ]
+}

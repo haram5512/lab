@@ -1,0 +1,42 @@
+{
+  "git_commit": "ce1eb57ff4d38ae4dfd6087927e914f4fe5d7eb3",
+  "dataset": "COCO val2017 full image set",
+  "person_gt_expected": 11004,
+  "image_size": 640,
+  "confidence": 0.001,
+  "nms_iou": 0.7,
+  "models": {
+    "pretrained": {
+      "kind": "baseline",
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+      "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+    },
+    "adv_best_seen": {
+      "kind": "baseline",
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_seen_map.pt",
+      "sha256": "c7f741cec3dab904747faa5bac77aaf0427e61b8cebff86f8bec61041393c422"
+    },
+    "proposed_best_clean": {
+      "kind": "proposed",
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v1_full\\best_clean_map.pt",
+      "sha256": "d658d43a69561a783dc0c5071e0cb7b82639040394eb115e7b500cb3af06303b"
+    },
+    "proposed_best_seen": {
+      "kind": "proposed",
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v1_full\\best_seen_map.pt",
+      "sha256": "d658d43a69561a783dc0c5071e0cb7b82639040394eb115e7b500cb3af06303b"
+    }
+  },
+  "patches": {
+    "seen": [
+      "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.png"
+    ],
+    "unseen": [
+      "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\adversarial_patches\\unseen"
+    ]
+  },
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "results": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v1_final"
+}

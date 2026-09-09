@@ -1,0 +1,62 @@
+{
+  "pool": "train_seen",
+  "images_per_patch": 20,
+  "rows": [
+    {
+      "patch": "patch_A.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017114440586374256,
+      "raw_score_drop": -5.2537971714627926e-05,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5446689217817038
+    },
+    {
+      "patch": "patch_B.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.0177996092425019,
+      "raw_score_drop": -0.0007377066278422717,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5536597064696253
+    },
+    {
+      "patch": "patch_C.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.01730634098094015,
+      "raw_score_drop": -0.0002444383662805194,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5530346841551363
+    },
+    {
+      "patch": "patch_D.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017347674684788216,
+      "raw_score_drop": -0.0002857720701285871,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.553134650294669
+    },
+    {
+      "patch": "patch_E.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.01764328480912809,
+      "raw_score_drop": -0.0005813821944684605,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5523426864296198
+    }
+  ],
+  "note": "Smoke strength diagnostic, not a final research result."
+}

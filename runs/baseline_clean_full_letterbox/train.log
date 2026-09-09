@@ -1,0 +1,20 @@
+epoch=1 train_loss=52.456028 validation=skipped train_batches=4008 device=cuda
+epoch=2 train_loss=50.840568 validation=skipped train_batches=4008 device=cuda
+epoch=3 train_loss=49.557751 validation=skipped train_batches=4008 device=cuda
+epoch=4 train_loss=48.658875 validation=skipped train_batches=4008 device=cuda
+epoch=5 train_loss=47.806055 val_loss=50.720178 map=0.4813 ap50=0.7300 ap75=0.5067 val_seconds=410.2 map_seconds=229.7 device=cuda
+epoch=6 train_loss=50.297757 validation=skipped train_batches=4008 device=cuda
+epoch=7 train_loss=48.699880 validation=skipped train_batches=4008 device=cuda
+epoch=8 train_loss=48.063979 validation=skipped train_batches=4008 device=cuda
+epoch=9 train_loss=47.671967 validation=skipped train_batches=4008 device=cuda
+epoch=10 train_loss=47.160731 val_loss=57.004992 map=0.4153 ap50=0.6763 ap75=0.4298 val_seconds=511.8 map_seconds=288.0 device=cuda
+epoch=11 train_loss=46.595807 validation=skipped train_batches=4008 device=cuda
+epoch=12 train_loss=46.166645 validation=skipped train_batches=4008 device=cuda
+epoch=13 train_loss=45.881262 validation=skipped train_batches=4008 device=cuda
+epoch=14 train_loss=45.389701 validation=skipped train_batches=4008 device=cuda
+epoch=15 train_loss=45.024077 val_loss=55.789376 map=0.4339 ap50=0.6947 ap75=0.4523 val_seconds=465.5 map_seconds=258.0 device=cuda
+epoch=16 train_loss=44.703229 validation=skipped train_batches=4008 device=cuda
+epoch=17 train_loss=44.366722 validation=skipped train_batches=4008 device=cuda
+epoch=18 train_loss=44.050703 validation=skipped train_batches=4008 device=cuda
+epoch=19 train_loss=43.809308 validation=skipped train_batches=4008 device=cuda
+WARNING NMS time limit 2.800s exceeded

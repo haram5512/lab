@@ -1,0 +1,59 @@
+{
+  "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\adv_training_v5c_smoke\\last.pt",
+  "patch": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.pt",
+  "mode": "deterministic",
+  "image_count": 20,
+  "image_ids": [
+    139,
+    285,
+    632,
+    724,
+    776,
+    785,
+    802,
+    872,
+    885,
+    1000,
+    1268,
+    1296,
+    1353,
+    1425,
+    1490,
+    1503,
+    1532,
+    1584,
+    1675,
+    1761
+  ],
+  "clean": {
+    "ap": 0.46115235243772296,
+    "ap50": 0.6863797999255458,
+    "ap75": 0.43445340539624855,
+    "recall50": 0.5740740740740741,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.656342250685538
+  },
+  "patched": {
+    "ap": 0.4562277252238445,
+    "ap50": 0.6784199301564268,
+    "ap75": 0.43086497012043257,
+    "recall50": 0.5555555555555556,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.6698282808065414
+  },
+  "attack": {
+    "ap_drop": 0.00492462721387843,
+    "ap50_drop": 0.007959869769118999,
+    "recall_drop": 0.01851851851851849,
+    "relative_recall_drop": 0.03225806451612898,
+    "mean_confidence_drop": -0.013486030121003467,
+    "asr": 0.03225806451612903
+  },
+  "runtime": {
+    "clean_seconds": 1.1113404000061564,
+    "patched_seconds": 0.9083763000089675
+  },
+  "git": {
+    "commit": "514c7d1a8446fc9fc1a9b9d0b32ab3a2d13e3658"
+  }
+}

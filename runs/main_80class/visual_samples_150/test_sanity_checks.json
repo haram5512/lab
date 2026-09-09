@@ -1,0 +1,32 @@
+[
+  {
+    "file": "test_001.jpg",
+    "same_input_for_panels": true,
+    "gt_count": 1,
+    "condition": "CLEAN"
+  },
+  {
+    "file": "test_002.jpg",
+    "same_input_for_panels": true,
+    "gt_count": 1,
+    "condition": "CLEAN"
+  },
+  {
+    "file": "test_003.jpg",
+    "same_input_for_panels": true,
+    "gt_count": 2,
+    "condition": "CLEAN"
+  },
+  {
+    "file": "test_004.jpg",
+    "same_input_for_panels": true,
+    "gt_count": 14,
+    "condition": "CLEAN"
+  },
+  {
+    "file": "test_005.jpg",
+    "same_input_for_panels": true,
+    "gt_count": 2,
+    "condition": "CLEAN"
+  }
+]

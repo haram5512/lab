@@ -1,0 +1,17 @@
+{
+  "git_commit": "77b70ac5841ef52f048eba35aece5c71481c7b3e",
+  "model": "baseline",
+  "source_checkpoint": "yolo11n.pt",
+  "dataset": "COCO 2017 (80 classes)",
+  "patch_pool": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\patch_smoke\\train_seen",
+  "clean_patch_ratio": [
+    0.5,
+    0.5
+  ],
+  "image_size": 640,
+  "batch_size": 2,
+  "learning_rate": 0.0001,
+  "epochs": 1,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti"
+}

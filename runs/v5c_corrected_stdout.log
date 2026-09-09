@@ -1,0 +1,613 @@
+{"epoch": 1, "train_loss": 58.28175162507626, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561100006103516, "epoch_seconds": 1250.4081128999824, "images_per_second": 102.55051824848233}
+{"epoch": 2, "train_loss": 56.37158084129859, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561211109161377, "epoch_seconds": 1289.8763663999853, "images_per_second": 99.4126284815086}
+{"epoch": 3, "train_loss": 55.073364368693795, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561211109161377, "epoch_seconds": 1273.4609685000032, "images_per_second": 100.69409520343667}
+{"epoch": 4, "train_loss": 53.97558513230192, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561211109161377, "epoch_seconds": 1246.5405699999828, "images_per_second": 102.86869363586118}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.25s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.81s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.65s).
+Accumulating evaluation results...
+DONE (t=2.04s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.249
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.381
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.266
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.137
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.301
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.413
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.230
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.385
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.434
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.255
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.503
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.631
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.25s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.08s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.82s).
+Accumulating evaluation results...
+DONE (t=2.08s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.245
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.378
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.260
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.137
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.296
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.407
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.227
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.381
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.432
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.255
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.503
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.618
+{"epoch": 5, "train_loss": 53.08514412386926, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561232089996338, "clean_person_ap": 0.49336830251322955, "clean_person_ap50": 0.7460421127558743, "clean_person_ap75": 0.5180700963108608, "clean_person_ar100": 0.6143082490489004, "clean_person_recall": 0.6667575427117411, "clean_person_gt": 11004, "seen_person_ap": 0.5216902152614223, "seen_person_ap50": 0.7679372468390294, "seen_person_ap75": 0.5530044472557518, "seen_person_ar100": 0.6300825832792057, "seen_person_recall": 0.6906579425663395, "seen_person_gt": 11004, "seen_failure_rate": 0.018960940462646958, "clean_to_seen_ap_drop": -0.02832191274819279, "clean_to_seen_ap50_drop": -0.021895134083155132, "clean_to_seen_recall_drop": -0.023900399854598353, "val_seconds": 806.9186945000256, "early_stop_wait": 0, "early_stop_triggered": false, "epoch_seconds": 2016.9260789999971, "images_per_second": 63.576945796435496}
+{"epoch": 6, "train_loss": 52.336409986613994, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561232089996338, "epoch_seconds": 1254.5089648999856, "images_per_second": 102.21529186937536}
+{"epoch": 7, "train_loss": 51.64126294577669, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561232089996338, "epoch_seconds": 1237.4457217000017, "images_per_second": 103.62474713140367}
+{"epoch": 8, "train_loss": 51.032239365720464, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561232089996338, "epoch_seconds": 1251.4933268000023, "images_per_second": 102.4615930856594}
+{"epoch": 9, "train_loss": 50.49877725532669, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.5613508224487305, "epoch_seconds": 1481.5060418000212, "images_per_second": 86.5538150922431}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.43s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.60s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=22.01s).
+Accumulating evaluation results...
+DONE (t=2.79s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.230
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.353
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.242
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.116
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.273
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.376
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.205
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.347
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.391
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.216
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.454
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.582
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.39s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.76s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=21.74s).
+Accumulating evaluation results...
+DONE (t=2.88s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.228
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.353
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.238
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.123
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.269
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.371
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.205
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.348
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.391
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.223
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.457
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.578
+{"epoch": 10, "train_loss": 49.98015801682919, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "clean_person_ap": 0.44279300714090647, "clean_person_ap50": 0.6723334677959731, "clean_person_ap75": 0.4637982497368896, "clean_person_ar100": 0.5540781293495407, "clean_person_recall": 0.6058705925118139, "clean_person_gt": 11004, "seen_person_ap": 0.48007611219773993, "seen_person_ap50": 0.7067728670539929, "seen_person_ap75": 0.5080634019820168, "seen_person_ar100": 0.5775726083325601, "seen_person_recall": 0.6394947291893857, "seen_person_gt": 11004, "seen_failure_rate": 0.10087220326128177, "clean_to_seen_ap_drop": -0.037283105056833465, "clean_to_seen_ap50_drop": -0.034439399258019754, "clean_to_seen_recall_drop": -0.0336241366775718, "val_seconds": 1036.1281705999863, "early_stop_wait": 5, "early_stop_triggered": false, "epoch_seconds": 2593.817732800002, "images_per_second": 49.43678130443534}
+{"epoch": 11, "train_loss": 49.52688113372483, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1551.2687323999999, "images_per_second": 82.6613708648744}
+{"epoch": 12, "train_loss": 49.106827515565946, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1540.4095399999933, "images_per_second": 83.24409624209453}
+{"epoch": 13, "train_loss": 48.68844844528777, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1376.9640097999945, "images_per_second": 93.1251645557719}
+{"epoch": 14, "train_loss": 48.3090072120735, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1187.8964351999748, "images_per_second": 107.94712080974743}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.37s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.46s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=16.61s).
+Accumulating evaluation results...
+DONE (t=1.89s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.243
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.380
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.256
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.127
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.288
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.405
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.222
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.379
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.424
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.241
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.493
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.622
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.79s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.39s).
+Accumulating evaluation results...
+DONE (t=1.90s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.238
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.373
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.250
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.125
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.280
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.392
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.217
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.370
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.418
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.236
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.489
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.608
+{"epoch": 15, "train_loss": 47.97168511425902, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "clean_person_ap": 0.48839222306691826, "clean_person_ap50": 0.7468436980009427, "clean_person_ap75": 0.512996066015033, "clean_person_ar100": 0.6073675419875662, "clean_person_recall": 0.68302435478008, "clean_person_gt": 11004, "seen_person_ap": 0.520985063850686, "seen_person_ap50": 0.7712138562108919, "seen_person_ap75": 0.5523542186381168, "seen_person_ar100": 0.6226686461909623, "seen_person_recall": 0.7066521264994547, "seen_person_gt": 11004, "seen_failure_rate": 0.019340159271899915, "clean_to_seen_ap_drop": -0.03259284078376773, "clean_to_seen_ap50_drop": -0.024370158209949144, "clean_to_seen_recall_drop": -0.0236277717193748, "val_seconds": 727.6488473000063, "early_stop_wait": 10, "early_stop_triggered": false, "epoch_seconds": 1979.681494199991, "images_per_second": 64.77304575290735}
+{"epoch": 16, "train_loss": 47.656740088186815, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1259.0851332000166, "images_per_second": 101.84378849275917}
+{"epoch": 17, "train_loss": 47.35459043499001, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1264.8283192999952, "images_per_second": 101.38134800062623}
+{"epoch": 18, "train_loss": 47.02064709106605, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1262.179021399992, "images_per_second": 101.59414617568989}
+{"epoch": 19, "train_loss": 46.7643756219251, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1276.1273266999924, "images_per_second": 100.4837035592655}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.43s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.43s).
+Accumulating evaluation results...
+DONE (t=2.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.246
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.377
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.259
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.295
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.401
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.219
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.374
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.418
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.240
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.488
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.605
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.44s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.62s).
+Accumulating evaluation results...
+DONE (t=1.98s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.237
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.371
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.247
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.126
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.282
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.393
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.217
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.365
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.410
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.237
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.471
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.597
+{"epoch": 20, "train_loss": 46.54761625026276, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "clean_person_ap": 0.48180724472493863, "clean_person_ap50": 0.740867672872374, "clean_person_ap75": 0.5013741894852471, "clean_person_ar100": 0.6039435835575764, "clean_person_recall": 0.6676663031624863, "clean_person_gt": 11004, "seen_person_ap": 0.5149194220222492, "seen_person_ap50": 0.7625528134472929, "seen_person_ap75": 0.54121746438435, "seen_person_ar100": 0.6187528996937923, "seen_person_recall": 0.6919302071973827, "seen_person_gt": 11004, "seen_failure_rate": 0.02085703450891163, "clean_to_seen_ap_drop": -0.03311217729731053, "clean_to_seen_ap50_drop": -0.021685140574918882, "clean_to_seen_recall_drop": -0.024263904034896422, "val_seconds": 736.7266567999905, "early_stop_wait": 15, "early_stop_triggered": false, "epoch_seconds": 2007.9249057999987, "images_per_second": 63.861950030900445}
+{"epoch": 21, "train_loss": 46.27126168919181, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1254.2859877999872, "images_per_second": 102.23346290020741}
+{"epoch": 22, "train_loss": 46.030449318552684, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1254.5135397999838, "images_per_second": 102.21491911553592}
+{"epoch": 23, "train_loss": 45.819516130788124, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1253.38552109999, "images_per_second": 102.30691023737327}
+{"epoch": 24, "train_loss": 45.61587223654497, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1253.250901899999, "images_per_second": 102.31789963653415}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.96s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.12s).
+Accumulating evaluation results...
+DONE (t=1.89s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.231
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.362
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.240
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.125
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.284
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.382
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.212
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.360
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.402
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.233
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.474
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.599
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.29s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.38s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=14.77s).
+Accumulating evaluation results...
+DONE (t=1.88s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.226
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.358
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.234
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.124
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.275
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.376
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.207
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.353
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.397
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.227
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.471
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.585
+{"epoch": 25, "train_loss": 45.421198718562096, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "clean_person_ap": 0.4816064640545595, "clean_person_ap50": 0.7430486837424217, "clean_person_ap75": 0.4997364051982795, "clean_person_ar100": 0.6036652129535122, "clean_person_recall": 0.6773900399854599, "clean_person_gt": 11004, "seen_person_ap": 0.5170606469502699, "seen_person_ap50": 0.7662813295195846, "seen_person_ap75": 0.5440558949549482, "seen_person_ar100": 0.6197921499489654, "seen_person_recall": 0.6972918938567794, "seen_person_gt": 11004, "seen_failure_rate": 0.01744406522563524, "clean_to_seen_ap_drop": -0.035454182895710395, "clean_to_seen_ap50_drop": -0.023232645777162886, "clean_to_seen_recall_drop": -0.019901853871319486, "val_seconds": 636.8634826999914, "early_stop_wait": 20, "early_stop_triggered": false, "epoch_seconds": 1895.0353021999763, "images_per_second": 67.66628561016029}
+{"epoch": 26, "train_loss": 45.21764217879244, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1258.0937853000069, "images_per_second": 101.92403896933811}
+{"epoch": 27, "train_loss": 45.02197755691772, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1258.666115800006, "images_per_second": 101.8776928927631}
+{"epoch": 28, "train_loss": 44.85391923767364, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1279.7557355999888, "images_per_second": 100.19880859520573}
+{"epoch": 29, "train_loss": 44.65135777591469, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "epoch_seconds": 1298.7949750999978, "images_per_second": 98.72997852499947}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.29s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.79s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.08s).
+Accumulating evaluation results...
+DONE (t=1.91s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.232
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.365
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.242
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.127
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.281
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.391
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.210
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.359
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.403
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.230
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.473
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.610
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.38s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=14.93s).
+Accumulating evaluation results...
+DONE (t=1.90s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.225
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.360
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.233
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.124
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.271
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.376
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.208
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.351
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.397
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.228
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.466
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.607
+{"epoch": 30, "train_loss": 44.531363633816355, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "device": "cuda", "max_vram_gib": 7.561424255371094, "clean_person_ap": 0.4806467771060213, "clean_person_ap50": 0.7433152529513836, "clean_person_ap75": 0.4990169477393011, "clean_person_ar100": 0.5992483993690267, "clean_person_recall": 0.6719374772809887, "clean_person_gt": 11004, "seen_person_ap": 0.5149711709222426, "seen_person_ap50": 0.7654579007678223, "seen_person_ap75": 0.5419052860942994, "seen_person_ar100": 0.6153289412638026, "seen_person_recall": 0.6952017448200655, "seen_person_gt": 11004, "seen_failure_rate": 0.02085703450891163, "clean_to_seen_ap_drop": -0.03432439381622138, "clean_to_seen_ap50_drop": -0.02214264781643871, "clean_to_seen_recall_drop": -0.023264267539076733, "val_seconds": 655.5481438000279, "early_stop_wait": 25, "early_stop_triggered": true, "epoch_seconds": 1911.7821277999901, "images_per_second": 67.07354260475405}

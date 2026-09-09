@@ -1,0 +1,5 @@
+﻿2026-09-05T01:59:34.9575484+09:00 Monitoring training PID 22436; shutdown is gated by completion checks.
+2026-09-05T02:01:08.4984671+09:00 Monitoring training PID 22436; shutdown is gated by completion checks.
+2026-09-05T02:13:40.8429020+09:00 Monitoring training PID 22436; shutdown is gated by completion checks.
+2026-09-05T08:43:34.1454014+09:00 Training PID 22436 ended; waiting for launcher and file flush.
+2026-09-05T08:44:17.8242264+09:00 All completion checks passed. Executing the authorized shutdown command.

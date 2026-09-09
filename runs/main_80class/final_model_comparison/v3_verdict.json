@@ -1,0 +1,6 @@
+{
+  "verdict": "GO",
+  "unseen_metrics_improved_over_adv": true,
+  "v3_best_clean": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v3_full\\best_clean_map.pt",
+  "v3_best_seen": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v3_full\\best_seen_map.pt"
+}

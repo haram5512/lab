@@ -1,0 +1,31 @@
+{
+  "patch_id": "A",
+  "pool": "train_seen",
+  "variant": "v1",
+  "git_commit": "2e0834c05e09ed6f1aaa1ae92e5b02a97ea9fae3",
+  "checkpoint": "artifacts\\checkpoints\\baseline_clean_best_map.pt",
+  "source_detector": "YOLO11n",
+  "dataset": "COCO train2017",
+  "source_image_count": 1,
+  "heldout_split": "train2017_disjoint_subset",
+  "target_policy": "all",
+  "strength": "weak",
+  "steps": 1,
+  "learning_rate": 0.03,
+  "patch_size": 128,
+  "seed": 7,
+  "attack_objective": "target_pre_nms_class_suppression",
+  "initialization": "uniform_random_[0,1]",
+  "eot": {
+    "scale_min": 0.8,
+    "scale_max": 1.2,
+    "translate_fraction": 0.08,
+    "rotation_degrees": 15.0,
+    "perspective_jitter": 0.08,
+    "brightness": 0.2,
+    "contrast": 0.2
+  },
+  "before_score": 5.1796180192131835e-12,
+  "after_score": 7.356065409580559e-12,
+  "loss_last": 7.0385112668769345e-12
+}

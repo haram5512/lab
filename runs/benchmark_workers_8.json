@@ -1,0 +1,15 @@
+[
+  {
+    "batch": 16,
+    "workers": 8,
+    "pin_memory": true,
+    "persistent_workers": true,
+    "step_seconds": 0.06470645000081277,
+    "images_sec": 247.27055803245312,
+    "epoch_minutes": 7.97291308093348,
+    "gpu_util_avg": 29.375,
+    "gpu_mem_mib": 6222.42578125,
+    "cuda_oom": false,
+    "loss_last": 49.71896743774414
+  }
+]

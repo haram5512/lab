@@ -1,0 +1,26 @@
+{
+  "git_commit": "f0821baa4efeaa57b74adbefbaeeaa94337ae764",
+  "config": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\dataset_config.main80.yaml",
+  "dataset": "COCO 2017 val2017 full image set, all 80 classes with person diagnostics",
+  "person_gt_expected": 11004,
+  "image_size": 640,
+  "confidence": 0.001,
+  "nms_iou": 0.7,
+  "models": {
+    "pretrained": {
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+      "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+    },
+    "best_clean_map": {
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_clean_map.pt",
+      "sha256": "2fdba9029eeab64797beb7fa19e3963e33f90d4b78e97ec7831a1ca54c79168b"
+    },
+    "best_seen_map": {
+      "path": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_seen_map.pt",
+      "sha256": "c7f741cec3dab904747faa5bac77aaf0427e61b8cebff86f8bec61041393c422"
+    }
+  },
+  "device": "cuda:0",
+  "results": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\adversarial_training_final_evaluation",
+  "final_verdict": "PARTIAL"
+}

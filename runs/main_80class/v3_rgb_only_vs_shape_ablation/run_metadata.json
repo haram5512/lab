@@ -1,0 +1,19 @@
+{
+  "git_commit": "a408805f54729e3cfbf729c74ce14ffa0e47fb74",
+  "checkpoint": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v3_full\\best_seen_map.pt",
+  "stored_alphas": [
+    0.13766932487487793,
+    0.23682373762130737,
+    0.243273064494133
+  ],
+  "device": "NVIDIA GeForce RTX 5070 Ti",
+  "conditions": [
+    "clean",
+    "seen",
+    "unseen"
+  ],
+  "confidence": 0.001,
+  "person_confidence": 0.25,
+  "nms_iou": 0.7,
+  "verdict": "ADAPTIVE ALPHA POTENTIALLY USEFUL"
+}

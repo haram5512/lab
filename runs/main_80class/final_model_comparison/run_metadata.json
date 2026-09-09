@@ -1,0 +1,11 @@
+{
+  "git_commit": "d27bfc71317fe05669ea7d6197bcdcb3af01f634",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "image_size": 640,
+  "evaluation_confidence": 0.001,
+  "nms_iou": 0.7,
+  "operating_point_confidence": 0.25,
+  "person_gt_expected": 11004,
+  "unavailable": []
+}

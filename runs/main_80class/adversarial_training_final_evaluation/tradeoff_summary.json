@@ -1,0 +1,91 @@
+{
+  "pretrained_reference": {
+    "clean": {
+      "person_ap": 0.5324906706762328,
+      "person_ap50": 0.7712696185264519,
+      "person_ap75": 0.568339709160409,
+      "person_ar100": 0.6462466363552009,
+      "person_recall": 0.6564885496183206,
+      "attacked_object_detection_rate": null
+    },
+    "seen": {
+      "person_ap": 0.5203620928646232,
+      "person_ap50": 0.7573611825004315,
+      "person_ap75": 0.5534207834874924,
+      "person_ar100": 0.6383501902199127,
+      "person_recall": 0.641130498000727,
+      "attacked_object_detection_rate": 0.9533560864618885
+    },
+    "unseen": {
+      "person_ap": 0.519424427826473,
+      "person_ap50": 0.7567878671107239,
+      "person_ap75": 0.5519494607350101,
+      "person_ar100": 0.6382945160990999,
+      "person_recall": 0.6423118865866958,
+      "attacked_object_detection_rate": 0.9541145240803944
+    }
+  },
+  "checkpoints": {
+    "best_clean": {
+      "clean_degradation": {
+        "person_ap": 0.04378874049206677,
+        "person_ap50": 0.034656320679685715,
+        "person_ap75": 0.05516791550715083,
+        "person_recall": -0.016721192293711384,
+        "person_ar100": 0.026306022084067848
+      },
+      "seen_absolute_improvement": {
+        "person_ap": -0.024962967183610407,
+        "person_ap50": -0.038782654685681206,
+        "person_ap75": -0.027491994741762782,
+        "person_recall": 0.04598327880770636,
+        "person_ar100": -0.008221211840029552,
+        "failure_rate_reduction": 0.02464922260144098
+      },
+      "unseen_absolute_improvement": {
+        "person_ap": -0.02574567948287343,
+        "person_ap50": -0.021656370527856295,
+        "person_ap75": -0.03145832359566281,
+        "person_recall": 0.037440930570701525,
+        "person_ar100": -0.015625869908137635
+      },
+      "generalization_gap": {
+        "seen_minus_unseen_ap": 0.0017203773374132036,
+        "seen_minus_unseen_recall": 0.007360959651036003
+      },
+      "verdict": "PARTIAL"
+    },
+    "best_seen": {
+      "clean_degradation": {
+        "person_ap": 0.04398895210376175,
+        "person_ap50": 0.03495736359515367,
+        "person_ap75": 0.055244209087310425,
+        "person_recall": -0.0162668120683388,
+        "person_ar100": 0.02660295072840302
+      },
+      "seen_absolute_improvement": {
+        "person_ap": -0.02350345613128807,
+        "person_ap50": -0.03648025147252809,
+        "person_ap75": -0.0257945903101231,
+        "person_recall": 0.048800436205016395,
+        "person_ar100": -0.006003526027651307,
+        "failure_rate_reduction": 0.028820629503223394
+      },
+      "unseen_absolute_improvement": {
+        "person_ap": -0.024617658143741505,
+        "person_ap50": -0.01956365656702186,
+        "person_ap75": -0.030214982823103087,
+        "person_recall": 0.04007633587786252,
+        "person_ar100": -0.013500974297114166
+      },
+      "generalization_gap": {
+        "seen_minus_unseen_ap": 0.0020518670506036174,
+        "seen_minus_unseen_recall": 0.0075427117411850375
+      },
+      "verdict": "PARTIAL"
+    }
+  },
+  "recommendation": "review_clean_seen_unseen_tradeoff_before_selecting_checkpoint",
+  "final_verdict": "PARTIAL",
+  "verdict_basis": "Both adversarial checkpoints improve person Recall on seen and unseen patched images, but person AP/AP50 decline versus pretrained and clean AP also declines; therefore robustness gain is a tradeoff, not a full GO."
+}

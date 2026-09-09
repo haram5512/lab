@@ -1,0 +1,149 @@
+[
+  {
+    "condition": "clean",
+    "metric": "person_ap",
+    "v3_best_clean_minus_adv": 0.03354186743900861,
+    "v3_best_seen_minus_adv": 0.03271400379648187,
+    "v3_best_seen_minus_v2": -0.002228053682486575
+  },
+  {
+    "condition": "clean",
+    "metric": "person_recall_iou50_conf025",
+    "v3_best_clean_minus_adv": -0.004452926208651342,
+    "v3_best_seen_minus_adv": -0.005361686659396514,
+    "v3_best_seen_minus_v2": 0.00454380225372597
+  },
+  {
+    "condition": "clean",
+    "metric": "person_recall_iou75_conf025",
+    "v3_best_clean_minus_adv": 0.016085059978189764,
+    "v3_best_seen_minus_adv": 0.015358051617593627,
+    "v3_best_seen_minus_v2": 0.002998909487459178
+  },
+  {
+    "condition": "clean",
+    "metric": "precision_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.05170614574573684,
+    "v3_best_seen_minus_adv": 0.05166298077646159,
+    "v3_best_seen_minus_v2": -0.011338609081609219
+  },
+  {
+    "condition": "clean",
+    "metric": "f1_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.02216441433218419,
+    "v3_best_seen_minus_adv": 0.021647326127104405,
+    "v3_best_seen_minus_v2": -0.002578082587176178
+  },
+  {
+    "condition": "clean",
+    "metric": "mean_gt_iou_with_misses",
+    "v3_best_clean_minus_adv": 0.0037358999252319336,
+    "v3_best_seen_minus_adv": 0.0029731392860412598,
+    "v3_best_seen_minus_v2": 0.0033071041107177734
+  },
+  {
+    "condition": "clean",
+    "metric": "failure_rate",
+    "v3_best_clean_minus_adv": 0.0,
+    "v3_best_seen_minus_adv": 0.0,
+    "v3_best_seen_minus_v2": 0.0
+  },
+  {
+    "condition": "seen",
+    "metric": "person_ap",
+    "v3_best_clean_minus_adv": 0.032422778246224304,
+    "v3_best_seen_minus_adv": 0.032101845685866826,
+    "v3_best_seen_minus_v2": 0.016552623155236423
+  },
+  {
+    "condition": "seen",
+    "metric": "person_recall_iou50_conf025",
+    "v3_best_clean_minus_adv": -0.011268629589240242,
+    "v3_best_seen_minus_adv": -0.011541257724463794,
+    "v3_best_seen_minus_v2": 0.02171937477280994
+  },
+  {
+    "condition": "seen",
+    "metric": "person_recall_iou75_conf025",
+    "v3_best_clean_minus_adv": 0.0013631406761177578,
+    "v3_best_seen_minus_adv": 0.0010905125408942062,
+    "v3_best_seen_minus_v2": 0.01981097782624497
+  },
+  {
+    "condition": "seen",
+    "metric": "precision_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.08052857381269729,
+    "v3_best_seen_minus_adv": 0.08065133778007583,
+    "v3_best_seen_minus_v2": 0.003849127029668664
+  },
+  {
+    "condition": "seen",
+    "metric": "f1_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.035350590088875755,
+    "v3_best_seen_minus_adv": 0.035265359759408255,
+    "v3_best_seen_minus_v2": 0.013384451172657297
+  },
+  {
+    "condition": "seen",
+    "metric": "mean_gt_iou_with_misses",
+    "v3_best_clean_minus_adv": -0.00504535436630249,
+    "v3_best_seen_minus_adv": -0.005284547805786133,
+    "v3_best_seen_minus_v2": 0.01939171552658081
+  },
+  {
+    "condition": "seen",
+    "metric": "failure_rate",
+    "v3_best_clean_minus_adv": 0.0006539936057438668,
+    "v3_best_seen_minus_adv": 0.0006778559518721174,
+    "v3_best_seen_minus_v2": -0.011995800770204242
+  },
+  {
+    "condition": "unseen",
+    "metric": "person_ap",
+    "v3_best_clean_minus_adv": 0.0400646936366722,
+    "v3_best_seen_minus_adv": 0.03952874223617453,
+    "v3_best_seen_minus_v2": 0.01976393488484951
+  },
+  {
+    "condition": "unseen",
+    "metric": "person_recall_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.0016357688113413094,
+    "v3_best_seen_minus_adv": 0.0012722646310432406,
+    "v3_best_seen_minus_v2": 0.02435478007997094
+  },
+  {
+    "condition": "unseen",
+    "metric": "person_recall_iou75_conf025",
+    "v3_best_clean_minus_adv": 0.025081788440567077,
+    "v3_best_seen_minus_adv": 0.024718284260269008,
+    "v3_best_seen_minus_v2": 0.025808796801163214
+  },
+  {
+    "condition": "unseen",
+    "metric": "precision_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.04142962957715235,
+    "v3_best_seen_minus_adv": 0.04145638227709347,
+    "v3_best_seen_minus_v2": -0.0003850345542441014
+  },
+  {
+    "condition": "unseen",
+    "metric": "f1_iou50_conf025",
+    "v3_best_clean_minus_adv": 0.021249026501088064,
+    "v3_best_seen_minus_adv": 0.021072167567415034,
+    "v3_best_seen_minus_v2": 0.012759191620253074
+  },
+  {
+    "condition": "unseen",
+    "metric": "mean_gt_iou_with_misses",
+    "v3_best_clean_minus_adv": 0.01086801290512085,
+    "v3_best_seen_minus_adv": 0.010556995868682861,
+    "v3_best_seen_minus_v2": 0.022840559482574463
+  },
+  {
+    "condition": "unseen",
+    "metric": "failure_rate",
+    "v3_best_clean_minus_adv": -0.00028839162260304446,
+    "v3_best_seen_minus_adv": -0.00012913799567327786,
+    "v3_best_seen_minus_v2": -0.011040299814703287
+  }
+]

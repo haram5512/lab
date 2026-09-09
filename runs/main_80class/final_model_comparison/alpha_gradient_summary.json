@@ -1,0 +1,34 @@
+{
+  "training_completed": true,
+  "exit_reason": "manual stop after epoch 60 validation; no meaningful Seen AP improvement",
+  "final_epoch": 60,
+  "early_stopping": false,
+  "best_clean_epoch": 25,
+  "best_clean_ap": 0.5267749380141351,
+  "best_seen_epoch": 45,
+  "best_seen_ap": 0.525497536193836,
+  "final_alpha": {
+    "alpha3": 0.19322093673972432,
+    "alpha4": 0.4739479493134155,
+    "alpha5": 0.6584858456533588
+  },
+  "alpha_min": {
+    "alpha3": 0.025490243055722017,
+    "alpha4": 0.07215938487270486,
+    "alpha5": 0.106776537718493
+  },
+  "alpha_max": {
+    "alpha3": 0.19322093673972432,
+    "alpha4": 0.4739479493134155,
+    "alpha5": 0.6584858456533588
+  },
+  "shape_gradient_mean": 20.07520789430513,
+  "shape_gradient_min": 4.9151075820166925,
+  "shape_gradient_max": 26.94442228177291,
+  "nan_or_inf": false,
+  "checkpoint_paths": {
+    "best_clean_map.pt": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v2_full\\best_clean_map.pt",
+    "best_seen_map.pt": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v2_full\\best_seen_map.pt",
+    "last.pt": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v2_full\\last.pt"
+  }
+}

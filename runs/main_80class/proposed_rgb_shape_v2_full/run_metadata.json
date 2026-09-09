@@ -1,0 +1,88 @@
+{
+  "git_commit": "ee39481a08f5e38e14bc0d313f5cac54110b4c13",
+  "git_dirty": true,
+  "model": "proposed_v2",
+  "source_checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+  "architecture": {
+    "pretrained_parameter_count": 2624080,
+    "new_parameter_count": 44491,
+    "incompatible_keys": [],
+    "config": {
+      "weights": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+      "shape_channels": [
+        8,
+        16,
+        24,
+        32,
+        48
+      ],
+      "fusion_alpha": 0.05,
+      "fusion_layers": [
+        16,
+        19,
+        22
+      ],
+      "num_classes": 80
+    },
+    "rgb_channels": [
+      64,
+      128,
+      256
+    ]
+  },
+  "dataset_config": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\dataset_config.main80.yaml",
+  "dataset": "COCO 2017 person-containing images, 80-class targets",
+  "patch_pool": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\adversarial_patches\\train_seen",
+  "patch_ids": [
+    "patch_A.png",
+    "patch_B.png",
+    "patch_C.png",
+    "patch_D.png",
+    "patch_E.png"
+  ],
+  "patch_sha256": "ab51a45b89e29ef9b42046036741a3613492675f89aee04ff748e39154e2ffa0",
+  "patch_profile": "v5-C torso/very-mild",
+  "unseen_patch_ids": [],
+  "validation": "official COCOeval person metrics, clean+train_seen only",
+  "person_mapping": {
+    "yolo_class": 0,
+    "coco_category_id": 1
+  },
+  "recall": {
+    "confidence": 0.25,
+    "iou": 0.5
+  },
+  "checkpoint_policy": {
+    "best_clean_map.pt": "clean person AP",
+    "best_seen_map.pt": "seen person AP",
+    "last.pt": "latest"
+  },
+  "early_stopping": {
+    "enabled": true,
+    "primary": "seen_person_ap",
+    "min_epochs": 30,
+    "patience": 20,
+    "min_delta": 0.001
+  },
+  "clean_patch_ratio": [
+    0.5,
+    0.5
+  ],
+  "image_size": 640,
+  "batch_size": 16,
+  "effective_images_per_step": 32,
+  "num_workers": 0,
+  "pin_memory": false,
+  "persistent_workers": false,
+  "learning_rate": 0.0001,
+  "optimizer": "AdamW",
+  "seed": 42,
+  "epochs": 100,
+  "val_every": 5,
+  "val_max_images": 0,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "ultralytics": "8.4.138"
+}

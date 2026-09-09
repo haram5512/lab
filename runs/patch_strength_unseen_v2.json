@@ -1,0 +1,40 @@
+{
+  "pool": "unseen",
+  "images_per_patch": 20,
+  "rows": [
+    {
+      "patch": "patch_F.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.01708797698447597,
+      "raw_score_drop": -2.607436981634237e-05,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5550833932589739
+    },
+    {
+      "patch": "patch_G.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.017517298128041148,
+      "raw_score_drop": -0.00045539551338151795,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.95,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5549333938164637
+    },
+    {
+      "patch": "patch_H.png",
+      "images": 20,
+      "clean_raw_mean": 0.01706190261465963,
+      "patched_raw_mean": 0.0172522687829769,
+      "raw_score_drop": -0.0001903661683172686,
+      "clean_detection_retention": 0.95,
+      "patched_detection_retention": 0.9,
+      "clean_nms_score_mean": 0.5501340119866654,
+      "patched_nms_score_mean": 0.5503556334530003
+    }
+  ],
+  "note": "Smoke strength diagnostic, not a final research result."
+}

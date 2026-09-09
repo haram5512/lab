@@ -1,0 +1,32 @@
+{
+  "model": "Proposed RGB/Shape v3",
+  "checkpoint": "C:\\\ub17c\ubb38\\runs\\main_80class\\proposed_rgb_shape_v3_full\\best_seen_map.pt",
+  "device": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "input": "100 real COCO val2017 images, batch=1, letterbox 640x640",
+  "confidence": 0.25,
+  "nms_iou": 0.7,
+  "warmup": 20,
+  "repetitions": 100,
+  "precision": "FP32",
+  "model_plus_nms": {
+    "median_ms": 10.069349984405562,
+    "mean_ms": 10.949494997039437,
+    "p95_ms": 16.292500018607825,
+    "fps_from_median": 99.31127645267108
+  },
+  "cpu_decode_letterbox": {
+    "median_ms": 3.753800003323704,
+    "mean_ms": 3.8132389972452074,
+    "p95_ms": 5.212500051129609,
+    "fps_from_median": 266.39671775656035
+  },
+  "end_to_end_decode_letterbox_h2d_model_nms": {
+    "median_ms": 15.260250045685098,
+    "mean_ms": 15.594731000019237,
+    "p95_ms": 20.605699974112213,
+    "fps_from_median": 65.5297257257429
+  },
+  "peak_vram_gib": 0.08121490478515625,
+  "parameter_count": 3665939
+}

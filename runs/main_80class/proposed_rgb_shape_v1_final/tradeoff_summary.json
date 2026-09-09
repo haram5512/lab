@@ -1,0 +1,281 @@
+{
+  "pretrained_reference": {
+    "clean": {
+      "person_ap": 0.5324908308217989,
+      "person_ap50": 0.7712699433925793,
+      "person_ap75": 0.5683398543539571,
+      "person_ar100": 0.6462466363552009,
+      "person_recall": 0.656215921483097
+    },
+    "seen": {
+      "person_ap": 0.5203620928646232,
+      "person_ap50": 0.7573611825004315,
+      "person_ap75": 0.5534207834874924,
+      "person_ar100": 0.6383501902199127,
+      "person_recall": 0.6407669938204289
+    },
+    "unseen": {
+      "person_ap": 0.5195649505531339,
+      "person_ap50": 0.7569574706451977,
+      "person_ap75": 0.5521397639061763,
+      "person_ar100": 0.6384615384615385,
+      "person_recall": 0.6420392584514721
+    }
+  },
+  "comparison": {
+    "adv_best_seen": {
+      "clean_degradation": {
+        "person_ap": 0.042282346526297754,
+        "person_ap50": 0.03230770845947739,
+        "person_ap75": 0.053316826720725796,
+        "person_recall": -0.019265721555797866,
+        "person_ar100": 0.02406049921128317
+      },
+      "seen_vs_pretrained": {
+        "person_ap": -0.02350345613128807,
+        "person_ap50": -0.03648025147252809,
+        "person_recall": 0.04907306434023995
+      },
+      "unseen_vs_pretrained": {
+        "person_ap": -0.02489701287047491,
+        "person_ap50": -0.019933475645256493,
+        "person_recall": 0.0398945837877136
+      },
+      "seen_vs_adv": {
+        "person_ap": 0.0,
+        "person_recall": 0.0
+      },
+      "unseen_vs_adv": {
+        "person_ap": 0.0,
+        "person_recall": 0.0
+      },
+      "generalization_gap": {
+        "seen_minus_unseen_ap": 0.002190699050676148,
+        "seen_minus_unseen_recall": 0.007906215921483106
+      }
+    },
+    "proposed_best_clean": {
+      "clean_degradation": {
+        "person_ap": 0.04637686424077858,
+        "person_ap50": 0.03313698324412662,
+        "person_ap75": 0.06077995549193271,
+        "person_recall": -0.009360232642675381,
+        "person_ar100": 0.03158578454115246
+      },
+      "seen_vs_pretrained": {
+        "person_ap": -0.022139943472597234,
+        "person_ap50": -0.02826387647478945,
+        "person_recall": 0.044983642311886674
+      },
+      "unseen_vs_pretrained": {
+        "person_ap": -0.03257645936291864,
+        "person_ap50": -0.022375342473510584,
+        "person_recall": 0.02889858233369691
+      },
+      "seen_vs_adv": {
+        "person_ap": 0.0013635126586908353,
+        "person_recall": -0.004089422028353273
+      },
+      "unseen_vs_adv": {
+        "person_ap": -0.007679446492443731,
+        "person_recall": -0.01099600145401669
+      },
+      "generalization_gap": {
+        "seen_minus_unseen_ap": 0.011233658201810715,
+        "seen_minus_unseen_recall": 0.014812795347146523
+      }
+    },
+    "proposed_best_seen": {
+      "clean_degradation": {
+        "person_ap": 0.04637686424077858,
+        "person_ap50": 0.03313698324412662,
+        "person_ap75": 0.06077995549193271,
+        "person_recall": -0.009360232642675381,
+        "person_ar100": 0.03158578454115246
+      },
+      "seen_vs_pretrained": {
+        "person_ap": -0.02204365461196106,
+        "person_ap50": -0.028156380042584472,
+        "person_recall": 0.04507451835696119
+      },
+      "unseen_vs_pretrained": {
+        "person_ap": -0.03257645936291864,
+        "person_ap50": -0.022375342473510584,
+        "person_recall": 0.02889858233369691
+      },
+      "seen_vs_adv": {
+        "person_ap": 0.0014598015193270086,
+        "person_recall": -0.003998545983278756
+      },
+      "unseen_vs_adv": {
+        "person_ap": -0.007679446492443731,
+        "person_recall": -0.01099600145401669
+      },
+      "generalization_gap": {
+        "seen_minus_unseen_ap": 0.011329947062446888,
+        "seen_minus_unseen_recall": 0.01490367139222104
+      }
+    }
+  },
+  "recommendation": "select checkpoint after clean_seen_unseen_tradeoff_review",
+  "comparison_with_recall_iou": {
+    "adv_best_seen": {
+      "person_recall_iou50_conf025_clean_minus_seen": -0.014358415121773938,
+      "person_recall_iou50_conf025_clean_minus_unseen": -0.006452199200290831,
+      "person_recall_iou75_conf025_clean_minus_seen": -0.024263904034896422,
+      "person_recall_iou75_conf025_clean_minus_unseen": -0.008814976372228278,
+      "mean_matched_iou_clean_minus_seen": -0.007773339748382568,
+      "mean_matched_iou_clean_minus_unseen": -0.0019758939743041992,
+      "mean_gt_iou_with_misses_clean_minus_seen": -0.017278552055358887,
+      "mean_gt_iou_with_misses_clean_minus_unseen": -0.00695115327835083,
+      "clean_person_ap_vs_pretrained": -0.042282346526297754,
+      "clean_person_ap50_vs_pretrained": -0.03230770845947739,
+      "clean_person_ap75_vs_pretrained": -0.053316826720725796,
+      "clean_person_recall_iou50_conf025_vs_pretrained": 0.019265721555797866,
+      "clean_person_recall_iou75_conf025_vs_pretrained": -0.012904398400581663,
+      "clean_mean_matched_iou_vs_pretrained": -0.017298460006713867,
+      "clean_mean_gt_iou_with_misses_vs_pretrained": 0.005142569541931152,
+      "seen_person_ap_vs_pretrained": -0.02350345613128807,
+      "seen_person_ap50_vs_pretrained": -0.03648025147252809,
+      "seen_person_ap75_vs_pretrained": -0.0257945903101231,
+      "seen_person_recall_iou50_conf025_vs_pretrained": 0.04907306434023995,
+      "seen_person_recall_iou75_conf025_vs_pretrained": 0.02462740821519449,
+      "seen_mean_matched_iou_vs_pretrained": -0.00870966911315918,
+      "seen_mean_gt_iou_with_misses_vs_pretrained": 0.035791873931884766,
+      "unseen_person_ap_vs_pretrained": -0.02489701287047491,
+      "unseen_person_ap50_vs_pretrained": -0.019933475645256493,
+      "unseen_person_ap75_vs_pretrained": -0.030548764822555197,
+      "unseen_person_recall_iou50_conf025_vs_pretrained": 0.0398945837877136,
+      "unseen_person_recall_iou75_conf025_vs_pretrained": 0.010268993093420553,
+      "unseen_mean_matched_iou_vs_pretrained": -0.013556122779846191,
+      "unseen_mean_gt_iou_with_misses_vs_pretrained": 0.025207221508026123,
+      "clean_person_ap_vs_adv_best_seen": 0.0,
+      "clean_person_ap50_vs_adv_best_seen": 0.0,
+      "clean_person_ap75_vs_adv_best_seen": 0.0,
+      "clean_person_recall_iou50_conf025_vs_adv_best_seen": 0.0,
+      "clean_person_recall_iou75_conf025_vs_adv_best_seen": 0.0,
+      "clean_mean_matched_iou_vs_adv_best_seen": 0.0,
+      "clean_mean_gt_iou_with_misses_vs_adv_best_seen": 0.0,
+      "seen_person_ap_vs_adv_best_seen": 0.0,
+      "seen_person_ap50_vs_adv_best_seen": 0.0,
+      "seen_person_ap75_vs_adv_best_seen": 0.0,
+      "seen_person_recall_iou50_conf025_vs_adv_best_seen": 0.0,
+      "seen_person_recall_iou75_conf025_vs_adv_best_seen": 0.0,
+      "seen_mean_matched_iou_vs_adv_best_seen": 0.0,
+      "seen_mean_gt_iou_with_misses_vs_adv_best_seen": 0.0,
+      "unseen_person_ap_vs_adv_best_seen": 0.0,
+      "unseen_person_ap50_vs_adv_best_seen": 0.0,
+      "unseen_person_ap75_vs_adv_best_seen": 0.0,
+      "unseen_person_recall_iou50_conf025_vs_adv_best_seen": 0.0,
+      "unseen_person_recall_iou75_conf025_vs_adv_best_seen": 0.0,
+      "unseen_mean_matched_iou_vs_adv_best_seen": 0.0,
+      "unseen_mean_gt_iou_with_misses_vs_adv_best_seen": 0.0
+    },
+    "proposed_best_clean": {
+      "person_recall_iou50_conf025_clean_minus_seen": -0.02017448200654315,
+      "person_recall_iou50_conf025_clean_minus_unseen": -0.005361686659396625,
+      "person_recall_iou75_conf025_clean_minus_seen": -0.029352962559069384,
+      "person_recall_iou75_conf025_clean_minus_unseen": -0.008905852417302795,
+      "mean_matched_iou_clean_minus_seen": -0.006933093070983887,
+      "mean_matched_iou_clean_minus_unseen": -0.0003571510314941406,
+      "mean_gt_iou_with_misses_clean_minus_seen": -0.021497249603271484,
+      "mean_gt_iou_with_misses_clean_minus_unseen": -0.0051389336585998535,
+      "clean_person_ap_vs_pretrained": -0.04637686424077858,
+      "clean_person_ap50_vs_pretrained": -0.03313698324412662,
+      "clean_person_ap75_vs_pretrained": -0.06077995549193271,
+      "clean_person_recall_iou50_conf025_vs_pretrained": 0.009360232642675381,
+      "clean_person_recall_iou75_conf025_vs_pretrained": -0.023264267539076733,
+      "clean_mean_matched_iou_vs_pretrained": -0.017085373401641846,
+      "clean_mean_gt_iou_with_misses_vs_pretrained": -0.0035589933395385742,
+      "seen_person_ap_vs_pretrained": -0.022139943472597234,
+      "seen_person_ap50_vs_pretrained": -0.02826387647478945,
+      "seen_person_ap75_vs_pretrained": -0.026073565150678046,
+      "seen_person_recall_iou50_conf025_vs_pretrained": 0.044983642311886674,
+      "seen_person_recall_iou75_conf025_vs_pretrained": 0.019356597600872383,
+      "seen_mean_matched_iou_vs_pretrained": -0.00933682918548584,
+      "seen_mean_gt_iou_with_misses_vs_pretrained": 0.03130900859832764,
+      "unseen_person_ap_vs_pretrained": -0.03257645936291864,
+      "unseen_person_ap50_vs_pretrained": -0.022375342473510584,
+      "unseen_person_ap75_vs_pretrained": -0.0407945518884536,
+      "unseen_person_recall_iou50_conf025_vs_pretrained": 0.02889858233369691,
+      "unseen_person_recall_iou75_conf025_vs_pretrained": 0.0,
+      "unseen_mean_matched_iou_vs_pretrained": -0.014961779117584229,
+      "unseen_mean_gt_iou_with_misses_vs_pretrained": 0.01469343900680542,
+      "clean_person_ap_vs_adv_best_seen": -0.004094517714480828,
+      "clean_person_ap50_vs_adv_best_seen": -0.0008292747846492254,
+      "clean_person_ap75_vs_adv_best_seen": -0.007463128771206917,
+      "clean_person_recall_iou50_conf025_vs_adv_best_seen": -0.009905488913122484,
+      "clean_person_recall_iou75_conf025_vs_adv_best_seen": -0.01035986913849507,
+      "clean_mean_matched_iou_vs_adv_best_seen": 0.00021308660507202148,
+      "clean_mean_gt_iou_with_misses_vs_adv_best_seen": -0.008701562881469727,
+      "seen_person_ap_vs_adv_best_seen": 0.0013635126586908353,
+      "seen_person_ap50_vs_adv_best_seen": 0.00821637499773864,
+      "seen_person_ap75_vs_adv_best_seen": -0.00027897484055494637,
+      "seen_person_recall_iou50_conf025_vs_adv_best_seen": -0.004089422028353273,
+      "seen_person_recall_iou75_conf025_vs_adv_best_seen": -0.005270810614322108,
+      "seen_mean_matched_iou_vs_adv_best_seen": -0.0006271600723266602,
+      "seen_mean_gt_iou_with_misses_vs_adv_best_seen": -0.004482865333557129,
+      "unseen_person_ap_vs_adv_best_seen": -0.007679446492443731,
+      "unseen_person_ap50_vs_adv_best_seen": -0.002441866828254091,
+      "unseen_person_ap75_vs_adv_best_seen": -0.010245787065898404,
+      "unseen_person_recall_iou50_conf025_vs_adv_best_seen": -0.01099600145401669,
+      "unseen_person_recall_iou75_conf025_vs_adv_best_seen": -0.010268993093420553,
+      "unseen_mean_matched_iou_vs_adv_best_seen": -0.0014056563377380371,
+      "unseen_mean_gt_iou_with_misses_vs_adv_best_seen": -0.010513782501220703
+    },
+    "proposed_best_seen": {
+      "person_recall_iou50_conf025_clean_minus_seen": -0.020265358051617666,
+      "person_recall_iou50_conf025_clean_minus_unseen": -0.005361686659396625,
+      "person_recall_iou75_conf025_clean_minus_seen": -0.0294438386041439,
+      "person_recall_iou75_conf025_clean_minus_unseen": -0.008905852417302795,
+      "mean_matched_iou_clean_minus_seen": -0.006946444511413574,
+      "mean_matched_iou_clean_minus_unseen": -0.0003571510314941406,
+      "mean_gt_iou_with_misses_clean_minus_seen": -0.021582722663879395,
+      "mean_gt_iou_with_misses_clean_minus_unseen": -0.0051389336585998535,
+      "clean_person_ap_vs_pretrained": -0.04637686424077858,
+      "clean_person_ap50_vs_pretrained": -0.03313698324412662,
+      "clean_person_ap75_vs_pretrained": -0.06077995549193271,
+      "clean_person_recall_iou50_conf025_vs_pretrained": 0.009360232642675381,
+      "clean_person_recall_iou75_conf025_vs_pretrained": -0.023264267539076733,
+      "clean_mean_matched_iou_vs_pretrained": -0.017085373401641846,
+      "clean_mean_gt_iou_with_misses_vs_pretrained": -0.0035589933395385742,
+      "seen_person_ap_vs_pretrained": -0.02204365461196106,
+      "seen_person_ap50_vs_pretrained": -0.028156380042584472,
+      "seen_person_ap75_vs_pretrained": -0.02596772358290178,
+      "seen_person_recall_iou50_conf025_vs_pretrained": 0.04507451835696119,
+      "seen_person_recall_iou75_conf025_vs_pretrained": 0.0194474736459469,
+      "seen_mean_matched_iou_vs_pretrained": -0.009323477745056152,
+      "seen_mean_gt_iou_with_misses_vs_pretrained": 0.03139448165893555,
+      "unseen_person_ap_vs_pretrained": -0.03257645936291864,
+      "unseen_person_ap50_vs_pretrained": -0.022375342473510584,
+      "unseen_person_ap75_vs_pretrained": -0.0407945518884536,
+      "unseen_person_recall_iou50_conf025_vs_pretrained": 0.02889858233369691,
+      "unseen_person_recall_iou75_conf025_vs_pretrained": 0.0,
+      "unseen_mean_matched_iou_vs_pretrained": -0.014961779117584229,
+      "unseen_mean_gt_iou_with_misses_vs_pretrained": 0.01469343900680542,
+      "clean_person_ap_vs_adv_best_seen": -0.004094517714480828,
+      "clean_person_ap50_vs_adv_best_seen": -0.0008292747846492254,
+      "clean_person_ap75_vs_adv_best_seen": -0.007463128771206917,
+      "clean_person_recall_iou50_conf025_vs_adv_best_seen": -0.009905488913122484,
+      "clean_person_recall_iou75_conf025_vs_adv_best_seen": -0.01035986913849507,
+      "clean_mean_matched_iou_vs_adv_best_seen": 0.00021308660507202148,
+      "clean_mean_gt_iou_with_misses_vs_adv_best_seen": -0.008701562881469727,
+      "seen_person_ap_vs_adv_best_seen": 0.0014598015193270086,
+      "seen_person_ap50_vs_adv_best_seen": 0.008323871429943619,
+      "seen_person_ap75_vs_adv_best_seen": -0.00017313327277868051,
+      "seen_person_recall_iou50_conf025_vs_adv_best_seen": -0.003998545983278756,
+      "seen_person_recall_iou75_conf025_vs_adv_best_seen": -0.005179934569247591,
+      "seen_mean_matched_iou_vs_adv_best_seen": -0.0006138086318969727,
+      "seen_mean_gt_iou_with_misses_vs_adv_best_seen": -0.004397392272949219,
+      "unseen_person_ap_vs_adv_best_seen": -0.007679446492443731,
+      "unseen_person_ap50_vs_adv_best_seen": -0.002441866828254091,
+      "unseen_person_ap75_vs_adv_best_seen": -0.010245787065898404,
+      "unseen_person_recall_iou50_conf025_vs_adv_best_seen": -0.01099600145401669,
+      "unseen_person_recall_iou75_conf025_vs_adv_best_seen": -0.010268993093420553,
+      "unseen_mean_matched_iou_vs_adv_best_seen": -0.0014056563377380371,
+      "unseen_mean_gt_iou_with_misses_vs_adv_best_seen": -0.010513782501220703
+    }
+  },
+  "final_verdict": "NO-GO",
+  "verdict_basis": "Proposed v1 does not improve Recall@0.50/0.75 or IoU over conventional adversarial training on seen/unseen; unseen AP and GT-inclusive IoU are lower, while clean AP is also lower."
+}

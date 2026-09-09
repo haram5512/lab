@@ -1,0 +1,59 @@
+{
+  "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\checkpoints\\baseline_clean_best_map.pt",
+  "patch": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\adversarial_patches\\v2\\unseen\\patch_F_v2.pt",
+  "mode": "deterministic",
+  "image_count": 20,
+  "image_ids": [
+    139,
+    285,
+    632,
+    724,
+    776,
+    785,
+    802,
+    872,
+    885,
+    1000,
+    1268,
+    1296,
+    1353,
+    1425,
+    1490,
+    1503,
+    1532,
+    1584,
+    1675,
+    1761
+  ],
+  "clean": {
+    "ap": 0.46592925178269323,
+    "ap50": 0.7081815030117276,
+    "ap75": 0.45158519155881444,
+    "recall50": 1.0,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.772583091800863
+  },
+  "patched": {
+    "ap": 0.4516924215736411,
+    "ap50": 0.6912934768574234,
+    "ap75": 0.4257922530817346,
+    "recall50": 1.0,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.7241710939190604
+  },
+  "attack": {
+    "ap_drop": 0.014236830209052143,
+    "ap50_drop": 0.01688802615430418,
+    "recall_drop": 0.0,
+    "relative_recall_drop": 0.0,
+    "mean_confidence_drop": 0.048411997881802615,
+    "asr": 0.0
+  },
+  "runtime": {
+    "clean_seconds": 1.5020715999999084,
+    "patched_seconds": 1.3425228999985848
+  },
+  "git": {
+    "commit": "fe0a24d285ec4eec2bea345edf2d1904d5c4b644"
+  }
+}

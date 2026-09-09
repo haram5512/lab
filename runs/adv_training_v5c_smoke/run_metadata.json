@@ -1,0 +1,29 @@
+{
+  "git_commit": "514c7d1a8446fc9fc1a9b9d0b32ab3a2d13e3658",
+  "git_dirty": true,
+  "model": "baseline",
+  "source_checkpoint": "yolo11n.pt",
+  "dataset": "COCO 2017 person-containing images, 80-class targets",
+  "patch_pool": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.png",
+  "patch_ids": [
+    "patch_V5-C.png"
+  ],
+  "patch_profile": "v5-C torso/very-mild",
+  "validation": "clean+train_seen only",
+  "clean_patch_ratio": [
+    0.5,
+    0.5
+  ],
+  "image_size": 640,
+  "batch_size": 4,
+  "effective_images_per_step": 8,
+  "learning_rate": 0.0001,
+  "optimizer": "AdamW",
+  "epochs": 1,
+  "val_every": 1,
+  "val_max_images": 20,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8"
+}

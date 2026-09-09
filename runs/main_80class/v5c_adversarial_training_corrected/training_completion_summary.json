@@ -1,0 +1,33 @@
+{
+    "metrics_path":  "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\metrics.jsonl",
+    "best_clean_ap":  0.4933683025132295,
+    "seen_failure_rate":  0.018960940462646961,
+    "seen_ap50":  0.76793724683902942,
+    "best_clean_epoch":  5,
+    "validation_errors":  [
+
+                          ],
+    "git_commit_hash":  "f0821baa4efeaa57b74adbefbaeeaa94337ae764",
+    "nan_or_inf_found":  false,
+    "seen_recall":  0.6906579425663395,
+    "early_stopping":  true,
+    "best_seen_ap":  0.52169021526142234,
+    "timestamp":  "2026-09-05T08:44:15.7964172+09:00",
+    "clean_ap50":  0.74604211275587429,
+    "checkpoint_paths":  {
+                             "last":  "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\last.pt",
+                             "best_clean":  "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_clean_map.pt",
+                             "best_seen":  "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_seen_map.pt"
+                         },
+    "exit_reason":  "early_stopping",
+    "checkpoint_epochs":  {
+                              "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\last.pt":  30,
+                              "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_clean_map.pt":  5,
+                              "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_seen_map.pt":  5
+                          },
+    "clean_recall":  0.66675754271174115,
+    "final_epoch":  30,
+    "best_seen_epoch":  5,
+    "metadata_path":  "C:\\논문\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\run_metadata.json",
+    "training_completed":  true
+}

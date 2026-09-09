@@ -1,0 +1,59 @@
+{
+  "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+  "patch": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.pt",
+  "mode": "deterministic",
+  "image_count": 20,
+  "image_ids": [
+    139,
+    285,
+    632,
+    724,
+    776,
+    785,
+    802,
+    872,
+    885,
+    1000,
+    1268,
+    1296,
+    1353,
+    1425,
+    1490,
+    1503,
+    1532,
+    1584,
+    1675,
+    1761
+  ],
+  "clean": {
+    "ap": 0.5166241729548443,
+    "ap50": 0.7395651267933622,
+    "ap75": 0.49356430242766414,
+    "recall50": 0.6111111111111112,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.6765179182543899
+  },
+  "patched": {
+    "ap": 0.5135701048167817,
+    "ap50": 0.7194164334167722,
+    "ap75": 0.5069950915422945,
+    "recall50": 0.5740740740740741,
+    "gt_person_count": 54,
+    "mean_matched_confidence": 0.7051753997802734
+  },
+  "attack": {
+    "ap_drop": 0.0030540681380626378,
+    "ap50_drop": 0.020148693376589977,
+    "recall_drop": 0.03703703703703709,
+    "relative_recall_drop": 0.06060606060606069,
+    "mean_confidence_drop": -0.028657481525883544,
+    "asr": 0.06060606060606061
+  },
+  "runtime": {
+    "clean_seconds": 1.0491927999828476,
+    "patched_seconds": 0.816639100026805
+  },
+  "git": {
+    "commit": "514c7d1a8446fc9fc1a9b9d0b32ab3a2d13e3658"
+  }
+}

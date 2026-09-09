@@ -1,0 +1,11 @@
+file,condition,image_id,largest_iou_delta
+localization_001.jpg,unseen,326541,0.46474093198776245
+localization_002.jpg,seen,137294,0.4542800188064575
+localization_003.jpg,seen,6771,0.43949490785598755
+localization_004.jpg,unseen,6771,0.4349437952041626
+localization_005.jpg,seen,343706,0.4285329580307007
+localization_006.jpg,unseen,153229,-0.4524295926094055
+localization_007.jpg,seen,153229,-0.4522084593772888
+localization_008.jpg,clean,322724,-0.4404715895652771
+localization_009.jpg,unseen,322724,-0.43775689601898193
+localization_010.jpg,clean,346703,-0.4234708547592163

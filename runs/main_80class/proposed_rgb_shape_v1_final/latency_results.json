@@ -1,0 +1,42 @@
+{
+  "pretrained": {
+    "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+    "forward_plus_nms": {
+      "median_ms": 3.9167001247406006,
+      "mean_ms": 3.9349331855773926,
+      "p95_ms": 4.108799934387207,
+      "fps": 255.31696789430083
+    },
+    "parameters": 2624080
+  },
+  "adv_best_seen": {
+    "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v5c_adversarial_training_corrected\\best_seen_map.pt",
+    "forward_plus_nms": {
+      "median_ms": 5.052599906921387,
+      "mean_ms": 4.830803871154785,
+      "p95_ms": 5.253375053405762,
+      "fps": 197.91790729959314
+    },
+    "parameters": 2624080
+  },
+  "proposed_best_clean": {
+    "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v1_full\\best_clean_map.pt",
+    "forward_plus_nms": {
+      "median_ms": 5.109399795532227,
+      "mean_ms": 5.651429176330566,
+      "p95_ms": 7.381084442138672,
+      "fps": 195.71770462636772
+    },
+    "parameters": 2640185
+  },
+  "proposed_best_seen": {
+    "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v1_full\\best_seen_map.pt",
+    "forward_plus_nms": {
+      "median_ms": 5.538400173187256,
+      "mean_ms": 5.99372673034668,
+      "p95_ms": 9.313868522644043,
+      "fps": 180.55755610460284
+    },
+    "parameters": 2640185
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "git_commit": "004834e2ddadcfbd94f824d7fa301951a3a5a4c5",
+  "dirty": true,
+  "settings": {
+    "checkpoint": "artifacts\\checkpoints\\baseline_clean_best_map.pt",
+    "config": "dataset_config.main80.yaml",
+    "source_images": 20,
+    "heldout_images": 20,
+    "steps": 30,
+    "batch_size": 4,
+    "seed": 2026,
+    "output": "runs\\v4_diagnostic"
+  },
+  "source_ids": [
+    36,
+    49,
+    61,
+    74,
+    77,
+    86,
+    109,
+    110,
+    113,
+    127,
+    136,
+    149,
+    151,
+    165,
+    192,
+    201,
+    241,
+    257,
+    260,
+    294
+  ],
+  "heldout_ids": [
+    139,
+    785,
+    872,
+    885,
+    1000,
+    1268,
+    1296,
+    1353,
+    1490,
+    1584,
+    1761,
+    2006,
+    2153,
+    2261,
+    2299,
+    2431,
+    2473,
+    2532,
+    2685,
+    3156
+  ],
+  "results": {
+    "no_transform": {
+      "optimization": {
+        "loss_first": 0.3462783694267273,
+        "loss_last": 0.5362324118614197,
+        "gradient_norm_last": 0.01117929071187973
+      },
+      "source": {
+        "clean": {
+          "ap": 0.49788320135344055,
+          "ap50": 0.7490241212932135,
+          "ap75": 0.5148869328284109,
+          "recall50": 0.6551724137931034,
+          "gt_person_count": 87,
+          "mean_confidence": 0.6303574683373434
+        },
+        "patched": {
+          "ap": 0.4870085265481169,
+          "ap50": 0.7370233752927913,
+          "ap75": 0.50775785788433,
+          "recall50": 0.632183908045977,
+          "gt_person_count": 87,
+          "mean_confidence": 0.6266396614638242
+        },
+        "drop": {
+          "recall": 0.02298850574712641,
+          "ap50": 0.012000746000422224,
+          "confidence": 0.0037178068735191916,
+          "evaluation_failure_rate": 0.03508771929824561
+        },
+        "seconds": 3.867059000011068
+      },
+      "heldout": {
+        "clean": {
+          "ap": 0.5484911046340121,
+          "ap50": 0.7921992281253208,
+          "ap75": 0.5719117444212195,
+          "recall50": 0.7222222222222222,
+          "gt_person_count": 90,
+          "mean_confidence": 0.6253974644037393
+        },
+        "patched": {
+          "ap": 0.5455132791054889,
+          "ap50": 0.7960963835239308,
+          "ap75": 0.5912555316107099,
+          "recall50": 0.7222222222222222,
+          "gt_person_count": 90,
+          "mean_confidence": 0.6294070665652935
+        },
+        "drop": {
+          "recall": 0.0,
+          "ap50": -0.0038971553986099083,
+          "confidence": -0.0040096021615542154,
+          "evaluation_failure_rate": 0.015384615384615385
+        },
+        "seconds": 3.1024449999968056
+      }
+    },
+    "mild_transform": {
+      "optimization": {
+        "loss_first": 0.3330930471420288,
+        "loss_last": 0.5493831634521484,
+        "gradient_norm_last": 0.018511537462472916
+      },
+      "source": {
+        "clean": {
+          "ap": 0.49788320135344055,
+          "ap50": 0.7490241212932135,
+          "ap75": 0.5148869328284109,
+          "recall50": 0.6551724137931034,
+          "gt_person_count": 87,
+          "mean_confidence": 0.6303574683373434
+        },
+        "patched": {
+          "ap": 0.47714807170836493,
+          "ap50": 0.7367465904943706,
+          "ap75": 0.49182190213410115,
+          "recall50": 0.6436781609195402,
+          "gt_person_count": 87,
+          "mean_confidence": 0.6362876168319157
+        },
+        "drop": {
+          "recall": 0.011494252873563204,
+          "ap50": 0.012277530798842862,
+          "confidence": -0.005930148494572296,
+          "evaluation_failure_rate": 0.017543859649122806
+        },
+        "seconds": 3.715423199988436
+      },
+      "heldout": {
+        "clean": {
+          "ap": 0.5484911046340121,
+          "ap50": 0.7921992281253208,
+          "ap75": 0.5719117444212195,
+          "recall50": 0.7222222222222222,
+          "gt_person_count": 90,
+          "mean_confidence": 0.6253974644037393
+        },
+        "patched": {
+          "ap": 0.543878738179527,
+          "ap50": 0.7926959692213249,
+          "ap75": 0.5891454252994206,
+          "recall50": 0.7222222222222222,
+          "gt_person_count": 90,
+          "mean_confidence": 0.6250282099613776
+        },
+        "drop": {
+          "recall": 0.0,
+          "ap50": -0.0004967410960040608,
+          "confidence": 0.00036925444236168836,
+          "evaluation_failure_rate": 0.015384615384615385
+        },
+        "seconds": 3.143517599994084
+      }
+    }
+  },
+  "metric_definition": "Recall@0.5 uses NMS person predictions with confidence>=0.25, greedy one-prediction-per-GT matching; failure rate is clean-matched GT lost after perturbation."
+}
