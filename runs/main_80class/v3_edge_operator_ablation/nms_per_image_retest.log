@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "operators": [
+    "sobel",
+    "canny",
+    "laplacian"
+  ],
+  "output": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v3_edge_operator_ablation\\final_metrics_nms_per_image.csv"
+}

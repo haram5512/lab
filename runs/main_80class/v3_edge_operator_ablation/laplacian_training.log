@@ -1,0 +1,434 @@
+
+Stage training_laplacian started 2026-09-10T16:32:28.151897+00:00
+{"epoch": 1, "train_loss": 54.87518782434825, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 40.175944230885534, "fusion_alpha": {"alpha3": 0.06044745616458669, "alpha4": 0.1056611003398806, "alpha5": 0.10837555636731748}, "device": "cuda", "max_vram_gib": 6.603041648864746, "epoch_seconds": 1325.5827914999973, "images_per_second": 96.73481039603573}
+{"epoch": 2, "train_loss": 54.55300288333626, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 50.12505245129925, "fusion_alpha": {"alpha3": 0.08536834182020671, "alpha4": 0.16055479218919358, "alpha5": 0.16115799399386505}, "device": "cuda", "max_vram_gib": 6.603082180023193, "epoch_seconds": 1276.3169016999964, "images_per_second": 100.46877842736662}
+{"epoch": 3, "train_loss": 54.36580279630101, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 57.899918284811385, "fusion_alpha": {"alpha3": 0.10442930698476569, "alpha4": 0.19067718935554137, "alpha5": 0.19210938525250454}, "device": "cuda", "max_vram_gib": 6.603397846221924, "epoch_seconds": 1220.950878100004, "images_per_second": 105.02470025620237}
+{"epoch": 4, "train_loss": 54.22455350891083, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 65.91978629440635, "fusion_alpha": {"alpha3": 0.11809830332803214, "alpha4": 0.21212708396082391, "alpha5": 0.21761975288688543}, "device": "cuda", "max_vram_gib": 6.603397846221924, "epoch_seconds": 1242.9549101999946, "images_per_second": 103.16544787563329}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.25s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.77s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.16s).
+Accumulating evaluation results...
+DONE (t=1.90s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.308
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.453
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.331
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.171
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.370
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.525
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.260
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.436
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.484
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.294
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.574
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.711
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.25s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.36s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.05s).
+Accumulating evaluation results...
+DONE (t=1.98s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.297
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.442
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.319
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.167
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.357
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.509
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.430
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.478
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.287
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.566
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.701
+{"epoch": 5, "train_loss": 54.119558991072424, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 75.85224974935252, "fusion_alpha": {"alpha3": 0.1301569965502578, "alpha4": 0.23100897393927364, "alpha5": 0.23930842381810952}, "device": "cuda", "max_vram_gib": 6.603397846221924, "clean_person_ap": 0.5262543582183673, "clean_person_ap50": 0.7692205891229452, "clean_person_ap75": 0.5593656404470313, "clean_person_ar100": 0.6393244873341375, "clean_person_recall": 0.6711195928753181, "clean_person_gt": 11004, "seen_person_ap": 0.5415767962315156, "seen_person_ap50": 0.7779388686028123, "seen_person_ap75": 0.5784929825875592, "seen_person_ar100": 0.6462559153753363, "seen_person_recall": 0.6818429661941112, "seen_person_gt": 11004, "seen_failure_rate": 0.020098596890405718, "clean_to_seen_ap_drop": -0.015322438013148254, "clean_to_seen_ap50_drop": -0.00871827947986703, "clean_to_seen_recall_drop": -0.010723373318793139, "val_seconds": 737.3155933999951, "early_stop_wait": 0, "early_stop_triggered": false, "epoch_seconds": 2008.6551089999994, "images_per_second": 63.83873439768302}
+{"epoch": 6, "train_loss": 53.974281361954894, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 87.40712112596293, "fusion_alpha": {"alpha3": 0.1406342699127402, "alpha4": 0.2497444533651877, "alpha5": 0.26064203656510915}, "device": "cuda", "max_vram_gib": 6.603397846221924, "epoch_seconds": 1227.6427625999931, "images_per_second": 104.45221028992584}
+{"epoch": 7, "train_loss": 53.83077051063736, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 99.98154623453809, "fusion_alpha": {"alpha3": 0.14825634386933254, "alpha4": 0.2684672447497735, "alpha5": 0.2827839382409217}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1285.0732648999983, "images_per_second": 99.78419402412716}
+{"epoch": 8, "train_loss": 53.679824459814505, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 114.35473053693595, "fusion_alpha": {"alpha3": 0.15413813349119798, "alpha4": 0.2870242722302735, "alpha5": 0.30798677262848245}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1223.7272938000096, "images_per_second": 104.78641822379446}
+{"epoch": 9, "train_loss": 53.52874239904438, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 128.8777990105191, "fusion_alpha": {"alpha3": 0.1601851149322744, "alpha4": 0.30535862280312415, "alpha5": 0.33391191782857366}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1271.4255264999956, "images_per_second": 100.85529771688161}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.27s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.37s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=14.91s).
+Accumulating evaluation results...
+DONE (t=1.89s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.306
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.452
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.329
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.170
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.370
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.510
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.259
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.435
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.484
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.300
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.566
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.705
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.26s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.02s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.13s).
+Accumulating evaluation results...
+DONE (t=1.90s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.298
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.443
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.318
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.164
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.358
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.496
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.257
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.429
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.478
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.560
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.700
+{"epoch": 10, "train_loss": 53.407014250279424, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 142.8388870903293, "fusion_alpha": {"alpha3": 0.16450355415736248, "alpha4": 0.32299956225022347, "alpha5": 0.36147183518180115}, "device": "cuda", "max_vram_gib": 6.603445053100586, "clean_person_ap": 0.5229706228055334, "clean_person_ap50": 0.7668481153653429, "clean_person_ap75": 0.5589739164817156, "clean_person_ar100": 0.638043982555442, "clean_person_recall": 0.6664849145765176, "clean_person_gt": 11004, "seen_person_ap": 0.5392168646709906, "seen_person_ap50": 0.7759611027378466, "seen_person_ap75": 0.5772561341556138, "seen_person_ar100": 0.6461445671337106, "seen_person_recall": 0.6802980734278444, "seen_person_gt": 11004, "seen_failure_rate": 0.017064846416382284, "clean_to_seen_ap_drop": -0.0162462418654572, "clean_to_seen_ap50_drop": -0.009112987372503656, "clean_to_seen_recall_drop": -0.013813158851326834, "val_seconds": 701.1716051000112, "early_stop_wait": 5, "early_stop_triggered": false, "epoch_seconds": 2021.3089600999956, "images_per_second": 63.439089486674206}
+{"epoch": 11, "train_loss": 53.2526480461547, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 156.0871043964382, "fusion_alpha": {"alpha3": 0.168839708256894, "alpha4": 0.3374288556074906, "alpha5": 0.38961087924961796}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1216.7439901000034, "images_per_second": 105.38782278222789}
+{"epoch": 12, "train_loss": 53.0895279507913, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 169.102094606737, "fusion_alpha": {"alpha3": 0.17325553712165523, "alpha4": 0.35244541030057414, "alpha5": 0.41997663269261876}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1226.1139821999968, "images_per_second": 104.58244654376989}
+{"epoch": 13, "train_loss": 52.953718110472856, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 180.3617547789757, "fusion_alpha": {"alpha3": 0.1763299105655469, "alpha4": 0.3654226223583112, "alpha5": 0.4478400347758077}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1225.6443509999954, "images_per_second": 104.62251948975081}
+{"epoch": 14, "train_loss": 52.805428874230905, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 190.54591380397602, "fusion_alpha": {"alpha3": 0.17956326061677552, "alpha4": 0.3755061081917343, "alpha5": 0.4747621969593142}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1231.2949630999938, "images_per_second": 104.14238979517893}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.26s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.40s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.17s).
+Accumulating evaluation results...
+DONE (t=1.95s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.301
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.448
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.323
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.168
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.363
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.504
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.256
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.431
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.479
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.294
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.565
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.703
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.26s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=3.81s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.16s).
+Accumulating evaluation results...
+DONE (t=2.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.292
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.437
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.314
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.163
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.354
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.491
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.254
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.425
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.474
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.559
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.688
+{"epoch": 15, "train_loss": 52.659858815922234, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 199.35957121250996, "fusion_alpha": {"alpha3": 0.1816103745199844, "alpha4": 0.38502772109296746, "alpha5": 0.4999142417278951}, "device": "cuda", "max_vram_gib": 6.603445053100586, "clean_person_ap": 0.5164496658251889, "clean_person_ap50": 0.7633936273002236, "clean_person_ap75": 0.5525171770143917, "clean_person_ar100": 0.6338034703535307, "clean_person_recall": 0.6713013449654671, "clean_person_gt": 11004, "seen_person_ap": 0.534221876851402, "seen_person_ap50": 0.7727224416432382, "seen_person_ap75": 0.5723366106672776, "seen_person_ar100": 0.6425814234016889, "seen_person_recall": 0.6826608505997819, "seen_person_gt": 11004, "seen_failure_rate": 0.02123625331816459, "clean_to_seen_ap_drop": -0.01777221102621307, "clean_to_seen_ap50_drop": -0.00932881434301458, "clean_to_seen_recall_drop": -0.01135950563431476, "val_seconds": 751.268553499991, "early_stop_wait": 10, "early_stop_triggered": false, "epoch_seconds": 1984.220806000012, "images_per_second": 64.62486413419819}
+{"epoch": 16, "train_loss": 52.51853237133064, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 208.33831051259978, "fusion_alpha": {"alpha3": 0.1838660438372168, "alpha4": 0.3944148011059461, "alpha5": 0.522984071450676}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1225.4268637999921, "images_per_second": 104.64108776134113}
+{"epoch": 17, "train_loss": 52.41995938095504, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 215.01032593419976, "fusion_alpha": {"alpha3": 0.1858831995432665, "alpha4": 0.40319991140011063, "alpha5": 0.546265585069171}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1222.686614899998, "images_per_second": 104.87560625703568}
+{"epoch": 18, "train_loss": 52.298686735168424, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 221.3824079122716, "fusion_alpha": {"alpha3": 0.18803740580549497, "alpha4": 0.4090095802903651, "alpha5": 0.5680529891463098}, "device": "cuda", "max_vram_gib": 6.603445053100586, "epoch_seconds": 1227.374197600002, "images_per_second": 104.47506575479585}
+{"epoch": 19, "train_loss": 52.181571191418435, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 228.08400616950672, "fusion_alpha": {"alpha3": 0.19024063384684617, "alpha4": 0.41671054547061465, "alpha5": 0.5883487907950273}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1227.767270299999, "images_per_second": 104.44161780649816}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.27s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.02s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.07s).
+Accumulating evaluation results...
+DONE (t=1.89s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.301
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.448
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.324
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.171
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.364
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.504
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.257
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.430
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.479
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.302
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.559
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.701
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.27s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.42s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=14.68s).
+Accumulating evaluation results...
+DONE (t=1.90s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.292
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.440
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.313
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.165
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.354
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.486
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.254
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.422
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.470
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.293
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.552
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.686
+{"epoch": 20, "train_loss": 52.089433187020276, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 233.18331483153983, "fusion_alpha": {"alpha3": 0.19330554701268912, "alpha4": 0.4226087134353772, "alpha5": 0.6083068831446404}, "device": "cuda", "max_vram_gib": 6.603487014770508, "clean_person_ap": 0.5148644016418319, "clean_person_ap50": 0.7638311198842697, "clean_person_ap75": 0.5523131845005285, "clean_person_ar100": 0.6338220283938016, "clean_person_recall": 0.6671210468920392, "clean_person_gt": 11004, "seen_person_ap": 0.5330470349458546, "seen_person_ap50": 0.7726435309965713, "seen_person_ap75": 0.5702110706358393, "seen_person_ar100": 0.6426742136030436, "seen_person_recall": 0.6804798255179935, "seen_person_gt": 11004, "seen_failure_rate": 0.018202502844141044, "clean_to_seen_ap_drop": -0.0181826333040227, "clean_to_seen_ap50_drop": -0.008812411112301688, "clean_to_seen_recall_drop": -0.013358778625954248, "val_seconds": 691.6802202000108, "early_stop_wait": 15, "early_stop_triggered": false, "epoch_seconds": 1919.8486994999985, "images_per_second": 66.79172167754467}
+{"epoch": 21, "train_loss": 51.986062351101175, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 238.04608431803166, "fusion_alpha": {"alpha3": 0.19430089657549968, "alpha4": 0.4281401038169861, "alpha5": 0.6270928037410487}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1229.2488040000026, "images_per_second": 104.31574111175603}
+{"epoch": 22, "train_loss": 51.87751876903389, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 241.7786771180201, "fusion_alpha": {"alpha3": 0.19586012231003858, "alpha4": 0.4342088996471759, "alpha5": 0.6450277407934328}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1234.128553500006, "images_per_second": 103.9032762319111}
+{"epoch": 23, "train_loss": 51.81029019931595, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 245.3112422446962, "fusion_alpha": {"alpha3": 0.19850630193443117, "alpha4": 0.4380001463293434, "alpha5": 0.6617396839424046}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1271.5143392000027, "images_per_second": 100.84825317870842}
+{"epoch": 24, "train_loss": 51.712282061338904, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 248.58888615824108, "fusion_alpha": {"alpha3": 0.20038448730316347, "alpha4": 0.4431771135883417, "alpha5": 0.6777724469166078}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1232.1529735000076, "images_per_second": 104.06987018483156}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.31s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.33s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=17.07s).
+Accumulating evaluation results...
+DONE (t=2.12s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.297
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.448
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.318
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.170
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.362
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.492
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.255
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.428
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.477
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.300
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.561
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.694
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.33s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.80s).
+Accumulating evaluation results...
+DONE (t=2.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.286
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.437
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.305
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.164
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.351
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.477
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.253
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.421
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.470
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.294
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.553
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.681
+{"epoch": 25, "train_loss": 51.65698356114462, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 252.6835573576205, "fusion_alpha": {"alpha3": 0.20075224336615938, "alpha4": 0.44744514901480986, "alpha5": 0.6930019509590076}, "device": "cuda", "max_vram_gib": 6.603487014770508, "clean_person_ap": 0.512152120919136, "clean_person_ap50": 0.7620793987183045, "clean_person_ap75": 0.5485389636873194, "clean_person_ar100": 0.6316043425814233, "clean_person_recall": 0.6692111959287532, "clean_person_gt": 11004, "seen_person_ap": 0.5293461982147338, "seen_person_ap50": 0.7704737450064334, "seen_person_ap75": 0.5678688692625795, "seen_person_ar100": 0.6399183446228078, "seen_person_recall": 0.680388949472919, "seen_person_gt": 11004, "seen_failure_rate": 0.02351156617368222, "clean_to_seen_ap_drop": -0.017194077295597854, "clean_to_seen_ap50_drop": -0.008394346288128851, "clean_to_seen_recall_drop": -0.011177753544165725, "val_seconds": 770.8754675000091, "early_stop_wait": 20, "early_stop_triggered": false, "epoch_seconds": 2019.2926365000021, "images_per_second": 63.50243529945139}
+{"epoch": 26, "train_loss": 51.56922469762509, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 254.41448460804335, "fusion_alpha": {"alpha3": 0.2023593639274557, "alpha4": 0.4517253370074455, "alpha5": 0.7087375038784897}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1358.535623799995, "images_per_second": 94.38839714878037}
+{"epoch": 27, "train_loss": 51.49244241776343, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 257.8126951897184, "fusion_alpha": {"alpha3": 0.20443722552911725, "alpha4": 0.4559141882507506, "alpha5": 0.7239887054541154}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1348.0447939000005, "images_per_second": 95.12295183383368}
+{"epoch": 28, "train_loss": 51.42513402160294, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 260.76989873451043, "fusion_alpha": {"alpha3": 0.2054796399745696, "alpha4": 0.4592388440629917, "alpha5": 0.7383046667584164}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1359.5944163000095, "images_per_second": 94.31489160492745}
+{"epoch": 29, "train_loss": 51.359286310668004, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 262.17416848449204, "fusion_alpha": {"alpha3": 0.20722734368222204, "alpha4": 0.46284095938512665, "alpha5": 0.751970555313571}, "device": "cuda", "max_vram_gib": 6.603487014770508, "epoch_seconds": 1344.6225783000118, "images_per_second": 95.36505043825716}
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.30s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.50s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=16.94s).
+Accumulating evaluation results...
+DONE (t=2.23s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.291
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.439
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.311
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.161
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.355
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.491
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.252
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.425
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.475
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.560
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.694
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+loading annotations into memory...
+Done (t=0.31s)
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=4.30s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=17.09s).
+Accumulating evaluation results...
+DONE (t=2.14s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.283
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.429
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.300
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.155
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.344
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.472
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.247
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.415
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.464
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.282
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.549
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.677
+{"epoch": 30, "train_loss": 51.29967117095422, "train_batches": 4008, "clean_samples": 64115, "perturbed_samples": 64115, "patch_ratio": 0.5, "shape_gradient_norm": 263.57441099202254, "fusion_alpha": {"alpha3": 0.20832612060248376, "alpha4": 0.46609210543438584, "alpha5": 0.7651800787347758}, "device": "cuda", "max_vram_gib": 6.603487014770508, "clean_person_ap": 0.5042089387990122, "clean_person_ap50": 0.7539478054232875, "clean_person_ap75": 0.5398603939155326, "clean_person_ar100": 0.628087593950079, "clean_person_recall": 0.6677571792075608, "clean_person_gt": 11004, "seen_person_ap": 0.5218416010634392, "seen_person_ap50": 0.763055677035232, "seen_person_ap75": 0.5580910316247456, "seen_person_ar100": 0.6348798366892456, "seen_person_recall": 0.6775717920756089, "seen_person_gt": 11004, "seen_failure_rate": 0.02692453545695872, "clean_to_seen_ap_drop": -0.017632662264427057, "clean_to_seen_ap50_drop": -0.009107871611944485, "clean_to_seen_recall_drop": -0.009814612868048078, "val_seconds": 822.8013648000051, "early_stop_wait": 25, "early_stop_triggered": false, "epoch_seconds": 2182.0121981999982, "images_per_second": 58.76685753900938}

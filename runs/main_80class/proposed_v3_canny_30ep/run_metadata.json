@@ -1,0 +1,117 @@
+{
+  "git_commit": "8e0656fd65724a9b8d2d54db6eadf687330b0ede",
+  "git_dirty": true,
+  "model": "proposed_v3",
+  "source_checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+  "architecture": {
+    "pretrained_parameter_count": 2624080,
+    "new_parameter_count": 1041859,
+    "incompatible_keys": [],
+    "pretrained_shape_initialization": {
+      "copied_rgb_layers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "incompatible_rgb_layers": [],
+      "first_conv_policy": "mean over RGB input channels"
+    },
+    "config": {
+      "weights": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\yolo11n.pt",
+      "fusion_alpha": 0.05,
+      "fusion_layers": [
+        16,
+        19,
+        22
+      ],
+      "num_classes": 80,
+      "edge_operator": "canny",
+      "canny_low_threshold": 0.1,
+      "canny_high_threshold": 0.2,
+      "canny_gaussian_kernel_size": 5,
+      "canny_gaussian_sigma": 1.0,
+      "canny_hysteresis_iterations": 32,
+      "laplacian_kernel_size": 3
+    },
+    "edge_preprocessing": {
+      "operator": "canny",
+      "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+      "gaussian_smoothing": true,
+      "gaussian_kernel_size": 5,
+      "gaussian_sigma": 1.0,
+      "low_threshold": 0.1,
+      "high_threshold": 0.2,
+      "threshold_scale": "per-image normalized gradient magnitude",
+      "non_maximum_suppression": "four quantized gradient directions",
+      "hysteresis_iterations": 32,
+      "normalization": "binary [0,1]"
+    },
+    "rgb_channels": [
+      64,
+      128,
+      256
+    ]
+  },
+  "dataset_config": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\dataset_config.main80.yaml",
+  "dataset": "COCO 2017 person-containing images, 80-class targets",
+  "patch_pool": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\adversarial_patches\\train_seen",
+  "patch_ids": [
+    "patch_A.png",
+    "patch_B.png",
+    "patch_C.png",
+    "patch_D.png",
+    "patch_E.png"
+  ],
+  "patch_sha256": "ab51a45b89e29ef9b42046036741a3613492675f89aee04ff748e39154e2ffa0",
+  "patch_profile": "v5-C torso/very-mild",
+  "unseen_patch_ids": [],
+  "validation": "official COCOeval person metrics, clean+train_seen only",
+  "person_mapping": {
+    "yolo_class": 0,
+    "coco_category_id": 1
+  },
+  "recall": {
+    "confidence": 0.25,
+    "iou": 0.5
+  },
+  "checkpoint_policy": {
+    "best_clean_map.pt": "clean person AP",
+    "best_seen_map.pt": "seen person AP",
+    "last.pt": "latest"
+  },
+  "early_stopping": {
+    "enabled": false,
+    "primary": "seen_person_ap",
+    "min_epochs": 30,
+    "patience": 20,
+    "min_delta": 0.001
+  },
+  "clean_patch_ratio": [
+    0.5,
+    0.5
+  ],
+  "image_size": 640,
+  "batch_size": 16,
+  "effective_images_per_step": 32,
+  "num_workers": 0,
+  "pin_memory": true,
+  "persistent_workers": false,
+  "learning_rate": 0.0001,
+  "optimizer": "AdamW",
+  "seed": 42,
+  "epochs": 30,
+  "val_every": 5,
+  "val_max_images": 0,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "ultralytics": "8.4.138",
+  "edge_operator": "canny"
+}

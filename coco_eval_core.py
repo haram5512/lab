@@ -12,7 +12,7 @@ from .metrics import inverse_letterbox_xyxy
 from .metrics import greedy_person_match_metrics
 
 
-def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, device: torch.device, image_size: int, attack_mode: str = "clean", confidence: float = 0.001, iou_threshold: float = 0.7) -> dict[str, Any]:
+def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, device: torch.device, image_size: int, attack_mode: str = "clean", confidence: float = 0.001, iou_threshold: float = 0.7, nms_max_time_img: float = 0.05) -> dict[str, Any]:
     from pycocotools.coco import COCO
     from pycocotools.cocoeval import COCOeval
 
@@ -30,7 +30,8 @@ def evaluate_model(model: Any, loader: Any, annotations: Path, dataset: Any, dev
         for batch in loader:
             images = batch["img"].to(device, non_blocking=device.type == "cuda")
             if hasattr(model, "predict"):
-                detections = model.predict(images, confidence=confidence, iou=iou_threshold, classes=None)
+                detections = model.predict(images, confidence=confidence, iou=iou_threshold, classes=None,
+                                           nms_max_time_img=nms_max_time_img)
             else:
                 detections = model.predict_tensor(images, confidence=confidence, iou=iou_threshold)
             for index, detection in enumerate(detections):

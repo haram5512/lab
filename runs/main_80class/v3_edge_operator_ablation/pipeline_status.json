@@ -1,0 +1,10 @@
+{
+  "stage": "complete",
+  "updated_at": "2026-09-11T14:13:29.896384+09:00",
+  "scope": "laplacian_30ep_and_both_final_tests",
+  "results": {
+    "canny": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_v3_canny_30ep\\final_evaluation\\metrics.json",
+    "laplacian": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_v3_laplacian_30ep\\final_evaluation\\metrics.json"
+  },
+  "combined_csv": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v3_edge_operator_ablation\\canny_laplacian_final_metrics.csv"
+}

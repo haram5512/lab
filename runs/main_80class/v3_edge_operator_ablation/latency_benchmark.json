@@ -1,0 +1,146 @@
+{
+  "device": "NVIDIA GeForce RTX 5070 Ti",
+  "torch": "2.11.0+cu128",
+  "input": "100 real COCO val2017 images, batch=1, letterbox 640x640",
+  "precision": "FP32",
+  "warmup": 20,
+  "repetitions": 100,
+  "confidence": 0.25,
+  "nms_iou": 0.7,
+  "results": {
+    "sobel": {
+      "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_rgb_shape_v3_full\\best_seen_map.pt",
+      "checkpoint_epoch": 5,
+      "edge_preprocessing": {
+        "operator": "sobel",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "kernel_size": 3,
+        "magnitude": "sqrt(gx^2+gy^2+1e-6)",
+        "normalization": "per-image maximum to [0,1]"
+      },
+      "edge_preprocessing_gpu": {
+        "median_ms": 0.21230000129435211,
+        "mean_ms": 0.22152700024889782,
+        "p95_ms": 0.3034999972442165,
+        "fps_from_median": 4710.315562426722
+      },
+      "model_including_edge_plus_nms": {
+        "median_ms": 7.478249994164798,
+        "mean_ms": 8.262064000155078,
+        "p95_ms": 12.797999996109866,
+        "fps_from_median": 133.72112469899906
+      },
+      "cpu_decode_letterbox": {
+        "median_ms": 3.0420500042964704,
+        "mean_ms": 3.4134860007907264,
+        "p95_ms": 5.091800005175173,
+        "fps_from_median": 328.72569437965836
+      },
+      "end_to_end_decode_letterbox_h2d_model_nms": {
+        "median_ms": 13.248850002128165,
+        "mean_ms": 14.256674000498606,
+        "p95_ms": 19.915500000934117,
+        "fps_from_median": 75.47824904345433
+      },
+      "parameter_count": 3665939,
+      "peak_vram_gib": 0.08452177047729492
+    },
+    "canny": {
+      "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_v3_canny_30ep\\best_seen_map.pt",
+      "checkpoint_epoch": 5,
+      "edge_preprocessing": {
+        "operator": "canny",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "gaussian_smoothing": true,
+        "gaussian_kernel_size": 5,
+        "gaussian_sigma": 1.0,
+        "low_threshold": 0.1,
+        "high_threshold": 0.2,
+        "threshold_scale": "per-image normalized gradient magnitude",
+        "non_maximum_suppression": "four quantized gradient directions",
+        "hysteresis_iterations": 32,
+        "normalization": "binary [0,1]"
+      },
+      "edge_preprocessing_gpu": {
+        "median_ms": 4.183349992672447,
+        "mean_ms": 4.342620999668725,
+        "p95_ms": 5.442099994979799,
+        "fps_from_median": 239.04287275786135
+      },
+      "model_including_edge_plus_nms": {
+        "median_ms": 12.534699999378063,
+        "mean_ms": 13.996978000795934,
+        "p95_ms": 20.64030000474304,
+        "fps_from_median": 79.77853479138848
+      },
+      "cpu_decode_letterbox": {
+        "median_ms": 3.293549998488743,
+        "mean_ms": 3.3783209990360774,
+        "p95_ms": 4.521700000623241,
+        "fps_from_median": 303.6237495890008
+      },
+      "end_to_end_decode_letterbox_h2d_model_nms": {
+        "median_ms": 17.193149993545376,
+        "mean_ms": 17.464781000016956,
+        "p95_ms": 22.468199997092597,
+        "fps_from_median": 58.162698538395716
+      },
+      "parameter_count": 3665939,
+      "peak_vram_gib": 0.08528518676757812
+    },
+    "laplacian": {
+      "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_v3_laplacian_30ep\\best_seen_map.pt",
+      "checkpoint_epoch": 5,
+      "edge_preprocessing": {
+        "operator": "laplacian",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "kernel": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            -4,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "kernel_size": 3,
+        "absolute_value": true,
+        "normalization": "per-image maximum to [0,1]"
+      },
+      "edge_preprocessing_gpu": {
+        "median_ms": 0.16365000192308798,
+        "mean_ms": 0.18170400129747577,
+        "p95_ms": 0.28360000578686595,
+        "fps_from_median": 6110.60182247953
+      },
+      "model_including_edge_plus_nms": {
+        "median_ms": 7.356449990766123,
+        "mean_ms": 8.12334899965208,
+        "p95_ms": 12.68770000024233,
+        "fps_from_median": 135.93513192575335
+      },
+      "cpu_decode_letterbox": {
+        "median_ms": 3.110850004304666,
+        "mean_ms": 3.2495779999590013,
+        "p95_ms": 4.547599994111806,
+        "fps_from_median": 321.45555028890533
+      },
+      "end_to_end_decode_letterbox_h2d_model_nms": {
+        "median_ms": 12.213950001751073,
+        "mean_ms": 12.745170000416692,
+        "p95_ms": 17.282700006035157,
+        "fps_from_median": 81.87359534439173
+      },
+      "parameter_count": 3665939,
+      "peak_vram_gib": 0.08528518676757812
+    }
+  }
+}

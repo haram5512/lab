@@ -29,6 +29,8 @@ def main() -> None:
     parser.add_argument("--config", type=Path, default=Path("dataset_config.main80.yaml"))
     parser.add_argument("--weights", default="yolo11n.pt")
     parser.add_argument("--model", choices=("baseline", "proposed", "proposed_v1", "proposed_v2", "proposed_v3"), default="baseline")
+    parser.add_argument("--edge-operator", choices=("sobel", "canny", "laplacian"), default="sobel",
+                        help="Shape input operator for proposed_v3 only")
     parser.add_argument("--patch-dir", type=Path, required=True)
     parser.add_argument("--max-images", type=int, default=100)
     parser.add_argument("--epochs", type=int, default=1)
@@ -85,7 +87,7 @@ def main() -> None:
     elif args.model == "proposed_v2":
         model = ProposedRGBShapeV2(ProposedV2Config(weights=args.weights))
     elif args.model == "proposed_v3":
-        model = ProposedRGBShapeV3(ProposedV3Config(weights=args.weights))
+        model = ProposedRGBShapeV3(ProposedV3Config(weights=args.weights, edge_operator=args.edge_operator))
     else:
         model = ShapeAwareYolo(ModelConfig(weights=args.weights, num_classes=None))
     model = model.to(device).train()
@@ -97,6 +99,9 @@ def main() -> None:
     patch_hash=hashlib.sha256(patched_ds.patch_files[0].read_bytes()).hexdigest()
     architecture = getattr(model, "initialization_report", None)
     metadata = {"git_commit": commit, "git_dirty": bool(subprocess.check_output([*git_safe,"status","--porcelain"],cwd=root,text=True).strip()), "model": args.model, "source_checkpoint": args.weights, "architecture": architecture, "dataset_config":str(config_path), "dataset": "COCO 2017 person-containing images, 80-class targets", "patch_pool": str(patch_dir.resolve()), "patch_ids": [p.name for p in patched_ds.patch_files], "patch_sha256":patch_hash,"patch_profile": "v5-C torso/very-mild", "unseen_patch_ids":[], "validation": "official COCOeval person metrics, clean+train_seen only", "person_mapping":{"yolo_class":0,"coco_category_id":1},"recall":{"confidence":.25,"iou":.5}, "checkpoint_policy":{"best_clean_map.pt":"clean person AP","best_seen_map.pt":"seen person AP","last.pt":"latest"},"early_stopping":{"enabled":args.early_stopping,"primary":"seen_person_ap","min_epochs":args.min_epochs,"patience":args.patience,"min_delta":args.min_delta}, "clean_patch_ratio": [1-args.patch_probability, args.patch_probability], "image_size": args.image_size, "batch_size": args.batch_size, "effective_images_per_step": args.batch_size*2, "num_workers":args.num_workers,"pin_memory":args.pin_memory,"persistent_workers":args.persistent_workers and args.num_workers>0,"learning_rate": args.lr, "optimizer":"AdamW", "seed":args.seed, "epochs": args.epochs, "val_every": args.val_every, "val_max_images": args.val_max_images, "device": str(device), "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU", "torch":torch.__version__, "cuda":torch.version.cuda,"ultralytics":ultralytics.__version__}
+    metadata["edge_operator"] = args.edge_operator if args.model == "proposed_v3" else None
+    metadata["weight_decay"] = optimizer.param_groups[0]["weight_decay"]
+    metadata["amp"] = False
     (args.output / "run_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     clean_iter = iter(clean_loader); patched_iter = iter(patched_loader)
     metrics_path = args.output / "metrics.jsonl"

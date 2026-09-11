@@ -10,10 +10,11 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 import os
-from typing import Any
+from typing import Any, Literal
 
 import torch
 from torch import Tensor, nn
+import torch.nn.functional as F
 
 os.environ.setdefault("YOLO_CONFIG_DIR", str(Path(__file__).resolve().parents[1] / "runs" / ".ultralytics"))
 from ultralytics import YOLO
@@ -33,6 +34,144 @@ class ProposedV3Config:
     fusion_alpha: float = 0.05
     fusion_layers: tuple[int, int, int] = (16, 19, 22)
     num_classes: int = 80
+    edge_operator: Literal["sobel", "canny", "laplacian"] = "sobel"
+    canny_low_threshold: float = 0.10
+    canny_high_threshold: float = 0.20
+    canny_gaussian_kernel_size: int = 5
+    canny_gaussian_sigma: float = 1.0
+    canny_hysteresis_iterations: int = 32
+    laplacian_kernel_size: int = 3
+
+
+def _grayscale(rgb: Tensor) -> Tensor:
+    if rgb.ndim != 4 or rgb.shape[1] != 3:
+        raise ValueError("rgb must have shape [B,3,H,W]")
+    return 0.299 * rgb[:, :1] + 0.587 * rgb[:, 1:2] + 0.114 * rgb[:, 2:3]
+
+
+class CannyEdge(nn.Module):
+    """Fixed-parameter Canny edge map implemented entirely with Torch tensors."""
+
+    def __init__(self, low_threshold: float = 0.10, high_threshold: float = 0.20,
+                 gaussian_kernel_size: int = 5, gaussian_sigma: float = 1.0,
+                 hysteresis_iterations: int = 32, eps: float = 1e-6) -> None:
+        super().__init__()
+        if not 0.0 <= low_threshold < high_threshold <= 1.0:
+            raise ValueError("Canny thresholds must satisfy 0 <= low < high <= 1")
+        if gaussian_kernel_size < 3 or gaussian_kernel_size % 2 == 0:
+            raise ValueError("Canny Gaussian kernel size must be an odd integer >= 3")
+        if gaussian_sigma <= 0 or hysteresis_iterations < 1:
+            raise ValueError("Canny sigma and hysteresis iterations must be positive")
+        radius = gaussian_kernel_size // 2
+        axis = torch.arange(-radius, radius + 1, dtype=torch.float32)
+        gaussian_1d = torch.exp(-(axis.square()) / (2.0 * gaussian_sigma ** 2))
+        gaussian_1d /= gaussian_1d.sum()
+        gaussian_2d = gaussian_1d[:, None] * gaussian_1d[None, :]
+        sobel_x = torch.tensor(
+            [[-1., 0., 1.], [-2., 0., 2.], [-1., 0., 1.]], dtype=torch.float32
+        )
+        self.register_buffer("gaussian_kernel", gaussian_2d.view(1, 1, gaussian_kernel_size, gaussian_kernel_size))
+        self.register_buffer("sobel_x", sobel_x.view(1, 1, 3, 3))
+        self.register_buffer("sobel_y", sobel_x.t().contiguous().view(1, 1, 3, 3))
+        self.low_threshold = float(low_threshold)
+        self.high_threshold = float(high_threshold)
+        self.gaussian_kernel_size = gaussian_kernel_size
+        self.gaussian_sigma = float(gaussian_sigma)
+        self.hysteresis_iterations = hysteresis_iterations
+        self.eps = eps
+
+    def forward(self, rgb: Tensor) -> Tensor:
+        gray = _grayscale(rgb)
+        smoothed = F.conv2d(gray, self.gaussian_kernel, padding=self.gaussian_kernel_size // 2)
+        gx = F.conv2d(smoothed, self.sobel_x, padding=1)
+        gy = F.conv2d(smoothed, self.sobel_y, padding=1)
+        magnitude = torch.sqrt(gx.square() + gy.square() + self.eps)
+        magnitude = magnitude / magnitude.amax(dim=(-2, -1), keepdim=True).clamp_min(self.eps)
+
+        angle = torch.remainder(torch.rad2deg(torch.atan2(gy, gx)), 180.0)
+        horizontal = (angle < 22.5) | (angle >= 157.5)
+        diagonal_up = (angle >= 22.5) & (angle < 67.5)
+        vertical = (angle >= 67.5) & (angle < 112.5)
+        diagonal_down = (angle >= 112.5) & (angle < 157.5)
+        keep = (
+            horizontal & (magnitude >= torch.roll(magnitude, 1, -1)) & (magnitude >= torch.roll(magnitude, -1, -1))
+        ) | (
+            diagonal_up & (magnitude >= torch.roll(magnitude, (1, -1), (-2, -1))) & (magnitude >= torch.roll(magnitude, (-1, 1), (-2, -1)))
+        ) | (
+            vertical & (magnitude >= torch.roll(magnitude, 1, -2)) & (magnitude >= torch.roll(magnitude, -1, -2))
+        ) | (
+            diagonal_down & (magnitude >= torch.roll(magnitude, (1, 1), (-2, -1))) & (magnitude >= torch.roll(magnitude, (-1, -1), (-2, -1)))
+        )
+        keep[..., 0, :] = False
+        keep[..., -1, :] = False
+        keep[..., :, 0] = False
+        keep[..., :, -1] = False
+        thinned = magnitude * keep
+        strong = thinned >= self.high_threshold
+        weak = thinned >= self.low_threshold
+        connected = strong
+        for _ in range(self.hysteresis_iterations):
+            neighborhood = F.max_pool2d(connected.to(thinned.dtype), 3, stride=1, padding=1).bool()
+            updated = strong | (weak & neighborhood)
+            if torch.equal(updated, connected):
+                break
+            connected = updated
+        return connected.to(rgb.dtype)
+
+
+class LaplacianEdge(nn.Module):
+    """Absolute 3x3 Laplacian response with per-image [0,1] normalization."""
+
+    def __init__(self, kernel_size: int = 3, eps: float = 1e-6) -> None:
+        super().__init__()
+        if kernel_size != 3:
+            raise ValueError("Only the fixed 3x3 Laplacian kernel is supported")
+        kernel = torch.tensor([[0., 1., 0.], [1., -4., 1.], [0., 1., 0.]])
+        self.register_buffer("kernel", kernel.view(1, 1, 3, 3))
+        self.kernel_size = kernel_size
+        self.eps = eps
+
+    def forward(self, rgb: Tensor) -> Tensor:
+        response = F.conv2d(_grayscale(rgb), self.kernel, padding=1).abs()
+        maximum = response.amax(dim=(-2, -1), keepdim=True).clamp_min(self.eps)
+        return response / maximum
+
+
+def build_edge_extractor(config: ProposedV3Config) -> tuple[nn.Module, dict[str, Any]]:
+    if config.edge_operator == "sobel":
+        return SobelMagnitude(), {
+            "operator": "sobel", "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+            "kernel_size": 3, "magnitude": "sqrt(gx^2+gy^2+1e-6)",
+            "normalization": "per-image maximum to [0,1]",
+        }
+    if config.edge_operator == "canny":
+        return CannyEdge(
+            low_threshold=config.canny_low_threshold,
+            high_threshold=config.canny_high_threshold,
+            gaussian_kernel_size=config.canny_gaussian_kernel_size,
+            gaussian_sigma=config.canny_gaussian_sigma,
+            hysteresis_iterations=config.canny_hysteresis_iterations,
+        ), {
+            "operator": "canny", "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+            "gaussian_smoothing": True,
+            "gaussian_kernel_size": config.canny_gaussian_kernel_size,
+            "gaussian_sigma": config.canny_gaussian_sigma,
+            "low_threshold": config.canny_low_threshold,
+            "high_threshold": config.canny_high_threshold,
+            "threshold_scale": "per-image normalized gradient magnitude",
+            "non_maximum_suppression": "four quantized gradient directions",
+            "hysteresis_iterations": config.canny_hysteresis_iterations,
+            "normalization": "binary [0,1]",
+        }
+    if config.edge_operator == "laplacian":
+        return LaplacianEdge(config.laplacian_kernel_size), {
+            "operator": "laplacian", "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+            "kernel": [[0, 1, 0], [1, -4, 1], [0, 1, 0]],
+            "kernel_size": config.laplacian_kernel_size,
+            "absolute_value": True,
+            "normalization": "per-image maximum to [0,1]",
+        }
+    raise ValueError(f"Unsupported edge operator: {config.edge_operator}")
 
 
 class YOLO11LikeShapeBackbone(nn.Module):
@@ -98,7 +237,7 @@ class ProposedRGBShapeV3(nn.Module):
         if not isinstance(self.detect, Detect) or list(self.detect.f) != list(self.config.fusion_layers):
             raise ValueError(f"Expected YOLO11n Detect inputs {self.config.fusion_layers}")
         rgb_channels = [int(self.detect.cv2[i][0].conv.in_channels) for i in range(3)]
-        self.shape_extractor = SobelMagnitude()
+        self.shape_extractor, self.edge_preprocessing = build_edge_extractor(self.config)
         self.shape_backbone = YOLO11LikeShapeBackbone()
         self.pretrained_initialization = self.shape_backbone.initialize_from_rgb(self.detector.model)
         self.fusions = nn.ModuleList([
@@ -111,7 +250,8 @@ class ProposedRGBShapeV3(nn.Module):
             "new_parameter_count": sum(parameter.numel() for parameter in self.shape_backbone.parameters()) + sum(parameter.numel() for parameter in self.fusions.parameters()),
             "incompatible_keys": self.pretrained_initialization["incompatible_rgb_layers"],
             "pretrained_shape_initialization": self.pretrained_initialization,
-            "config": asdict(self.config), "rgb_channels": rgb_channels,
+            "config": asdict(self.config), "edge_preprocessing": self.edge_preprocessing,
+            "rgb_channels": rgb_channels,
         }
 
     @property
@@ -119,7 +259,8 @@ class ProposedRGBShapeV3(nn.Module):
         return {f"alpha{index}": float(fusion.alpha.detach()) for index, fusion in enumerate(self.fusions, 3)}
 
     def forward(self, rgb: Tensor) -> Any:
-        shape_p3, shape_p4, shape_p5 = self.shape_backbone(self.shape_extractor(rgb))
+        shape_input = self.shape_extractor(rgb)
+        shape_p3, shape_p4, shape_p5 = self.shape_backbone(shape_input)
         shape_features = (shape_p3, shape_p4, shape_p5)
         cache: list[Any] = []
         x: Any = rgb
@@ -138,7 +279,7 @@ class ProposedRGBShapeV3(nn.Module):
                 x = fused_features[scale]
             cache.append(x if module.i in self.detector.save else None)
         self.last_diagnostics = {
-            "rgb_input": tuple(rgb.shape), "shape_input": tuple(self.shape_extractor(rgb).shape),
+            "rgb_input": tuple(rgb.shape), "shape_input": tuple(shape_input.shape),
             "shape_p3": tuple(shape_p3.shape), "shape_p4": tuple(shape_p4.shape), "shape_p5": tuple(shape_p5.shape),
             "rgb_p3": tuple(rgb_features[0].shape), "rgb_p4": tuple(rgb_features[1].shape), "rgb_p5": tuple(rgb_features[2].shape),
             "fused_p3": tuple(fused_features[0].shape), "fused_p4": tuple(fused_features[1].shape), "fused_p5": tuple(fused_features[2].shape),
@@ -151,9 +292,10 @@ class ProposedRGBShapeV3(nn.Module):
 
     @torch.no_grad()
     def predict(self, images: Tensor, confidence: float = 0.001, iou: float = 0.7,
-                classes: list[int] | None = None) -> list[Tensor]:
+                classes: list[int] | None = None, nms_max_time_img: float = 0.05) -> list[Tensor]:
         was_training = self.training; self.eval()
         raw = self(images); prediction = raw[0] if isinstance(raw, tuple) else raw
         detections = non_max_suppression(prediction, conf_thres=confidence, iou_thres=iou,
-                                         classes=classes, max_det=300, nc=self.config.num_classes)
+                                         classes=classes, max_det=300, nc=self.config.num_classes,
+                                         max_time_img=nms_max_time_img)
         self.train(was_training); return detections

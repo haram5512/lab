@@ -1,0 +1,618 @@
+{
+  "status": "passed",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "edge_samples_per_operator": 5,
+  "initial_trainable_parameters_identical": true,
+  "edge_metadata": {
+    "sobel": {
+      "operator": "sobel",
+      "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+      "kernel_size": 3,
+      "magnitude": "sqrt(gx^2+gy^2+1e-6)",
+      "normalization": "per-image maximum to [0,1]"
+    },
+    "canny": {
+      "operator": "canny",
+      "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+      "gaussian_smoothing": true,
+      "gaussian_kernel_size": 5,
+      "gaussian_sigma": 1.0,
+      "low_threshold": 0.1,
+      "high_threshold": 0.2,
+      "threshold_scale": "per-image normalized gradient magnitude",
+      "non_maximum_suppression": "four quantized gradient directions",
+      "hysteresis_iterations": 32,
+      "normalization": "binary [0,1]"
+    },
+    "laplacian": {
+      "operator": "laplacian",
+      "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+      "kernel": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          -4,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "kernel_size": 3,
+      "absolute_value": true,
+      "normalization": "per-image maximum to [0,1]"
+    }
+  },
+  "diagnostics": {
+    "sobel": {
+      "edge_preprocessing": {
+        "operator": "sobel",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "kernel_size": 3,
+        "magnitude": "sqrt(gx^2+gy^2+1e-6)",
+        "normalization": "per-image maximum to [0,1]"
+      },
+      "initial_parameter_digest": "74e445e0c8e44435f3e78088106bd55fdabc314a762e08036265da2604551a35",
+      "batches": [
+        {
+          "loss": 9.065774917602539,
+          "output_finite": true,
+          "shape_gradient_norm": 30.76184553769417,
+          "alpha_gradients": {
+            "alpha3": 1.4194941520690918,
+            "alpha4": 0.5430512428283691,
+            "alpha5": 0.056174129247665405
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        },
+        {
+          "loss": 8.261102676391602,
+          "output_finite": true,
+          "shape_gradient_norm": 28.54957753745839,
+          "alpha_gradients": {
+            "alpha3": 1.1134113073349,
+            "alpha4": 0.17956417798995972,
+            "alpha5": 0.13784784078598022
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        }
+      ]
+    },
+    "canny": {
+      "edge_preprocessing": {
+        "operator": "canny",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "gaussian_smoothing": true,
+        "gaussian_kernel_size": 5,
+        "gaussian_sigma": 1.0,
+        "low_threshold": 0.1,
+        "high_threshold": 0.2,
+        "threshold_scale": "per-image normalized gradient magnitude",
+        "non_maximum_suppression": "four quantized gradient directions",
+        "hysteresis_iterations": 32,
+        "normalization": "binary [0,1]"
+      },
+      "initial_parameter_digest": "74e445e0c8e44435f3e78088106bd55fdabc314a762e08036265da2604551a35",
+      "batches": [
+        {
+          "loss": 9.11912727355957,
+          "output_finite": true,
+          "shape_gradient_norm": 40.837021952611394,
+          "alpha_gradients": {
+            "alpha3": 0.7974653840065002,
+            "alpha4": 0.7303534150123596,
+            "alpha5": 0.04425013065338135
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        },
+        {
+          "loss": 8.276021957397461,
+          "output_finite": true,
+          "shape_gradient_norm": 29.155151583312545,
+          "alpha_gradients": {
+            "alpha3": 0.322557657957077,
+            "alpha4": 0.0032662153244018555,
+            "alpha5": 0.2689535915851593
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        }
+      ]
+    },
+    "laplacian": {
+      "edge_preprocessing": {
+        "operator": "laplacian",
+        "grayscale": "BT.601 (0.299R+0.587G+0.114B)",
+        "kernel": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            -4,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "kernel_size": 3,
+        "absolute_value": true,
+        "normalization": "per-image maximum to [0,1]"
+      },
+      "initial_parameter_digest": "74e445e0c8e44435f3e78088106bd55fdabc314a762e08036265da2604551a35",
+      "batches": [
+        {
+          "loss": 8.718083381652832,
+          "output_finite": true,
+          "shape_gradient_norm": 28.080930207273923,
+          "alpha_gradients": {
+            "alpha3": 0.30966198444366455,
+            "alpha4": 0.5988075733184814,
+            "alpha5": 0.1524488925933838
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        },
+        {
+          "loss": 8.498289108276367,
+          "output_finite": true,
+          "shape_gradient_norm": 26.86141917470377,
+          "alpha_gradients": {
+            "alpha3": 0.5550262928009033,
+            "alpha4": 0.1574615240097046,
+            "alpha5": 0.31528231501579285
+          },
+          "forward_diagnostics": {
+            "rgb_input": [
+              2,
+              3,
+              640,
+              640
+            ],
+            "shape_input": [
+              2,
+              1,
+              640,
+              640
+            ],
+            "shape_p3": [
+              2,
+              128,
+              80,
+              80
+            ],
+            "shape_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "shape_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "rgb_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "rgb_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "rgb_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "fused_p3": [
+              2,
+              64,
+              80,
+              80
+            ],
+            "fused_p4": [
+              2,
+              128,
+              40,
+              40
+            ],
+            "fused_p5": [
+              2,
+              256,
+              20,
+              20
+            ],
+            "detection_type": "dict",
+            "alpha": {
+              "alpha3": 0.05000000074505806,
+              "alpha4": 0.05000000074505806,
+              "alpha5": 0.05000000074505806
+            }
+          }
+        }
+      ]
+    }
+  }
+}

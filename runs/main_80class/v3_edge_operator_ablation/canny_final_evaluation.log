@@ -1,0 +1,14 @@
+
+Stage evaluating_canny started 2026-09-11T04:20:29.775897+00:00
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+{
+  "status": "complete",
+  "operators": [
+    "canny"
+  ],
+  "output": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v3_edge_operator_ablation\\canny_laplacian_final_metrics.csv"
+}

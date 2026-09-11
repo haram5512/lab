@@ -1,0 +1,12 @@
+
+Stage evaluating_laplacian started 2026-09-11T04:47:29.829748+00:00
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+WARNING NMS time limit 2.800s exceeded
+{
+  "status": "complete",
+  "operators": [
+    "laplacian"
+  ],
+  "output": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\v3_edge_operator_ablation\\canny_laplacian_final_metrics.csv"
+}

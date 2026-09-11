@@ -1,0 +1,19 @@
+{
+  "edge_operator": "canny",
+  "checkpoint": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\main_80class\\proposed_v3_canny_30ep\\best_seen_map.pt",
+  "checkpoint_epoch": 5,
+  "selection_rule": "maximum Seen Person AP",
+  "unseen_used_for_selection": false,
+  "evaluation": {
+    "images": "C:\\\ub17c\ubb38\\datasets\\coco\\val2017",
+    "annotations": "C:\\\ub17c\ubb38\\datasets\\coco\\annotations\\instances_val2017.json",
+    "seen_patch": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\runs\\v5_diagnostic\\patch_V5-C.png",
+    "unseen_patch_dir": "C:\\\ub17c\ubb38\\adversarial_robust_detector\\artifacts\\adversarial_patches\\unseen",
+    "image_size": 640,
+    "batch_size": 16,
+    "seed": 7,
+    "confidence": 0.001,
+    "nms_iou": 0.7,
+    "evaluator": "coco_eval_core.evaluate_model"
+  }
+}
